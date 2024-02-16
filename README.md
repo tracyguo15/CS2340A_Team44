@@ -2,3 +2,4 @@
 
 Members:
 1) Michael Leonick
+2) Adam Vaughn
