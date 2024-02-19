@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class createAccountActivity extends AppCompatActivity {
+public class CreateAccountActivityRef extends AppCompatActivity {
     EditText theUsername;
     EditText thePassword;
     EditText confirmThePassword;
