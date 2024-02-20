@@ -9,7 +9,7 @@
         android:id="@+id/ingredientTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ingredients"
+        android:text="@string/ingredients"
         android:textSize="40sp" />
 
 </LinearLayout>

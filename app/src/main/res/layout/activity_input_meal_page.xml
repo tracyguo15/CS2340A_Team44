@@ -9,7 +9,7 @@
         android:id="@+id/inputMealsTitleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Input Meal"
+        android:text="@string/input_meal"
         android:textSize="40sp" />
 
 </LinearLayout>
