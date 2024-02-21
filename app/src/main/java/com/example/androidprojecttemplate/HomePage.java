@@ -21,12 +21,23 @@ import com.google.android.material.navigation.NavigationView;
 public class HomePage extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
+    private static boolean isLoggedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        // Check if user is logged in before going on home page
+        if (!isLoggedIn) {
+            // If not logged in, stay on the login activity
+            Intent intent = new Intent(this, loginPageActivity.class);
+            startActivity(intent);
+            // Finish the current activity to prevent going back to it when pressing back button
+            finish();
+            return;
+        }
         dl = (DrawerLayout) findViewById(R.id.dl);
         abdt = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
@@ -84,5 +95,10 @@ public class HomePage extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+    }
+
+    // Method to set the login state. remember to do this after login page is implemented
+    public static void setLoggedIn(boolean value) {
+        isLoggedIn = value;
     }
 }
