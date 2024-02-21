@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class loginPageActivity extends AppCompatActivity {
 private EditText theUsername;
@@ -51,17 +52,16 @@ FirebaseAuth mAuth;
                 return;
             }
 
-
             // Code to login user from firebase
             mAuth.signInWithEmailAndPassword(theActualUsername, theActualPassword)
                     .addOnCompleteListener(loginPageActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(loginPageActivity.this, "Successfull OMG!", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(loginPageActivity.this, "Successfull OMG!", Toast.LENGTH_SHORT).show();
                                 // Switch screen to home page
-                                //Intent theIntent = new Intent(loginPageActivity.this, HomePage.class);
-                                //startActivity(theIntent);
+                                Intent theIntent = new Intent(loginPageActivity.this, welcomeScreenActivity.class);
+                                startActivity(theIntent);
                             } else {
                                 Toast.makeText(loginPageActivity.this, "Terrible OMG!", Toast.LENGTH_SHORT).show();
                             }
@@ -71,6 +71,16 @@ FirebaseAuth mAuth;
         });
 
     }
+
+    /*@Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser theUser = mAuth.getCurrentUser();
+        if (theUser != null) {
+            Intent theIntent = new Intent(loginPageActivity.this, HomePage.class);
+            startActivity(theIntent);
+        }
+    } */
 
 
 }

@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class createAccountActivity extends AppCompatActivity {
@@ -65,23 +66,45 @@ public class createAccountActivity extends AppCompatActivity {
                 return;
             }
 
-            // Now we will register the user using firebase
-            mAuth.createUserWithEmailAndPassword(theActualUsername, theActualPassword)
-                    .addOnCompleteListener(createAccountActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(createAccountActivity.this, "Successfull!", Toast.LENGTH_SHORT).show();
-                                // Switch to new screen
-                                //Intent theIntent = new Intent(createAccountActivity.this, HomePage.class);
-                                //startActivity(theIntent);
-                            } else {
-                                Toast.makeText(createAccountActivity.this, "Unsuccessful OMG!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+            // check to make sure that the password is more than 6 characters
+            if(theActualPassword.length() < 6) {
+                Toast.makeText(createAccountActivity.this, "Password needs to be 6 or more letters", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
+            // check if email is valid
+            if(!theActualUsername.contains("@")) {
+                Toast.makeText(createAccountActivity.this, "Username has to be a valid email", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+                // Now we will register the user using firebase
+                mAuth.createUserWithEmailAndPassword(theActualUsername, theActualPassword)
+                        .addOnCompleteListener(createAccountActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    //Toast.makeText(createAccountActivity.this, "Successfull!", Toast.LENGTH_SHORT).show();
+                                    // Switch to new screen
+                                    Intent theIntent = new Intent(createAccountActivity.this, loginPageActivity.class);
+                                    startActivity(theIntent);
+                                    finish();
+                                } else {
+                                    Toast.makeText(createAccountActivity.this, "Not Good", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            }
+                        });
         });
     }
-    
+
+   /* @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser theUser = mAuth.getCurrentUser();
+        if (theUser != null) {
+            Intent theIntent = new Intent(createAccountActivity.this, HomePage.class);
+            startActivity(theIntent);
+        }
+    } */
 }
