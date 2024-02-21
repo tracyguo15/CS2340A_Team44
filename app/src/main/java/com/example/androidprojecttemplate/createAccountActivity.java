@@ -67,7 +67,7 @@ public class createAccountActivity extends AppCompatActivity {
 
             // Now we will register the user using firebase
             mAuth.createUserWithEmailAndPassword(theActualUsername, theActualPassword)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    .addOnCompleteListener(createAccountActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
@@ -83,6 +83,5 @@ public class createAccountActivity extends AppCompatActivity {
 
         });
     }
-
-
+    
 }

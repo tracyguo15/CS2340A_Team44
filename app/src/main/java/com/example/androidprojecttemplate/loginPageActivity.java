@@ -54,7 +54,7 @@ FirebaseAuth mAuth;
 
             // Code to login user from firebase
             mAuth.signInWithEmailAndPassword(theActualUsername, theActualPassword)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    .addOnCompleteListener(loginPageActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
