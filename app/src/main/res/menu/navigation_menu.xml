@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="inputmeal"
+        android:id="@+id/inputmeal"
         android:title="Input Meal"
-        android:icon=" ">
+        android:icon="@drawable/inputmealart">
 
     </item>
     <item
-        android:id="recipe"
+        android:id="@+id/recipe"
         android:title="Recipe"
-        android:icon=" ">
+        android:icon="@drawable/recipeicon">
 
     </item>
 
     <item
-        android:id="ingredient"
+        android:id="@+id/ingredient"
         android:title="Ingredient"
-        android:icon=" ">
+        android:icon="@drawable/ingredienticon">
 
     </item>
 
     <item
-        android:id="shoppinglist"
+        android:id="@+id/shoppinglist"
         android:title="Shopping List"
-        android:icon=" ">
+        android:icon="@drawable/baseline_add_shopping_cart_24">
 
     </item>
 </menu>

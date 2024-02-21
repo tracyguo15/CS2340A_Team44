@@ -4,4 +4,6 @@
     <string name="recipes">Recipes</string>
     <string name="ingredients">Ingredients</string>
     <string name="shopping_list">Shopping List</string>
+    <string name="Open">GreenPlate</string>
+    <string name="Close">GreenPlate</string>
 </resources>
