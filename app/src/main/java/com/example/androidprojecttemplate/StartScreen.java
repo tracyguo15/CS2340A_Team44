@@ -1,4 +1,4 @@
-package com.example.cs2340Team44;
+package com.example.androidprojecttemplate;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
@@ -17,8 +17,8 @@ public class StartScreen extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // create later to start the app and go to the navagiation screen
-                Intent intent = new Intent(StartScreen.this, loginPageActivity.class);
+                // to start the app and go to the login screen
+                Intent intent = new Intent(StartScreen.this, welcomeScreenActivity.class);
                 startActivity(intent);
 
 
