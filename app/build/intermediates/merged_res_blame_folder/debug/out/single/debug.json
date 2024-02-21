@@ -1,86 +1,106 @@
 [
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/mipmap-hdpi_ic_launcher.webp.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/mipmap-hdpi/ic_launcher.webp"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/layout_create_account.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/layout/create_account.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/layout_welcome_screen.xml.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/layout/welcome_screen.xml"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/mipmap-xhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/drawable_ic_launcher_foreground.xml.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/drawable/ic_launcher_foreground.xml"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/layout_activity_input_meal_page.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/layout/activity_input_meal_page.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/mipmap-mdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/mipmap-mdpi/ic_launcher_round.webp"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/mipmap-anydpi-v26/ic_launcher_round.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/layout_login_screen.xml.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/layout/login_screen.xml"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/mipmap-anydpi-v26/ic_launcher.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/mipmap-xxhdpi/ic_launcher.webp"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/xml_backup_rules.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/xml/backup_rules.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/mipmap-anydpi-v26/ic_launcher_round.xml"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/mipmap-xxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/mipmap-xxxhdpi/ic_launcher.webp"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/mipmap-hdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/mipmap-anydpi-v26/ic_launcher.xml"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/layout_activity_recipe_page.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/layout/activity_recipe_page.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/mipmap-xhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/mipmap-xhdpi/ic_launcher_round.webp"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/layout_activity_list_page.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/layout/activity_list_page.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/mipmap-xxhdpi/ic_launcher_round.webp"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/drawable_ic_launcher_background.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/drawable/ic_launcher_background.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/mipmap-mdpi_ic_launcher.webp.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/mipmap-mdpi/ic_launcher.webp"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/xml_backup_rules.xml.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/xml/backup_rules.xml"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/mipmap-xhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/mipmap-xhdpi_ic_launcher.webp.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/mipmap-xhdpi/ic_launcher.webp"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/mipmap-xxxhdpi/ic_launcher.webp"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/drawable_ic_launcher_background.xml.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/drawable/ic_launcher_background.xml"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/mipmap-xxhdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/xml_data_extraction_rules.xml.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/xml/data_extraction_rules.xml"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/layout_activity_fitness_timer.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/layout/activity_fitness_timer.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/layout_activity_wellness_dashboard.xml.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/layout/activity_wellness_dashboard.xml"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/drawable/ic_launcher_foreground.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/mipmap-hdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/mipmap-hdpi/ic_launcher_round.webp"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/layout_activity_ingredient_page.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/layout/activity_ingredient_page.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/layout_activity_fitness_timer.xml.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/layout/activity_fitness_timer.xml"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/layout_activity_wellness_dashboard.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/layout/activity_wellness_dashboard.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/layout_create_account.xml.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/layout/create_account.xml"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/layout_welcome_screen.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/layout/welcome_screen.xml"
     },
     {
-        "merged": "com.example.androidprojecttemplate.app-merged_res-31:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
-        "source": "com.example.androidprojecttemplate.app-main-33:/mipmap-xxxhdpi/ic_launcher_round.webp"
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/layout_activity_home_page.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/layout/activity_home_page.xml"
+    },
+    {
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "com.example.androidprojecttemplate.app-merged_res-36:/layout_login_screen.xml.flat",
+        "source": "com.example.androidprojecttemplate.app-main-38:/layout/login_screen.xml"
     }
 ]
