@@ -97,7 +97,7 @@ public class HomePage extends AppCompatActivity {
         return abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
-    // Method to set the login state. remember to do this after login page is implemented
+    // Method to set the login state. remember to set login after login page is implemented
     public static void setLoggedIn(boolean value) {
         isLoggedIn = value;
     }
