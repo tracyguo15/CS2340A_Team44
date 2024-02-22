@@ -18,7 +18,7 @@ public class StartScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // to start the app and go to the login screen
-                Intent intent = new Intent(StartScreen.this, welcomeScreenActivity.class);
+                Intent intent = new Intent(StartScreen.this, HomePage.class);
                 startActivity(intent);
 
 

@@ -17,19 +17,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import com.google.android.material.navigation.NavigationView;
+import androidx.appcompat.app.ActionBar;
+import androidx.core.view.GravityCompat;
+
 
 public class HomePage extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
-    private static boolean isLoggedIn = false;
+    private static boolean isLoggedIn = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
 
-        // Check if user is logged in before going on home page
+//         Check if user is logged in before going on home page
         if (!isLoggedIn) {
             // If not logged in, stay on the login activity
             Intent intent = new Intent(this, loginPageActivity.class);
@@ -41,31 +43,42 @@ public class HomePage extends AppCompatActivity {
         dl = (DrawerLayout) findViewById(R.id.dl);
         abdt = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
-
         dl.addDrawerListener(abdt);
         abdt.syncState();
+        //close hamburger
+//        dl.closeDrawer(GravityCompat.START);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar(); // Get the hamburger
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true); // Show the back button
+            actionBar.setHomeButtonEnabled(true);
+        }
 
-        final NavigationView nav_view = (NavigationView) findViewById(R.id.nav_view);
-        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
-        {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.inputmeal) {
-                    Toast.makeText(HomePage.this, "InputMeal", Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.recipe) {
-                    Toast.makeText(HomePage.this, "Recipe", Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.ingredient) {
-                    Toast.makeText(HomePage.this, "Ingredient", Toast.LENGTH_SHORT).show();
-                } else if (id == R.id.shoppinglist) {
-                    Toast.makeText(HomePage.this, "ShoppingList", Toast.LENGTH_SHORT).show();
-                }
-
-                return true;
+        NavigationView nav_view = (NavigationView) findViewById(R.id.nav_view);
+        nav_view.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.inputmeal) {
+                Toast.makeText(HomePage.this, "InputMeal", Toast.LENGTH_SHORT).show();
+                // intent goes to the page
+                Intent intent = new Intent(HomePage.this, InputMealPage.class);
+                startActivity(intent);
+            } else if (id == R.id.recipe) {
+                Toast.makeText(HomePage.this, "Recipe", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomePage.this, RecipePage.class);
+                startActivity(intent);
+            } else if (id == R.id.ingredient) {
+                Toast.makeText(HomePage.this, "Ingredient", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomePage.this, IngredientPage.class);
+                startActivity(intent);
+            } else if (id == R.id.shoppinglist) {
+                Toast.makeText(HomePage.this, "ShoppingList", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomePage.this, ListPage.class);
+                startActivity(intent);
             }
+            return true;
         });
+    }
+
 
 //        Button toRecipePageButton = findViewById(R.id.RecipeButton);
 //        toRecipePageButton.setOnClickListener(v -> {
@@ -90,14 +103,16 @@ public class HomePage extends AppCompatActivity {
 //            Intent intent = new Intent(HomePage.this, ListPage.class);
 //            startActivity(intent);
 //        });
-    }
-
+//    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        if (abdt.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
-    // Method to set the login state. remember to set login after login page is implemented
+//     Method to set the login state. remember to set login after login page is implemented
     public static void setLoggedIn(boolean value) {
         isLoggedIn = value;
     }
