@@ -49,22 +49,33 @@ public class CreateAccountActivity extends AppCompatActivity {
                 return;
             }
 
-            // create user and login with firebase
-            /*
-            firebaseAuth.signInWithEmailAndPassword(username, password)
+            // create user with firebase
+            firebaseAuth.createUserWithEmailAndPassword(username, password)
             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(LoginPageActivity.this, "Successfull OMG!", Toast.LENGTH_SHORT).show();
-                        // switch to home page
-                        //Intent theIntent = new Intent(loginPageActivity.this, HomePage.class);
-                        //startActivity(theIntent);
+                        
+                        // login with firebase
+                        firebaseAuth.signInWithEmailAndPassword(username, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(LoginPageActivity.this, "successful", Toast.LENGTH_SHORT).show();
+                                    // switch to home page
+                                    //Intent theIntent = new Intent(loginPageActivity.this, HomePage.class);
+                                    //startActivity(theIntent);
+                                } else {
+                                    Toast.makeText(LoginPageActivity.this, "user login failed", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
                     } else {
-                        Toast.makeText(LoginPageActivity.this, "Terrible OMG!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginPageActivity.this, "user creation failed", Toast.LENGTH_SHORT).show();
                     }
                 }
-            });*/
+            });
         });
     }
 }
