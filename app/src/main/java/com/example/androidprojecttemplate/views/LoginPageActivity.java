@@ -53,8 +53,9 @@ public class LoginPageActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Toast.makeText(LoginPageActivity.this, "Successfull OMG!", Toast.LENGTH_SHORT).show();
                         // switch to home page
-                        //Intent theIntent = new Intent(loginPageActivity.this, HomePage.class);
-                        //startActivity(theIntent);
+                        Intent theIntent = new Intent(loginPageActivity.this, HomePage.class);
+                        startActivity(theIntent);
+                        finish();
                     } else {
                         Toast.makeText(LoginPageActivity.this, "Terrible OMG!", Toast.LENGTH_SHORT).show();
                     }
