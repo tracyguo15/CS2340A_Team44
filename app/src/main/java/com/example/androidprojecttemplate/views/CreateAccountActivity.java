@@ -5,20 +5,16 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CreateAccountActivity extends AppCompatActivity {
-    EditText theUsername;
-    EditText thePassword;
-    EditText confirmThePassword;
+    EditText usernameInput;
+    EditText passwordInput;
+    EditText confirmPasswordInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // DO NOT MODIFY
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_account);
-        theUsername = findViewById(R.id.usernameCreate);
-        thePassword = findViewById(R.id.passwordCreate);
-        confirmThePassword = findViewById(R.id.confirmPasswordCreate);
-
+        usernameInput = findViewById(R.id.username);
+        passwordInput = findViewById(R.id.password);
+        confirmPasswordInput = findViewById(R.id.confirmPassword);
     }
-
-
 }
