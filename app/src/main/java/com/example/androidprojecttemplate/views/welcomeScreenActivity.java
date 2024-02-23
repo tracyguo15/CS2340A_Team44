@@ -1,10 +1,12 @@
-package com.example.androidprojecttemplate;
+package com.example.androidprojecttemplate.views;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.androidprojecttemplate.R;
 
 public class welcomeScreenActivity extends AppCompatActivity {
 
@@ -19,7 +21,7 @@ public class welcomeScreenActivity extends AppCompatActivity {
 
         // The button that goes to the login page
         goToLogin.setOnClickListener(v -> {
-            Intent theIntent = new Intent(welcomeScreenActivity.this, loginPageActivity.class);
+            Intent theIntent = new Intent(welcomeScreenActivity.this, LoginPageActivity.class);
             startActivity(theIntent);
         });
 
