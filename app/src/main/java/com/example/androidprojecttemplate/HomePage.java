@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +32,7 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Check if user is logged in before going on home page
-        if (!isLoggedIn) {
+        if (!!isLoggedIn) {
             // If not logged in, stay on the login activity
             Intent intent = new Intent(this, loginPageActivity.class);
             startActivity(intent);
@@ -38,6 +40,8 @@ public class HomePage extends AppCompatActivity {
             finish();
             return;
         }
+        Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
+        setSupportActionBar(homeToolBar);
         dl = (DrawerLayout) findViewById(R.id.dl);
         abdt = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
@@ -48,6 +52,8 @@ public class HomePage extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final NavigationView nav_view = (NavigationView) findViewById(R.id.nav_view);
+
+        nav_view.setVisibility(View.GONE);
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
         {
             @Override
@@ -65,6 +71,14 @@ public class HomePage extends AppCompatActivity {
 
                 return true;
             }
+        });
+
+        abdt.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nav_view.setVisibility(View.VISIBLE);
+            }
+
         });
 
 //        Button toRecipePageButton = findViewById(R.id.RecipeButton);
