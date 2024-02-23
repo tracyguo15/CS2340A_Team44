@@ -24,6 +24,7 @@ import androidx.core.view.GravityCompat;
 public class HomePage extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
+    //change to false after implemented
     private static boolean isLoggedIn = true;
 
     @Override
