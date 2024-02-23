@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginPageActivity extends AppCompatActivity {
     private EditText usernameInput;
     private EditText passwordInput;
+    private Button toHomePage;
 
     FirebaseAuth firebaseAuth;
 
@@ -27,7 +28,7 @@ public class LoginPageActivity extends AppCompatActivity {
 
         usernameInput = findViewById(R.id.username);
         passwordInput = findViewById(R.id.password);
-        Button toHomeScreen = findViewById(R.id.toHomeScreen);
+        toHomeScreen = findViewById(R.id.toHomeScreen);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
