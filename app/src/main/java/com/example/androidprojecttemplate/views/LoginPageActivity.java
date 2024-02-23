@@ -15,10 +15,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginPageActivity extends AppCompatActivity {
-private EditText usernameInput;
-private EditText passwordInput;
+    private EditText usernameInput;
+    private EditText passwordInput;
 
-FirebaseAuth mAuth;
+    FirebaseAuth firebaseAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,20 +28,15 @@ FirebaseAuth mAuth;
         usernameInput = findViewById(R.id.username);
         passwordInput = findViewById(R.id.password);
         Button toHomeScreen = findViewById(R.id.toHomeScreen);
-        // Firebase authentication
-        mAuth = FirebaseAuth.getInstance();
 
-        // The button to login
+        firebaseAuth = FirebaseAuth.getInstance();
+
         toHomeScreen.setOnClickListener(v -> {
-            String theActualUsername;
-            String theActualPassword;
+            String username = String.valueOf(usernameInput.getText());
+            String password = String.valueOf(passwordInput.getText());
 
-            theActualUsername = String.valueOf(usernameInput.getText());
-            theActualPassword = String.valueOf(passwordInput.getText());
-
-            // Statement to check whether the username or password is empty or not
+            // check validity of username and password
             if (TextUtils.isEmpty(theActualUsername)) {
-                // Toast message to display to the user
                 Toast.makeText(LoginPageActivity.this, "Please enter an username!", Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(theActualPassword)) {
@@ -48,27 +44,21 @@ FirebaseAuth mAuth;
                 return;
             }
 
-
-            // Code to login user from firebase
-            mAuth.signInWithEmailAndPassword(theActualUsername, theActualPassword)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                Toast.makeText(LoginPageActivity.this, "Successfull OMG!", Toast.LENGTH_SHORT).show();
-                                // Switch screen to home page
-                                //Intent theIntent = new Intent(loginPageActivity.this, HomePage.class);
-                                //startActivity(theIntent);
-                            } else {
-                                Toast.makeText(LoginPageActivity.this, "Terrible OMG!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
+            // login with firebase
+            firebaseAuth.signInWithEmailAndPassword(username, password)
+            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(LoginPageActivity.this, "Successfull OMG!", Toast.LENGTH_SHORT).show();
+                        // switch to home page
+                        //Intent theIntent = new Intent(loginPageActivity.this, HomePage.class);
+                        //startActivity(theIntent);
+                    } else {
+                        Toast.makeText(LoginPageActivity.this, "Terrible OMG!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         });
-
     }
-
-
 }
-
