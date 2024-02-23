@@ -23,14 +23,15 @@ FirebaseAuth mAuth;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
+
         usernameInput = findViewById(R.id.username);
         passwordInput = findViewById(R.id.password);
-        Button theButtonToHomeScreen = findViewById(R.id.buttonToHomeScreen);
+        Button toHomeScreen = findViewById(R.id.toHomeScreen);
         // Firebase authentication
         mAuth = FirebaseAuth.getInstance();
 
         // The button to login
-        theButtonToHomeScreen.setOnClickListener(v -> {
+        toHomeScreen.setOnClickListener(v -> {
             String theActualUsername;
             String theActualPassword;
 
