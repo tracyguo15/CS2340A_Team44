@@ -75,14 +75,6 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
-        abdt.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.setVisibility(View.VISIBLE);
-            }
-
-        });
-
 //        Button toRecipePageButton = findViewById(R.id.RecipeButton);
 //        toRecipePageButton.setOnClickListener(v -> {
 //            Intent intent = new Intent(HomePage.this, RecipePage.class);
@@ -110,10 +102,10 @@ public class HomePage extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (nav_view.getVisibility() == View.GONE) {
-            nav_view.setVisibility(View.VISIBLE);
-        } else {
+        if (nav_view.getVisibility() == View.VISIBLE) {
             nav_view.setVisibility(View.GONE);
+        } else {
+            nav_view.setVisibility(View.VISIBLE);
         }
         return true || abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
