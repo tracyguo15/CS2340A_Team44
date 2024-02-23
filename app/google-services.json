@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "13911148787",
+    "project_id": "sprint1-8c77a",
+    "storage_bucket": "sprint1-8c77a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13911148787:android:775b54075f3cf0921e8f86",
+        "android_client_info": {
+          "package_name": "com.example.androidprojecttemplate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRCeM2G_Qz6aFa2D3lifdvcUUvUAyR8CM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
