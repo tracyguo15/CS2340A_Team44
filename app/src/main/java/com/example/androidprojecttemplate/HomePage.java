@@ -25,6 +25,8 @@ public class HomePage extends AppCompatActivity {
     private ActionBarDrawerToggle abdt;
     private static boolean isLoggedIn = false;
 
+    private NavigationView nav_view;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +53,7 @@ public class HomePage extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        final NavigationView nav_view = (NavigationView) findViewById(R.id.nav_view);
+        nav_view = (NavigationView) findViewById(R.id.nav_view);
 
         nav_view.setVisibility(View.GONE);
         nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
@@ -71,14 +73,6 @@ public class HomePage extends AppCompatActivity {
 
                 return true;
             }
-        });
-
-        abdt.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                nav_view.setVisibility(View.VISIBLE);
-            }
-
         });
 
 //        Button toRecipePageButton = findViewById(R.id.RecipeButton);
@@ -108,7 +102,12 @@ public class HomePage extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        if (nav_view.getVisibility() == View.VISIBLE) {
+            nav_view.setVisibility(View.GONE);
+        } else {
+            nav_view.setVisibility(View.VISIBLE);
+        }
+        return true || abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     // Method to set the login state. remember to set login after login page is implemented
