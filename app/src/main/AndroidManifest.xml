@@ -22,11 +22,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".views.LoginPageActivity"
-            android:exported="true">
-        </activity>
-
-        <activity
             android:name=".views.CreateAccountActivity"
             android:exported="true">
         </activity>
@@ -54,6 +49,7 @@
             android:name=".views.RecipePage"
             android:exported="true">
         </activity>
+
     </application>
 
 </manifest>
