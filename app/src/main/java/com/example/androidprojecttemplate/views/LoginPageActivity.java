@@ -21,6 +21,8 @@ public class LoginPageActivity extends AppCompatActivity {
     private EditText passwordInput;
     private Button toHomePage;
 
+    private Button toCreateAccount;
+
     FirebaseAuth firebaseAuth;
 
     @Override
@@ -31,6 +33,7 @@ public class LoginPageActivity extends AppCompatActivity {
         usernameInput = findViewById(R.id.username);
         passwordInput = findViewById(R.id.password);
         toHomePage = findViewById(R.id.toHomeScreen);
+        toCreateAccount = findViewById(R.id.clickToCreateAccount);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -53,16 +56,21 @@ public class LoginPageActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        Toast.makeText(LoginPageActivity.this, "Successfull OMG!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginPageActivity.this, "Successfull", Toast.LENGTH_SHORT).show();
                         // switch to home page
                         Intent theIntent = new Intent(LoginPageActivity.this, HomePage.class);
                         startActivity(theIntent);
                         finish();
                     } else {
-                        Toast.makeText(LoginPageActivity.this, "Terrible OMG!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginPageActivity.this, "The username or password is wrong", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
+        });
+
+        toCreateAccount.setOnClickListener(v -> {
+            Intent theIntent = new Intent(LoginPageActivity.this, CreateAccountActivity.class);
+            startActivity(theIntent);
         });
     }
 }

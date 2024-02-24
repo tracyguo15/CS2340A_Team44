@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 
 public class CreateAccountActivity extends AppCompatActivity {
     private EditText usernameInput;
@@ -56,34 +57,40 @@ public class CreateAccountActivity extends AppCompatActivity {
                 return;
             }
 
-            // create user with firebase
-            firebaseAuth.createUserWithEmailAndPassword(username, password)
-            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        
-                        // login with firebase
-                        firebaseAuth.signInWithEmailAndPassword(username, password)
+            // check that the username has an "@"
+            if (!username.contains("@")) {
+                Toast.makeText(CreateAccountActivity.this, "Not a valid email", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // check that the password is six or more characters
+            if (password.length() < 6) {
+                Toast.makeText(CreateAccountActivity.this, "Passwords isn't long enough", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Check if there are spaces within the username or password
+            if (username.contains(" ") || password.contains(" ")) {
+                Toast.makeText(CreateAccountActivity.this, "No spaces allowed", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+                // create user with firebase
+                firebaseAuth.createUserWithEmailAndPassword(username, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
+                                if(task.isSuccessful()) {
                                     Toast.makeText(CreateAccountActivity.this, "successful", Toast.LENGTH_SHORT).show();
                                     // switch to home page
-                                    Intent theIntent = new Intent(CreateAccountActivity.this, HomePage.class);
+                                    Intent theIntent = new Intent(CreateAccountActivity.this, LoginPageActivity.class);
                                     startActivity(theIntent);
                                     //finish();
                                 } else {
-                                    Toast.makeText(CreateAccountActivity.this, "user login failed", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(CreateAccountActivity.this, "An email has already been registered, please login", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-                    } else {
-                        Toast.makeText(CreateAccountActivity.this, "user creation failed", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
         });
     }
 }
