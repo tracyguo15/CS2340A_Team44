@@ -1,5 +1,6 @@
 package com.example.androidprojecttemplate;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -17,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginPageActivity extends AppCompatActivity {
     private EditText usernameInput;
     private EditText passwordInput;
-    private Button toHomePage;
+    private Button toHomeScreen;
 
     FirebaseAuth firebaseAuth;
 
@@ -37,10 +38,10 @@ public class LoginPageActivity extends AppCompatActivity {
             String password = String.valueOf(passwordInput.getText());
 
             // check validity of username and password
-            if (TextUtils.isEmpty(theActualUsername)) {
+            if (TextUtils.isEmpty(username)) {
                 Toast.makeText(LoginPageActivity.this, "Please enter an username!", Toast.LENGTH_SHORT).show();
                 return;
-            } else if (TextUtils.isEmpty(theActualPassword)) {
+            } else if (TextUtils.isEmpty(password)) {
                 Toast.makeText(LoginPageActivity.this, "Please enter a password!", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -53,7 +54,7 @@ public class LoginPageActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Toast.makeText(LoginPageActivity.this, "Successfull OMG!", Toast.LENGTH_SHORT).show();
                         // switch to home page
-                        Intent theIntent = new Intent(loginPageActivity.this, HomePage.class);
+                        Intent theIntent = new Intent(LoginPageActivity.this, HomePage.class);
                         startActivity(theIntent);
                         finish();
                     } else {
