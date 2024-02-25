@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate;
+package com.example.androidprojecttemplate.views;
 
 // Do not import android support because we are using androidx
 //import android.support.v4.widget.DrawerLayout;
@@ -19,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import com.google.android.material.navigation.NavigationView;
+
+import com.example.androidprojecttemplate.R;
 
 public class HomePage extends AppCompatActivity {
     private DrawerLayout dl;
