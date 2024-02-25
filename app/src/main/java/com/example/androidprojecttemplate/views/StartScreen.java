@@ -1,9 +1,12 @@
-package com.example.androidprojecttemplate;
+package com.example.androidprojecttemplate.views;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.content.Intent;
+
+import com.example.androidprojecttemplate.R;
+
 
 public class StartScreen extends AppCompatActivity {
 
@@ -18,7 +21,7 @@ public class StartScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // to start the app and go to the login screen
-                Intent intent = new Intent(StartScreen.this, welcomeScreenActivity.class);
+                Intent intent = new Intent(StartScreen.this, WelcomeScreenActivity.class);
                 startActivity(intent);
 
 

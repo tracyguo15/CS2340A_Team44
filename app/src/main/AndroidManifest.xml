@@ -22,41 +22,41 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".loginPageActivity"
+            android:name=".views.LoginPageActivity"
             android:exported="true">
         </activity>
 
-        <activity android:name=".HomePage"
-            android:exported="true">
-        </activity>
-
-        <activity
-            android:name=".CreateAccountActivity"
+        <activity android:name=".views.HomePage"
             android:exported="true">
         </activity>
 
         <activity
-            android:name=".welcomeScreenActivity"
+            android:name=".views.CreateAccountActivity"
             android:exported="true">
         </activity>
 
         <activity
-            android:name=".IngredientPage"
+            android:name=".views.WelcomeScreenActivity"
             android:exported="true">
         </activity>
 
         <activity
-            android:name=".InputMealPage"
+            android:name=".views.IngredientPage"
             android:exported="true">
         </activity>
 
         <activity
-            android:name=".ListPage"
+            android:name=".views.InputMealPage"
             android:exported="true">
         </activity>
 
         <activity
-            android:name=".RecipePage"
+            android:name=".views.ListPage"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".views.RecipePage"
             android:exported="true">
         </activity>
 
