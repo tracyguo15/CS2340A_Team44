@@ -26,8 +26,7 @@ public class RecipePage extends AppCompatActivity {
     private ActionBarDrawerToggle abdt;
     private static boolean isLoggedIn = false;
 
-    private NavigationView nav_view;
-
+    private NavigationView navView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +44,11 @@ public class RecipePage extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        navView = (NavigationView) findViewById(R.id.nav_view);
 
-        nav_view.setVisibility(View.GONE);
-        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
-        {
+        navView.setVisibility(View.GONE);
+        navView.setNavigationItemSelectedListener(new
+            NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
@@ -79,11 +78,12 @@ public class RecipePage extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (nav_view.getVisibility() == View.VISIBLE) {
-            nav_view.setVisibility(View.GONE);
+        if (navView.getVisibility() == View.VISIBLE) {
+            navView.setVisibility(View.GONE);
         } else {
-            nav_view.setVisibility(View.VISIBLE);
+            navView.setVisibility(View.VISIBLE);
         }
-        return true || abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return true;
+        //|| abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 }
