@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class createAccountActivity extends AppCompatActivity {
+public class CreateAccountActivity extends AppCompatActivity {
     EditText theUsername;
     EditText thePassword;
     EditText confirmThePassword;

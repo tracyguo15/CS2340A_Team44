@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidprojecttemplate.R;
-import com.example.androidprojecttemplate.views.HomePage;
+import com.example.androidprojecttemplate.viewsh.HomePage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
