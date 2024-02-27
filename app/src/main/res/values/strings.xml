@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">GreenPlate</string>
-    <string name="input_meal">Input Meal</string>
-    <string name="recipes">Recipes</string>
-    <string name="ingredients">Ingredients</string>
-    <string name="shopping_list">Shopping List</string>
+    <string name="input_meal">Input Meal Screen</string>
+    <string name="recipes">Recipe Screen</string>
+    <string name="ingredients">Ingredient Screen</string>
+    <string name="shopping_list">Shopping List Screen</string>
     <string name="Open">GreenPlate</string>
     <string name="Close">GreenPlate</string>
 </resources>
