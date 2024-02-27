@@ -18,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 //import androidx.core.view.GravityCompat;
 //import com.example.androidprojecttemplate.R;
 
+import com.example.androidprojecttemplate.LoginPageActivity;
 import com.google.android.material.navigation.NavigationView;
 
 
@@ -65,19 +66,23 @@ public class HomePage extends AppCompatActivity {
                     int id = item.getItemId();
                     if (id == R.id.inputmeal) {
                         //Toast.makeText(HomePage.this, "InputMeal", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(HomePage.this, InputMealPage.class);
+                        Intent intent = new Intent(HomePage.this,
+                                InputMealPage.class);
                         startActivity(intent);
                     } else if (id == R.id.recipe) {
                         //Toast.makeText(HomePage.this, "Recipe", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(HomePage.this, RecipePage.class);
+                        Intent intent = new Intent(HomePage.this,
+                                RecipePage.class);
                         startActivity(intent);
                     } else if (id == R.id.ingredient) {
                         //Toast.makeText(HomePage.this, "Ingredient", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(HomePage.this, IngredientPage.class);
+                        Intent intent = new Intent(HomePage.this,
+                                IngredientPage.class);
                         startActivity(intent);
                     } else if (id == R.id.list) {
                         //Toast.makeText(HomePage.this, "ShoppingList", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(HomePage.this, ListPage.class);
+                        Intent intent = new Intent(HomePage.this,
+                                ListPage.class);
                         startActivity(intent);
                     }
 

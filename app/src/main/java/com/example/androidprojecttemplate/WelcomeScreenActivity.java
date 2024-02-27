@@ -6,6 +6,9 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.androidprojecttemplate.views.CreateAccountActivity;
+import com.example.androidprojecttemplate.views.LoginPageActivity;
+
 public class WelcomeScreenActivity extends AppCompatActivity {
 
 
@@ -19,13 +22,15 @@ public class WelcomeScreenActivity extends AppCompatActivity {
 
         // The button that goes to the login page
         goToLogin.setOnClickListener(v -> {
-            Intent theIntent = new Intent(WelcomeScreenActivity.this, LoginPageActivity.class);
+            Intent theIntent = new Intent(WelcomeScreenActivity.this,
+                    LoginPageActivity.class);
             startActivity(theIntent);
         });
 
         // The button that goes to the create account page
         goToCreateAccountScreen.setOnClickListener(v -> {
-            Intent theIntent = new Intent(WelcomeScreenActivity.this, CreateAccountActivity.class);
+            Intent theIntent = new Intent(WelcomeScreenActivity.this,
+                    CreateAccountActivity.class);
             startActivity(theIntent);
         });
     }
