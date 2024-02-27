@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">AndroidProjectTemplate</string>
+    <string name="app_name">GreenPlate</string>
+    <string name="input_meal">Input Meal Screen</string>
+    <string name="recipes">Recipe Screen</string>
+    <string name="ingredients">Ingredient Screen</string>
+    <string name="shopping_list">Shopping List Screen</string>
+    <string name="Open">GreenPlate</string>
+    <string name="Close">GreenPlate</string>
 </resources>
