@@ -19,10 +19,6 @@ import androidx.core.view.GravityCompat;
 import com.example.androidprojecttemplate.R;
 
 import com.google.android.material.navigation.NavigationView;
-import com.example.androidprojecttemplate.IngredientPage;
-import com.example.androidprojecttemplate.InputMealPage;
-import com.example.androidprojecttemplate.ListPage;
-import com.example.androidprojecttemplate.RecipePage;
 
 
 //implements NavigationView.OnNavigationItemSelectedListener

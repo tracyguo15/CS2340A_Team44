@@ -5,7 +5,6 @@ import com.example.androidprojecttemplate.R;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -13,14 +12,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.core.view.GravityCompat;
-import com.example.androidprojecttemplate.R;
 
 import com.google.android.material.navigation.NavigationView;
-import com.example.androidprojecttemplate.IngredientPage;
-import com.example.androidprojecttemplate.InputMealPage;
-import com.example.androidprojecttemplate.ListPage;
-import com.example.androidprojecttemplate.RecipePage;
 
 
 //implements NavigationView.OnNavigationItemSelectedListener
@@ -40,7 +33,7 @@ public class HomePage extends AppCompatActivity {
         // Check if user is logged in before going on home page
         if (isLoggedIn) {
             // If not logged in, stay on the login activity
-            Intent intent = new Intent(this, loginPageActivity.class);
+            Intent intent = new Intent(this, LoginPageActivity.class);
             startActivity(intent);
             // Finish the current activity to prevent going back to it when pressing back button
             finish();

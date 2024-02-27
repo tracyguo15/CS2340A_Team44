@@ -27,7 +27,7 @@ public class WelcomeScreenActivity extends AppCompatActivity {
 
         // The button that goes to the create account page
         goToCreateAccountScreen.setOnClickListener(v -> {
-            Intent theIntent = new Intent(welcomeScreenActivity.this, CreateAccountActivity.class);
+            Intent theIntent = new Intent(WelcomeScreenActivity.this, CreateAccountActivity.class);
             startActivity(theIntent);
         });
     }
