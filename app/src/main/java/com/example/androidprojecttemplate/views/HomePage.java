@@ -1,52 +1,10 @@
-package com.example.androidprojecttemplate;
+package com.example.androidprojecttemplate.views;
 
-<<<<<<< HEAD
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.widget.Button;
-import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-
-public class HomePage extends AppCompatActivity {
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
-
-        Button toRecipePageButton = findViewById(R.id.RecipeButton);
-        toRecipePageButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomePage.this, RecipePage.class);
-            startActivity(intent);
-        });
-
-        Button toInputMealPageButton = findViewById(R.id.InputMealButton);
-        toInputMealPageButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomePage.this, InputMealPage.class);
-            startActivity(intent);
-        });
-
-        Button toIngredientPageButton = findViewById(R.id.IngredientButton);
-        toIngredientPageButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomePage.this, IngredientPage.class);
-            startActivity(intent);
-        });
-
-        Button toListPageButton = findViewById(R.id.ListButton);
-        toListPageButton.setOnClickListener(v -> {
-            Intent intent = new Intent(HomePage.this, ListPage.class);
-            startActivity(intent);
-        });
-    }
-}
-=======
-// Do not import android support because we are using androidx
-//import android.support.v4.widget.DrawerLayout;
-//import android.support.v7.app.ActionBarDrawerToggle;
+import com.example.androidprojecttemplate.R;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -54,14 +12,8 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.core.view.GravityCompat;
-import com.example.androidprojecttemplate.R;
 
 import com.google.android.material.navigation.NavigationView;
-import com.example.androidprojecttemplate.IngredientPage;
-import com.example.androidprojecttemplate.InputMealPage;
-import com.example.androidprojecttemplate.ListPage;
-import com.example.androidprojecttemplate.RecipePage;
 
 
 //implements NavigationView.OnNavigationItemSelectedListener
@@ -81,7 +33,7 @@ public class HomePage extends AppCompatActivity {
         // Check if user is logged in before going on home page
         if (isLoggedIn) {
             // If not logged in, stay on the login activity
-            Intent intent = new Intent(this, loginPageActivity.class);
+            Intent intent = new Intent(this, LoginPageActivity.class);
             startActivity(intent);
             // Finish the current activity to prevent going back to it when pressing back button
             finish();
@@ -144,4 +96,3 @@ public class HomePage extends AppCompatActivity {
         isLoggedIn = value;
     }
 }
->>>>>>> dae2ef2c613b0163ba25878b35101fcfd56d3b2c

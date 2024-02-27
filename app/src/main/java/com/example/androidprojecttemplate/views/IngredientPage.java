@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate;
+package com.example.androidprojecttemplate.views;
 
 // Do not import android support because we are using androidx
 //import android.support.v4.widget.DrawerLayout;
@@ -19,12 +19,10 @@ import androidx.core.view.GravityCompat;
 import com.example.androidprojecttemplate.R;
 
 import com.google.android.material.navigation.NavigationView;
-import com.example.androidprojecttemplate.IngredientPage;
-import com.example.androidprojecttemplate.RecipePage;
 
 
 //implements NavigationView.OnNavigationItemSelectedListener
-public class ListPage extends AppCompatActivity {
+public class IngredientPage extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
     private static boolean isLoggedIn = false;
@@ -35,7 +33,7 @@ public class ListPage extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_list_page);
+        setContentView(R.layout.activity_ingredient_page);
 
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(homeToolBar);
@@ -57,22 +55,22 @@ public class ListPage extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.inputmeal) {
-                    Intent intent = new Intent(ListPage.this, IngredientPage.class);
+                    Intent intent = new Intent(IngredientPage.this, InputMealPage.class);
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.recipe) {
-                    Intent intent = new Intent(ListPage.this, RecipePage.class);
+                    Intent intent = new Intent(IngredientPage.this, RecipePage.class);
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.ingredient) {
-                    Intent intent = new Intent(ListPage.this, IngredientPage.class);
-                    startActivity(intent);
-                    return true;
-                } else if (id == R.id.list) {
-                    if (!(ListPage.this instanceof ListPage)) {
-                        Intent intent = new Intent(ListPage.this, ListPage.class);
+                    if (!(IngredientPage.this instanceof IngredientPage)) {
+                        Intent intent = new Intent(IngredientPage.this, IngredientPage.class);
                         startActivity(intent);
                     }
+                    return true;
+                } else if (id == R.id.list) {
+                    Intent intent = new Intent(IngredientPage.this, ListPage.class);
+                    startActivity(intent);
                     return true;
                 }
 

@@ -1,4 +1,6 @@
-package com.example.androidprojecttemplate;
+package com.example.androidprojecttemplate.viewModels;
+
+import com.example.androidprojecttemplate.models.WellnessData;
 
 public class WellnessViewModel {
     private static WellnessViewModel instance;
