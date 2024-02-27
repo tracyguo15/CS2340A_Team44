@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.androidprojecttemplate.HomePage;
+import com.example.androidprojecttemplate.views.HomePage;
 import com.example.androidprojecttemplate.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

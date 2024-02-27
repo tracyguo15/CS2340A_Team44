@@ -32,6 +32,21 @@
             android:name=".views.CreateAccountActivity"
             android:exported="true">
         </activity>
+
+        <activity
+            android:name=".views.CreateAccountActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".views.CreateAccountActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".views.CreateAccountActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>
