@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate.views;
+package com.example.androidprojecttemplate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,9 +6,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.androidprojecttemplate.R;
-
-public class WelcomeScreenActivity extends AppCompatActivity {
+public class welcomeScreenActivity extends AppCompatActivity {
 
 
     @Override
@@ -21,13 +19,13 @@ public class WelcomeScreenActivity extends AppCompatActivity {
 
         // The button that goes to the login page
         goToLogin.setOnClickListener(v -> {
-            Intent theIntent = new Intent(WelcomeScreenActivity.this, LoginPageActivity.class);
+            Intent theIntent = new Intent(welcomeScreenActivity.this, loginPageActivity.class);
             startActivity(theIntent);
         });
 
         // The button that goes to the create account page
         goToCreateAccountScreen.setOnClickListener(v -> {
-            Intent theIntent = new Intent(welcomeScreenActivity.this, CreateAccountActivity.class);
+            Intent theIntent = new Intent(welcomeScreenActivity.this, createAccountActivity.class);
             startActivity(theIntent);
         });
     }

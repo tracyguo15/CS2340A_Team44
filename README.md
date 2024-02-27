@@ -5,3 +5,4 @@ Members:
 2) Adam Vaughn
 3) Tracy Guo
 4) Rohan Bhole
+5) Michael V
