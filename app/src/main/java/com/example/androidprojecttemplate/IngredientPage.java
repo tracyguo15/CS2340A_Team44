@@ -7,7 +7,7 @@ package com.example.androidprojecttemplate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
+//import android.widget.Toast;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -15,14 +15,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.core.view.GravityCompat;
-import com.example.androidprojecttemplate.R;
+//import androidx.core.view.GravityCompat;
+//import com.example.androidprojecttemplate.R;
 
 import com.google.android.material.navigation.NavigationView;
-import com.example.androidprojecttemplate.IngredientPage;
-import com.example.androidprojecttemplate.InputMealPage;
-import com.example.androidprojecttemplate.ListPage;
-import com.example.androidprojecttemplate.RecipePage;
 
 
 //implements NavigationView.OnNavigationItemSelectedListener
@@ -31,7 +27,7 @@ public class IngredientPage extends AppCompatActivity {
     private ActionBarDrawerToggle abdt;
     private static boolean isLoggedIn = false;
 
-    private NavigationView nav_view;
+    private NavigationView navView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,45 +46,45 @@ public class IngredientPage extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        navView = (NavigationView) findViewById(R.id.nav_view);
 
-        nav_view.setVisibility(View.GONE);
-        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
-        {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.inputmeal) {
-                    Intent intent = new Intent(IngredientPage.this, InputMealPage.class);
-                    startActivity(intent);
-                    return true;
-                } else if (id == R.id.recipe) {
-                    Intent intent = new Intent(IngredientPage.this, RecipePage.class);
-                    startActivity(intent);
-                    return true;
-                } else if (id == R.id.ingredient) {
-                    if (!(IngredientPage.this instanceof IngredientPage)) {
-                        Intent intent = new Intent(IngredientPage.this, IngredientPage.class);
+        navView.setVisibility(View.GONE);
+        navView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    int id = item.getItemId();
+                    if (id == R.id.inputmeal) {
+                        Intent intent = new Intent(IngredientPage.this, InputMealPage.class);
                         startActivity(intent);
+                        return true;
+                    } else if (id == R.id.recipe) {
+                        Intent intent = new Intent(IngredientPage.this, RecipePage.class);
+                        startActivity(intent);
+                        return true;
+                    } else if (id == R.id.ingredient) {
+                        if (!(IngredientPage.this instanceof IngredientPage)) {
+                            Intent intent = new Intent(IngredientPage.this, IngredientPage.class);
+                            startActivity(intent);
+                        }
+                        return true;
+                    } else if (id == R.id.list) {
+                        Intent intent = new Intent(IngredientPage.this, ListPage.class);
+                        startActivity(intent);
+                        return true;
                     }
-                    return true;
-                } else if (id == R.id.list) {
-                    Intent intent = new Intent(IngredientPage.this, ListPage.class);
-                    startActivity(intent);
-                    return true;
-                }
 
-                return false;
-            }
-        });
+                    return false;
+                }
+            });
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (nav_view.getVisibility() == View.VISIBLE) {
-            nav_view.setVisibility(View.GONE);
+        if (navView.getVisibility() == View.VISIBLE) {
+            navView.setVisibility(View.GONE);
         } else {
-            nav_view.setVisibility(View.VISIBLE);
+            navView.setVisibility(View.VISIBLE);
         }
-        return true || abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return true;
     }
 }

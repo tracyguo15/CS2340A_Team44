@@ -7,7 +7,7 @@ package com.example.androidprojecttemplate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
+//import android.widget.Toast;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -15,14 +15,10 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.core.view.GravityCompat;
-import com.example.androidprojecttemplate.R;
+//import androidx.core.view.GravityCompat;
+//import com.example.androidprojecttemplate.R;
 
 import com.google.android.material.navigation.NavigationView;
-import com.example.androidprojecttemplate.IngredientPage;
-import com.example.androidprojecttemplate.InputMealPage;
-import com.example.androidprojecttemplate.ListPage;
-import com.example.androidprojecttemplate.RecipePage;
 
 
 //implements NavigationView.OnNavigationItemSelectedListener
@@ -31,7 +27,7 @@ public class HomePage extends AppCompatActivity {
     private ActionBarDrawerToggle abdt;
     private static boolean isLoggedIn = false;
 
-    private NavigationView nav_view;
+    private NavigationView navView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,7 +38,7 @@ public class HomePage extends AppCompatActivity {
         // Check if user is logged in before going on home page
         if (isLoggedIn) {
             // If not logged in, stay on the login activity
-            Intent intent = new Intent(this, loginPageActivity.class);
+            Intent intent = new Intent(this, LoginPageActivity.class);
             startActivity(intent);
             // Finish the current activity to prevent going back to it when pressing back button
             finish();
@@ -59,45 +55,45 @@ public class HomePage extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        navView = (NavigationView) findViewById(R.id.nav_view);
 
-        nav_view.setVisibility(View.GONE);
-        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
-        {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.inputmeal) {
-//                    Toast.makeText(HomePage.this, "InputMeal", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, InputMealPage.class);
-                    startActivity(intent);
-                } else if (id == R.id.recipe) {
-//                    Toast.makeText(HomePage.this, "Recipe", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, RecipePage.class);
-                    startActivity(intent);
-                } else if (id == R.id.ingredient) {
-//                    Toast.makeText(HomePage.this, "Ingredient", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, IngredientPage.class);
-                    startActivity(intent);
-                } else if (id == R.id.list) {
-//                    Toast.makeText(HomePage.this, "ShoppingList", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, ListPage.class);
-                    startActivity(intent);
+        navView.setVisibility(View.GONE);
+        navView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    int id = item.getItemId();
+                    if (id == R.id.inputmeal) {
+                        //Toast.makeText(HomePage.this, "InputMeal", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(HomePage.this, InputMealPage.class);
+                        startActivity(intent);
+                    } else if (id == R.id.recipe) {
+                        //Toast.makeText(HomePage.this, "Recipe", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(HomePage.this, RecipePage.class);
+                        startActivity(intent);
+                    } else if (id == R.id.ingredient) {
+                        //Toast.makeText(HomePage.this, "Ingredient", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(HomePage.this, IngredientPage.class);
+                        startActivity(intent);
+                    } else if (id == R.id.list) {
+                        //Toast.makeText(HomePage.this, "ShoppingList", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(HomePage.this, ListPage.class);
+                        startActivity(intent);
+                    }
+
+                    return true;
                 }
-
-                return true;
-            }
-        });
+            });
 
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (nav_view.getVisibility() == View.VISIBLE) {
-            nav_view.setVisibility(View.GONE);
+        if (navView.getVisibility() == View.VISIBLE) {
+            navView.setVisibility(View.GONE);
         } else {
-            nav_view.setVisibility(View.VISIBLE);
+            navView.setVisibility(View.VISIBLE);
         }
-        return true || abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return true;
     }
 
     // Method to set the login state. remember to set login after login page is implemented

@@ -5,9 +5,9 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CreateAccountActivity extends AppCompatActivity {
-    EditText theUsername;
-    EditText thePassword;
-    EditText confirmThePassword;
+    private EditText theUsername;
+    private EditText thePassword;
+    private EditText confirmThePassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
