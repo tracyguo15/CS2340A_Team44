@@ -23,7 +23,7 @@ android:id="@+id/dl">
         android:layout_height="wrap_content"
         android:text="@string/ingredients"
         android:textSize="40sp"
-        android:layout_centerInParent="true"/>
+        android:layout_marginTop="55dp"/>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
