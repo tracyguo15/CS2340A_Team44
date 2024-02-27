@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate;
+package com.example.androidprojecttemplate.views;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.androidprojecttemplate.R;
+import com.example.androidprojecttemplate.viewModels.WellnessViewModel;
 
 public class WellnessActivity extends AppCompatActivity {
 
