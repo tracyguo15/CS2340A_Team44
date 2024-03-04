@@ -7,6 +7,7 @@ package com.example.androidprojecttemplate.views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 import android.view.View;
 
@@ -24,6 +25,8 @@ import com.google.android.material.navigation.NavigationView;
 public class InputMealPage extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
+    private EditText mealInput;
+    private EditText calorieInput;
     private static boolean isLoggedIn = false;
 
     private NavigationView nav_view;
@@ -33,6 +36,9 @@ public class InputMealPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_input_meal_page);
+
+        mealInput = findViewById(R.id.mealInput);
+        calorieInput = findViewById(R.id.calorieInput);
 
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(homeToolBar);
