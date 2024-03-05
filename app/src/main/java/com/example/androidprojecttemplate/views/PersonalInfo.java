@@ -1,6 +1,8 @@
 package com.example.androidprojecttemplate.views;
 
-import com.example.androidprojecttemplate.R;
+// Do not import android support because we are using androidx
+//import android.support.v4.widget.DrawerLayout;
+//import android.support.v7.app.ActionBarDrawerToggle;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.androidprojecttemplate.R;
 import com.google.android.material.navigation.NavigationView;
 
 
 //implements NavigationView.OnNavigationItemSelectedListener
-public class HomePage extends AppCompatActivity {
+public class PersonalInfo extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
     private static boolean isLoggedIn = false;
@@ -28,17 +31,8 @@ public class HomePage extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_personal_info_page);
 
-        // Check if user is logged in before going on home page
-        if (isLoggedIn) {
-            // If not logged in, stay on the login activity
-            Intent intent = new Intent(this, LoginPageActivity.class);
-            startActivity(intent);
-            // Finish the current activity to prevent going back to it when pressing back button
-            finish();
-            return;
-        }
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(homeToolBar);
         dl = (DrawerLayout) findViewById(R.id.dl);
@@ -59,29 +53,31 @@ public class HomePage extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.inputmeal) {
-//                    Toast.makeText(HomePage.this, "InputMeal", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, InputMealPage.class);
+                    Intent intent = new Intent(PersonalInfo.this, InputMealPage.class);
                     startActivity(intent);
+                    return true;
                 } else if (id == R.id.recipe) {
-//                    Toast.makeText(HomePage.this, "Recipe", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, RecipePage.class);
+                    Intent intent = new Intent(PersonalInfo.this, RecipePage.class);
                     startActivity(intent);
+                    return true;
                 } else if (id == R.id.ingredient) {
-//                    Toast.makeText(HomePage.this, "Ingredient", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, IngredientPage.class);
+                    Intent intent = new Intent(PersonalInfo.this, IngredientPage.class);
                     startActivity(intent);
+                    return true;
                 } else if (id == R.id.list) {
-//                    Toast.makeText(HomePage.this, "ShoppingList", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, ListPage.class);
+                    Intent intent = new Intent(PersonalInfo.this, ListPage.class);
                     startActivity(intent);
+                    return true;
                 } else if (id == R.id.personalinfo) {
-                    Intent intent = new Intent(HomePage.this, PersonalInfo.class);
-                    startActivity(intent);
+                    if (!(PersonalInfo.this instanceof PersonalInfo)) {
+                        Intent intent = new Intent(PersonalInfo.this, PersonalInfo.class);
+                        startActivity(intent);
+                    }
+                    return true;
                 }
-                return true;
+                return false;
             }
         });
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -91,10 +87,5 @@ public class HomePage extends AppCompatActivity {
             nav_view.setVisibility(View.VISIBLE);
         }
         return true || abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
-    }
-
-    // Method to set the login state. remember to set login after login page is implemented
-    public static void setLoggedIn(boolean value) {
-        isLoggedIn = value;
     }
 }
