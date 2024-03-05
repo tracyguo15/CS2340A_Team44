@@ -72,8 +72,11 @@ public class InputMealPage extends AppCompatActivity {
                     Intent intent = new Intent(InputMealPage.this, ListPage.class);
                     startActivity(intent);
                     return true;
+                } else if (id == R.id.personalinfo) {
+                    Intent intent = new Intent(InputMealPage.this, PersonalInfo.class);
+                    startActivity(intent);
+                    return true;
                 }
-
                 return false;
             }
         });
