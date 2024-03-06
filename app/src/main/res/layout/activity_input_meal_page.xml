@@ -27,10 +27,34 @@
             android:theme="?attr/actionBarTheme" />
 
         <TextView
-            android:id="@+id/ingredientTitleTextView"
+            android:id="@+id/ingredientTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/input_meal"
+            android:textSize="40sp"
+            android:layout_marginTop="55dp" />
+
+        <TextView
+            android:id="@+id/userHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="height"
+            android:textSize="40sp"
+            android:layout_marginTop="55dp" />
+
+        <TextView
+            android:id="@+id/userWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="weight"
+            android:textSize="40sp"
+            android:layout_marginTop="55dp" />
+
+        <TextView
+            android:id="@+id/userGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="gender"
             android:textSize="40sp"
             android:layout_marginTop="55dp" />
 
