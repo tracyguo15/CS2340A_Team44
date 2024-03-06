@@ -10,8 +10,6 @@
     android:id="@+id/dl">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -30,73 +28,43 @@
             android:id="@+id/ingredientTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/input_meal"
-            android:textSize="40sp"
-            android:layout_marginTop="55dp" />
+            android:layout_marginTop="16dp"
+            android:text="Welcome, name"
+            android:textSize="24sp" />
 
-        <TextView
-            android:id="@+id/userHeight"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="height"
-            android:textSize="40sp"
-            android:layout_marginTop="55dp" />
+            android:orientation="horizontal"
+            android:padding="0dp"
+            tools:context=".inputmeal">
 
-        <TextView
-            android:id="@+id/userWeight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="weight"
-            android:textSize="40sp"
-            android:layout_marginTop="55dp" />
+            <TextView
+                android:id="@+id/userHeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="4dp"
+                android:text="6'"
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/userGender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="gender"
-            android:textSize="40sp"
-            android:layout_marginTop="55dp" />
+            <TextView
+                android:id="@+id/userWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="4dp"
+                android:text="160 lbs."
+                android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/userCalorieGoal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="calorie goal"
-            android:textSize="40sp"
-            android:layout_marginTop="55dp" />
-
-        <TextView
-            android:id="@+id/userDailyCalorieIntake"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="daily calorie intake"
-            android:textSize="40sp"
-            android:layout_marginTop="55dp" />
-
-        <Button
-            android:id="@+id/displayVisualization1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="display vis 1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.641" />
-
-        <Button
-            android:id="@+id/displayVisualization2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="display vis 2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.641" />
+            <TextView
+                android:id="@+id/userGender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="male"
+                android:textSize="16sp" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/mealInput"
@@ -105,6 +73,7 @@
             android:ems="10"
             android:hint="meal"
             android:inputType="text"
+            android:layout_marginTop="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
@@ -125,6 +94,54 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.317" />
+
+        <TextView
+            android:id="@+id/userCalorieGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="calorie goal"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/userDailyCalorieIntake"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="daily calorie intake"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="0dp"
+            tools:context=".inputmeal">
+            <Button
+                android:id="@+id/displayVisualization1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="display vis 1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.641" />
+
+            <Button
+                android:id="@+id/displayVisualization2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="display vis 2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.641" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
