@@ -14,12 +14,13 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import com.example.androidprojecttemplate.R;
 
+import com.example.androidprojecttemplate.R;
 import com.google.android.material.navigation.NavigationView;
 
+
 //implements NavigationView.OnNavigationItemSelectedListener
-public class RecipePage extends AppCompatActivity {
+public class PersonalInfo extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
     private static boolean isLoggedIn = false;
@@ -30,7 +31,7 @@ public class RecipePage extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_recipe_page);
+        setContentView(R.layout.activity_personal_info_page);
 
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(homeToolBar);
@@ -52,25 +53,28 @@ public class RecipePage extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.inputmeal) {
-                    Intent intent = new Intent(RecipePage.this, IngredientPage.class);
+                    Intent intent = new Intent(PersonalInfo.this, InputMealPage.class);
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.recipe) {
-                    if (!(RecipePage.this instanceof RecipePage)) {
-                        Intent intent = new Intent(RecipePage.this, RecipePage.class);
-                        startActivity(intent);
-                    }
+                    Intent intent = new Intent(PersonalInfo.this, RecipePage.class);
+                    startActivity(intent);
                     return true;
                 } else if (id == R.id.ingredient) {
-                    Intent intent = new Intent(RecipePage.this, IngredientPage.class);
+                    Intent intent = new Intent(PersonalInfo.this, IngredientPage.class);
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.list) {
-                    Intent intent = new Intent(RecipePage.this, ListPage.class);
+                    Intent intent = new Intent(PersonalInfo.this, ListPage.class);
                     startActivity(intent);
                     return true;
+                } else if (id == R.id.personalinfo) {
+                    if (!(PersonalInfo.this instanceof PersonalInfo)) {
+                        Intent intent = new Intent(PersonalInfo.this, PersonalInfo.class);
+                        startActivity(intent);
+                    }
+                    return true;
                 }
-
                 return false;
             }
         });

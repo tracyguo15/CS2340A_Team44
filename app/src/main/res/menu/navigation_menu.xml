@@ -21,9 +21,16 @@
     </item>
 
     <item
-        android:id="@+id/shoppinglist"
+        android:id="@+id/list"
         android:title="Shopping List"
         android:icon="@drawable/baseline_add_shopping_cart_24">
+
+    </item>
+
+    <item
+        android:id="@+id/personalinfo"
+        android:title="Personal Information"
+        android:icon="@drawable/baseline_person_24">
 
     </item>
 </menu>
