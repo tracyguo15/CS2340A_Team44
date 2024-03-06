@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate;
+package com.example.androidprojecttemplate.models;
 
 public class WellnessData {
     private int sleepHours;

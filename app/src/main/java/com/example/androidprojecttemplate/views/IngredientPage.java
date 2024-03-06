@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate;
+package com.example.androidprojecttemplate.views;
 
 // Do not import android support because we are using androidx
 //import android.support.v4.widget.DrawerLayout;
@@ -19,10 +19,6 @@ import androidx.core.view.GravityCompat;
 import com.example.androidprojecttemplate.R;
 
 import com.google.android.material.navigation.NavigationView;
-import com.example.androidprojecttemplate.IngredientPage;
-import com.example.androidprojecttemplate.InputMealPage;
-import com.example.androidprojecttemplate.ListPage;
-import com.example.androidprojecttemplate.RecipePage;
 
 
 //implements NavigationView.OnNavigationItemSelectedListener
@@ -74,6 +70,10 @@ public class IngredientPage extends AppCompatActivity {
                     return true;
                 } else if (id == R.id.list) {
                     Intent intent = new Intent(IngredientPage.this, ListPage.class);
+                    startActivity(intent);
+                    return true;
+                } else if (id == R.id.personalinfo) {
+                    Intent intent = new Intent(IngredientPage.this, PersonalInfo.class);
                     startActivity(intent);
                     return true;
                 }
