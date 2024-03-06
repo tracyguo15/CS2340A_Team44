@@ -58,6 +58,22 @@
             android:textSize="40sp"
             android:layout_marginTop="55dp" />
 
+        <TextView
+            android:id="@+id/userCalorieGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="calorie goal"
+            android:textSize="40sp"
+            android:layout_marginTop="55dp" />
+
+        <TextView
+            android:id="@+id/userDailyCalorieIntake"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="daily calorie intake"
+            android:textSize="40sp"
+            android:layout_marginTop="55dp" />
+
         <Button
             android:id="@+id/displayVisualization1"
             android:layout_width="wrap_content"
