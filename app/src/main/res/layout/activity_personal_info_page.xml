@@ -102,6 +102,7 @@
                     android:textSize="24sp" />
 
                 <RadioGroup
+                    android:id="@+id/genderRadioGroup"
                     android:layout_width="match_parent"
                     android:layout_height="240dp">
 
