@@ -34,7 +34,6 @@ public class CreateAccountActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
 
     // For real-time database
-    FirebaseDatabase rootNode;
     DatabaseReference reference;
 
 
@@ -93,10 +92,9 @@ public class CreateAccountActivity extends AppCompatActivity {
                                     Toast.makeText(CreateAccountActivity.this, "successful", Toast.LENGTH_SHORT).show();
 
                                     // Add entires to the real-time database
-                                    rootNode = FirebaseDatabase.getInstance();
-                                    reference = rootNode.getReference("Users");
+                                    reference = FirebaseDatabase.getInstance().getReference().child("Users");
 
-                                    UserLoginData theUser = new UserLoginData(username, password);
+                                    UserLoginData theUser = new UserLoginData(username, password, name);
 
                                     // Will track different usernames in the database by taking the first letter of their username (since you can't use the full username since it has special characters)
                                     reference.child(name).setValue(theUser);
