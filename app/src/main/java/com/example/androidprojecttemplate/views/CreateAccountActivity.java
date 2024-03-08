@@ -10,20 +10,35 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.androidprojecttemplate.models.UserLoginData;
 import com.example.androidprojecttemplate.views.HomePage;
 import com.example.androidprojecttemplate.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class CreateAccountActivity extends AppCompatActivity {
     private EditText usernameInput;
     private EditText passwordInput;
     private EditText confirmPasswordInput;
+
+    private EditText nameInput;
+
     private Button toHomeScreen;
 
+
+    // For authentication
     FirebaseAuth firebaseAuth;
+
+    // For real-time database
+    FirebaseDatabase rootNode;
+    DatabaseReference reference;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +49,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         passwordInput = findViewById(R.id.passwordInput);
         confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
         toHomeScreen = findViewById(R.id.toHomeScreen);
+        nameInput = findViewById(R.id.theName);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -41,6 +57,7 @@ public class CreateAccountActivity extends AppCompatActivity {
             String username = String.valueOf(usernameInput.getText());
             String password = String.valueOf(passwordInput.getText());
             String confirmPassword = String.valueOf(confirmPasswordInput.getText());
+            String name = String.valueOf(nameInput.getText());
 
             // check validity of username and password
             if (TextUtils.isEmpty(username)) {
@@ -48,6 +65,9 @@ public class CreateAccountActivity extends AppCompatActivity {
                 return;
             } else if (TextUtils.isEmpty(password)) {
                 Toast.makeText(CreateAccountActivity.this, "Please enter a password!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(name)) {
+                Toast.makeText(CreateAccountActivity.this, "Please enter a name!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -71,6 +91,16 @@ public class CreateAccountActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(CreateAccountActivity.this, "successful", Toast.LENGTH_SHORT).show();
+
+                                    // Add entires to the real-time database
+                                    rootNode = FirebaseDatabase.getInstance();
+                                    reference = rootNode.getReference("Users");
+
+                                    UserLoginData theUser = new UserLoginData(username, password);
+
+                                    // Will track different usernames in the database by taking the first letter of their username (since you can't use the full username since it has special characters)
+                                    reference.child(name).setValue(theUser);
+
                                     // switch to home page
                                     Intent intent = new Intent(CreateAccountActivity.this, HomePage.class);
                                     startActivity(intent);
