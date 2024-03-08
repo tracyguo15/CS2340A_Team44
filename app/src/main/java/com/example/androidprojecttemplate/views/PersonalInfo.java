@@ -67,6 +67,7 @@ public class PersonalInfo extends AppCompatActivity {
         theGenderInput = findViewById(R.id.theGener);
         theButtonToLogData = findViewById(R.id.buttonToEnnterData);
 
+
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(homeToolBar);
         dl = (DrawerLayout) findViewById(R.id.dl);
@@ -163,7 +164,6 @@ public class PersonalInfo extends AppCompatActivity {
             });
 
         });
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
