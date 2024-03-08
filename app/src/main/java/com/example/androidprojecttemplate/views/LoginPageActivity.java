@@ -20,6 +20,7 @@ public class LoginPageActivity extends AppCompatActivity {
     private EditText usernameInput;
     private EditText passwordInput;
     private Button toHomeScreen;
+    private Button toWelcomePage;
 
     FirebaseAuth firebaseAuth;
 
@@ -31,6 +32,7 @@ public class LoginPageActivity extends AppCompatActivity {
         usernameInput = findViewById(R.id.username);
         passwordInput = findViewById(R.id.password);
         toHomeScreen = findViewById(R.id.toHomeScreen);
+        toWelcomePage = findViewById(R.id.backButton);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -62,6 +64,11 @@ public class LoginPageActivity extends AppCompatActivity {
                     }
                 }
             });
+        });
+
+        toWelcomePage.setOnClickListener(f -> {
+            Intent intent = new Intent(LoginPageActivity.this, WelcomeScreenActivity.class);
+            startActivity(intent);
         });
     }
 }

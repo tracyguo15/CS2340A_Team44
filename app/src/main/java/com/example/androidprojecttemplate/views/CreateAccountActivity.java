@@ -28,6 +28,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     private EditText nameInput;
 
     private Button toHomeScreen;
+    private Button toWelcomePage;
 
 
     // For authentication
@@ -49,6 +50,7 @@ public class CreateAccountActivity extends AppCompatActivity {
         confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
         toHomeScreen = findViewById(R.id.toHomeScreen);
         nameInput = findViewById(R.id.theName);
+        toWelcomePage = findViewById(R.id.backButton);
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -113,6 +115,11 @@ public class CreateAccountActivity extends AppCompatActivity {
                     }
                 }
             });
+        });
+
+        toWelcomePage.setOnClickListener(f -> {
+            Intent intent = new Intent(CreateAccountActivity.this, WelcomeScreenActivity.class);
+            startActivity(intent);
         });
     }
 }

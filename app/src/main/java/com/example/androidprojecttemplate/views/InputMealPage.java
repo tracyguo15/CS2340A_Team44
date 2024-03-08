@@ -94,6 +94,6 @@ public class InputMealPage extends AppCompatActivity {
         } else {
             nav_view.setVisibility(View.VISIBLE);
         }
-        return true || abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return true;
     }
 }

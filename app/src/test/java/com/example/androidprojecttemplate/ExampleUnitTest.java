@@ -19,4 +19,6 @@ public class ExampleUnitTest {
 //        assertEquals(vm.getWellnessData().getFitnessMinutes(), 5);
     }
 
+
+
 }
