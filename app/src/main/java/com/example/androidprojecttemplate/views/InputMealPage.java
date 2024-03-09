@@ -32,6 +32,8 @@ public class InputMealPage extends AppCompatActivity {
     private TextView userHeight;
     private TextView userWeight;
     private TextView userGender;
+    private TextView userCalorieGoal;
+    private TextView userDailyCalorieIntake;
     private EditText mealInput;
     private EditText calorieInput;
     private NavigationView nav_view;
@@ -48,6 +50,8 @@ public class InputMealPage extends AppCompatActivity {
         userHeight = findViewById(R.id.userHeight);
         userWeight = findViewById(R.id.userWeight);
         userGender = findViewById(R.id.userGender);
+        userCalorieGoal = findViewById(R.id.userCalorieGoal);
+        userDailyCalorieIntake = findViewById(R.id.userDailyCalorieIntake);
         mealInput = findViewById(R.id.mealInput);
         calorieInput = findViewById(R.id.calorieInput);
 
