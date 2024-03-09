@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Button;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ public class InputMealPage extends AppCompatActivity {
     private TextView userDailyCalorieIntake;
     private EditText mealInput;
     private EditText calorieInput;
+    private Button submitMealData;
     private NavigationView nav_view;
 
     // state
@@ -54,6 +56,7 @@ public class InputMealPage extends AppCompatActivity {
         userDailyCalorieIntake = findViewById(R.id.userDailyCalorieIntake);
         mealInput = findViewById(R.id.mealInput);
         calorieInput = findViewById(R.id.calorieInput);
+        submitMealData = findViewById(R.id.submitMealData);
 
         // navbar
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
