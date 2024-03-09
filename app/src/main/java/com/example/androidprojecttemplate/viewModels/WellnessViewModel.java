@@ -6,8 +6,6 @@ public class WellnessViewModel {
     private static WellnessViewModel instance;
     final private WellnessData wellnessData;
 
-
-
     // DO NOT MODIFY METHOD
     public WellnessViewModel() {
         wellnessData = new WellnessData();
