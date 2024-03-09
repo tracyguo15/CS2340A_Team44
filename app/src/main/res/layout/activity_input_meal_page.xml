@@ -24,14 +24,6 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme" />
 
-        <TextView
-            android:id="@+id/ingredientTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Welcome, name"
-            android:textSize="24sp" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,6 +58,22 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/userCalorieGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="calorie goal"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/userDailyCalorieIntake"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="daily calorie intake"
+            android:textSize="16sp" />
+
         <EditText
             android:id="@+id/mealInput"
             android:layout_width="wrap_content"
@@ -95,28 +103,19 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.317" />
 
-        <TextView
-            android:id="@+id/userCalorieGoal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="calorie goal"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/userDailyCalorieIntake"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="daily calorie intake"
-            android:textSize="16sp" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:orientation="horizontal"
             android:padding="0dp"
             tools:context=".inputmeal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
             <Button
                 android:id="@+id/displayVisualization1"
                 android:layout_width="wrap_content"
@@ -129,6 +128,11 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.641" />
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
             <Button
                 android:id="@+id/displayVisualization2"
                 android:layout_width="wrap_content"
@@ -140,6 +144,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.641" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
 
         </LinearLayout>
 

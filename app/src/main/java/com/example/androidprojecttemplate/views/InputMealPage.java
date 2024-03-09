@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View;
 
@@ -20,28 +21,41 @@ import com.example.androidprojecttemplate.R;
 
 import com.google.android.material.navigation.NavigationView;
 
+import org.w3c.dom.Text;
 
-//implements NavigationView.OnNavigationItemSelectedListener
+
+// implements NavigationView.OnNavigationItemSelectedListener
 public class InputMealPage extends AppCompatActivity {
+    // ui
     private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
+    private TextView userHeight;
+    private TextView userWeight;
+    private TextView userGender;
     private EditText mealInput;
     private EditText calorieInput;
-    private static boolean isLoggedIn = false;
-
     private NavigationView nav_view;
+
+    // state
+    private static boolean isLoggedIn = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_input_meal_page);
 
+        // ui
+        userHeight = findViewById(R.id.userHeight);
+        userWeight = findViewById(R.id.userWeight);
+        userGender = findViewById(R.id.userGender);
         mealInput = findViewById(R.id.mealInput);
         calorieInput = findViewById(R.id.calorieInput);
 
+        // navbar
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(homeToolBar);
+
+        // nav menu
         dl = (DrawerLayout) findViewById(R.id.dl);
         abdt = new ActionBarDrawerToggle(this, dl, R.string.Open, R.string.Close);
         abdt.setDrawerIndicatorEnabled(true);
@@ -87,6 +101,7 @@ public class InputMealPage extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (nav_view.getVisibility() == View.VISIBLE) {
