@@ -74,8 +74,10 @@ public class HomePage extends AppCompatActivity {
 //                    Toast.makeText(HomePage.this, "ShoppingList", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(HomePage.this, ListPage.class);
                     startActivity(intent);
+                } else if (id == R.id.personalinfo) {
+                    Intent intent = new Intent(HomePage.this, PersonalInfo.class);
+                    startActivity(intent);
                 }
-
                 return true;
             }
         });
