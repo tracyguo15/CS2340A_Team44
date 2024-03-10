@@ -6,12 +6,12 @@ package com.example.androidprojecttemplate.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -20,7 +20,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.androidprojecttemplate.R;
+import com.example.androidprojecttemplate.models.UserData;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 //implements NavigationView.OnNavigationItemSelectedListener
@@ -31,20 +39,35 @@ public class PersonalInfo extends AppCompatActivity {
 
     private NavigationView nav_view;
 
-    private EditText heightField;
-    private EditText weightField;
-    private RadioGroup genderButtons;
-    private String genderChosen = null;
+    private EditText theHeightInput;
 
-    private Button saveButton;
+    private EditText theWeightInput;
 
-    // plan -- add object here later to store demographic data
+    private EditText theGenderInput;
+    private EditText theAgeInput;
+
+    private Button theButtonToLogData;
+
+    // For firebase authentication (to get user's email)
+    FirebaseAuth auth;
+    FirebaseUser user;
+
+
+    // For real-time database
+    FirebaseDatabase rootNode;
+    DatabaseReference reference;
+    DatabaseReference tempReference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_personal_info_page);
+        theHeightInput = findViewById(R.id.theHeight);
+        theWeightInput = findViewById(R.id.theWeight);
+        theGenderInput = findViewById(R.id.theGender);
+        theAgeInput = findViewById(R.id.theAge);
+        theButtonToLogData = findViewById(R.id.submitPersonalInfoData);
 
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(homeToolBar);
@@ -92,53 +115,65 @@ public class PersonalInfo extends AppCompatActivity {
             }
         });
 
-        heightField = findViewById(R.id.heightNumberField);
-        weightField = findViewById(R.id.weightNumberField);
-        genderButtons = findViewById(R.id.genderRadioGroup);
-        saveButton = findViewById(R.id.piiSaveButton);
+        // Get the current user's email, which will be used further down the code
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        String theUsersEmail = user.getEmail();
 
-        //get user data and reflect the values previously defined in the text field
-        //so get user height and prefill it in heightField as an empty field text
-        //similarly get user weight and prefill it in weightField as an empty number
-        //finally, set up gender -- try checking RadioButton.setChecked(boolean checked) for more details
+        //String[] theNames = new String[15];
 
-        //now set up listener for gender buttons so that when they are clicked they update genderChosen
-        genderButtons.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                RadioButton b = findViewById(checkedId);
+        // Will now focus on logging the data
+        theButtonToLogData.setOnClickListener(v -> {
+            // Check if the the inputs from the edit text are valid or not
+            String height = String.valueOf(theHeightInput.getText());
+            String weight = String.valueOf(theWeightInput.getText());
+            String gender = String.valueOf(theGenderInput.getText());
+            String age = String.valueOf(theAgeInput.getText());
 
-                genderChosen = getGenderChosen(b);
+            if (TextUtils.isEmpty(height)) {
+                Toast.makeText(PersonalInfo.this, "Please enter a height!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(weight)) {
+                Toast.makeText(PersonalInfo.this, "Please enter a weight!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(gender)) {
+                Toast.makeText(PersonalInfo.this, "Please enter a gender!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(age)) {
+                Toast.makeText(PersonalInfo.this, "Please enter an age!", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            reference = FirebaseDatabase.getInstance().getReference().child("Users");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot theSnapshot: snapshot.getChildren()) {
+
+                        String theEmailFromFirebase = theSnapshot.child("username").getValue().toString();
+                        if (theEmailFromFirebase.equals(theUsersEmail)) {
+                           //Found the email, can now add the data for that specific user
+                            //UserData theInfo = new personalInfo(height, weight, gender);
+                            UserData data = new UserData();
+                            data.setHeight(Integer.parseInt(height));
+                            data.setWeight(Integer.parseInt(weight));
+                            data.setGender(gender);
+                            data.setAge(Integer.parseInt(age));
+
+                            tempReference = reference.child(theSnapshot.child("name").getValue().toString());
+                            tempReference.child("Personal Info").setValue(data);
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(PersonalInfo.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
+                }
+            });
+
         });
-
-        //and set up save button listener so it:
-        // 1) deactivate the input widgets
-        // 2) save to external database
-        //   2b) gather data from input and
-        //   2a) if it takes too long to connect, reactivate the widget and exit this function
-        // 3) clear all the inputs and prefill with new values
-        // 4) reactivate widgets
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                heightField.setEnabled(false);
-                weightField.setEnabled(false);
-                genderButtons.setEnabled(false);
-
-                //gather data and send it to external database
-                saveToExternalDatabase();
-
-                //prefill with new values, try looking at EditText.setHint(String s) for more details
-                prefillValues();
-
-                //re-enable UI components
-                heightField.setEnabled(true);
-                weightField.setEnabled(true);
-                genderButtons.setEnabled(true);
-            }
-        });
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -150,20 +185,6 @@ public class PersonalInfo extends AppCompatActivity {
         return true || abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
-    /**
-     * A helper method to determine what to set genderChosen to after a radioButton is clicked.
-     *
-     * @param b the RadioButton chosen
-     * @return what gender was selected: "Male", "Female", "Non-Binary", "Other"
-     * */
-    private String getGenderChosen(RadioButton b) {
-        String label = b.getText().toString();
-        if (label.equals("Other/Not Specified")) {
-            return "Other";
-        } else {
-            return label;
-        }
-    }
 
     /**
      * This gets the data in the text field and sends it off to the database.
