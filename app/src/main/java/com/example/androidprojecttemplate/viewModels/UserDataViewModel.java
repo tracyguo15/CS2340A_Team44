@@ -6,9 +6,9 @@ public class UserDataViewModel {
     private static UserDataViewModel instance;
     final private UserData userData;
 
-    public UserDataViewModel(int height, int weight, int gender) {
+    public UserDataViewModel() {
         this.userData = new UserData();
-        this.updateData(height, weight, gender);
+        //this.updateData(height, weight, gender);
     }
 
     public static synchronized UserDataViewModel getInstance() {
