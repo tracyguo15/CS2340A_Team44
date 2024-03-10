@@ -62,12 +62,17 @@ public class UserDataViewModel {
         int weight = (int)Math.round(userData.getWeight() * 0.454);      // in kg
         int age = userData.getAge();
 
-        int calorieGoal;
+        int calorieGoal = (int)Math.round((10 * weight) + (6.25 * height) - (5 * age));
 
-        if (userData.getGender() == "male") {
-            calorieGoal = (int)Math.round((10 * weight) + (6.25 * height) - (5 * age) + 5);
-        } else {
-            calorieGoal = (int)Math.round((10 * weight) + (6.25 * height) - (5 * age) - 161);
+        switch (userData.getGender()) {
+            case "male":
+                calorieGoal += 5;
+                break;
+            case "female":
+                calorieGoal -= 161;
+                break;
+            default:
+                break;
         }
 
         return String.format("Calorie goal: %d", calorieGoal);
