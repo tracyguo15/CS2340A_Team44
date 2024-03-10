@@ -42,6 +42,7 @@ public class InputMealPage extends AppCompatActivity {
     private NavigationView nav_view;
 
     // state
+    private String userId;
     private static boolean isLoggedIn = false;
     private UserDataViewModel viewModel;
     FirebaseAuth firebaseAuth;
@@ -112,6 +113,9 @@ public class InputMealPage extends AppCompatActivity {
         });
 
         firebaseAuth = FirebaseAuth.getInstance();
+        userId = savedInstanceState.getString("USER_ID");
+
+        Log.d("YourTag", userId);
     }
 
     @Override
