@@ -20,7 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.androidprojecttemplate.R;
-import com.example.androidprojecttemplate.models.personalInfo;
+import com.example.androidprojecttemplate.models.UserData;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

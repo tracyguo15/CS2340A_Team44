@@ -22,6 +22,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.androidprojecttemplate.R;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.w3c.dom.Text;
 
@@ -42,10 +43,10 @@ public class InputMealPage extends AppCompatActivity {
     private NavigationView nav_view;
 
     // state
-    private String userId;
     private static boolean isLoggedIn = false;
     private UserDataViewModel viewModel;
     FirebaseAuth firebaseAuth;
+    FirebaseUser user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

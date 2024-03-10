@@ -22,7 +22,6 @@ public class LoginPageActivity extends AppCompatActivity {
     private Button toHomeScreen;
 
     FirebaseAuth firebaseAuth;
-    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +53,6 @@ public class LoginPageActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        // save user UID
-                        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-                        userId = currentUser.getUid();
-
                         // switch to home page
                         Intent theIntent = new Intent(LoginPageActivity.this, HomePage.class);
                         startActivity(theIntent);
@@ -68,11 +63,5 @@ public class LoginPageActivity extends AppCompatActivity {
                 }
             });
         });
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("USER_ID", userId);
     }
 }

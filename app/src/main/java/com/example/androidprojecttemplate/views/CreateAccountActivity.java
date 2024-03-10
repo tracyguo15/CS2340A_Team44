@@ -90,11 +90,6 @@ public class CreateAccountActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    // update user id
-                                    // save user UID
-                                    FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-                                    userId = currentUser.getUid();
-
                                     Toast.makeText(CreateAccountActivity.this, "successful", Toast.LENGTH_SHORT).show();
 
                                     // Add entires to the real-time database
@@ -120,11 +115,5 @@ public class CreateAccountActivity extends AppCompatActivity {
                 }
             });
         });
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("USER_ID", userId);
     }
 }
