@@ -3,20 +3,27 @@ package com.example.androidprojecttemplate;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
-
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
-    // TODO 8: Write a unit test for ensuring correct behavior of the updateData function you implemented in TODO 2 in WellnessViewModel
     @Test
-    public void addition_isCorrect() {
-//        WellnessViewModel vm = new WellnessViewModel();
-//        vm.updateData(4,5);
-//        assertEquals(vm.getWellnessData().getSleepHours(), 4);
-//        assertEquals(vm.getWellnessData().getFitnessMinutes(), 5);
+    public void unitTest() {
+        // initalizes the model with 0 for both sleep and fittness time
+//        WellnessViewModel test = new WellnessViewModel();
+//        assertEquals(0, test.getWellnessData().getSleepHours());
+//        assertEquals(0, test.getWellnessData().getFitnessMinutes());
+//        // updates the data
+//        test.updateData(30, 20);
+//        assertEquals(30, test.getWellnessData().getSleepHours());
+//        assertEquals(20, test.getWellnessData().getFitnessMinutes());
+//        // updates the data again with new numbers
+//        test.updateData(88, 12);
+//        assertEquals(88, test.getWellnessData().getSleepHours());
+//        assertEquals(12, test.getWellnessData().getFitnessMinutes());
+//        System.out.println("JUNITS have been completed.");
     }
 
 }
