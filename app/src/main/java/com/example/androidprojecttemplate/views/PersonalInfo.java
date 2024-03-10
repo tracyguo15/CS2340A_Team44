@@ -65,10 +65,9 @@ public class PersonalInfo extends AppCompatActivity {
         setContentView(R.layout.activity_personal_info_page);
         theHeightInput = findViewById(R.id.theHeight);
         theWeightInput = findViewById(R.id.theWeight);
-        theGenderInput = findViewById(R.id.theGener);
+        theGenderInput = findViewById(R.id.theGender);
         theAgeInput = findViewById(R.id.theAge);
-        theButtonToLogData = findViewById(R.id.buttonToEnnterData);
-
+        theButtonToLogData = findViewById(R.id.submitPersonalInfoData);
 
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(homeToolBar);
