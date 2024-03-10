@@ -20,7 +20,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.androidprojecttemplate.R;
-import com.example.androidprojecttemplate.models.personalInfo;
+import com.example.androidprojecttemplate.models.UserData;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,6 +44,7 @@ public class PersonalInfo extends AppCompatActivity {
     private EditText theWeightInput;
 
     private EditText theGenderInput;
+    private EditText theAgeInput;
 
     private Button theButtonToLogData;
 
@@ -64,8 +65,9 @@ public class PersonalInfo extends AppCompatActivity {
         setContentView(R.layout.activity_personal_info_page);
         theHeightInput = findViewById(R.id.theHeight);
         theWeightInput = findViewById(R.id.theWeight);
-        theGenderInput = findViewById(R.id.theGener);
-        theButtonToLogData = findViewById(R.id.buttonToEnnterData);
+        theGenderInput = findViewById(R.id.theGender);
+        theAgeInput = findViewById(R.id.theAge);
+        theButtonToLogData = findViewById(R.id.submitPersonalInfoData);
 
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(homeToolBar);
@@ -118,7 +120,7 @@ public class PersonalInfo extends AppCompatActivity {
         user = auth.getCurrentUser();
         String theUsersEmail = user.getEmail();
 
-        String[] theNames = new String[15];
+        //String[] theNames = new String[15];
 
         // Will now focus on logging the data
         theButtonToLogData.setOnClickListener(v -> {
@@ -126,6 +128,7 @@ public class PersonalInfo extends AppCompatActivity {
             String height = String.valueOf(theHeightInput.getText());
             String weight = String.valueOf(theWeightInput.getText());
             String gender = String.valueOf(theGenderInput.getText());
+            String age = String.valueOf(theAgeInput.getText());
 
             if (TextUtils.isEmpty(height)) {
                 Toast.makeText(PersonalInfo.this, "Please enter a height!", Toast.LENGTH_SHORT).show();
@@ -135,6 +138,9 @@ public class PersonalInfo extends AppCompatActivity {
                 return;
             } else if (TextUtils.isEmpty(gender)) {
                 Toast.makeText(PersonalInfo.this, "Please enter a gender!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(age)) {
+                Toast.makeText(PersonalInfo.this, "Please enter an age!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -147,10 +153,15 @@ public class PersonalInfo extends AppCompatActivity {
                         String theEmailFromFirebase = theSnapshot.child("username").getValue().toString();
                         if (theEmailFromFirebase.equals(theUsersEmail)) {
                            //Found the email, can now add the data for that specific user
-                            personalInfo theInfo = new personalInfo(height, weight, gender);
+                            //UserData theInfo = new personalInfo(height, weight, gender);
+                            UserData data = new UserData();
+                            data.setHeight(Integer.parseInt(height));
+                            data.setWeight(Integer.parseInt(weight));
+                            data.setGender(gender);
+                            data.setAge(Integer.parseInt(age));
 
                             tempReference = reference.child(theSnapshot.child("name").getValue().toString());
-                            tempReference.child("Personal Info").setValue(theInfo);
+                            tempReference.child("Personal Info").setValue(data);
                         }
 
                     }
@@ -163,7 +174,6 @@ public class PersonalInfo extends AppCompatActivity {
             });
 
         });
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

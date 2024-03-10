@@ -32,6 +32,7 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     // For authentication
     FirebaseAuth firebaseAuth;
+    private String userId;
 
     // For real-time database
     DatabaseReference reference;
