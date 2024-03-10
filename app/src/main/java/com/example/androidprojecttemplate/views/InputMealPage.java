@@ -4,7 +4,7 @@ package com.example.androidprojecttemplate.views;
 //import android.support.v4.widget.DrawerLayout;
 //import android.support.v7.app.ActionBarDrawerToggle;
 import com.example.androidprojecttemplate.models.UserData;
-import com.example.androidprojecttemplate.viewModels.UserDataViewModel;
+import com.example.androidprojecttemplate.viewmodels.UserDataViewModel;
 
 import android.content.Intent;
 import android.os.Bundle;

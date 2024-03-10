@@ -88,6 +88,8 @@ public class PersonalInfo extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
+                System.out.println("click");
+                System.out.println(id);
                 if (id == R.id.inputmeal) {
                     Intent intent = new Intent(PersonalInfo.this, InputMealPage.class);
                     startActivity(intent);
@@ -193,14 +195,6 @@ public class PersonalInfo extends AppCompatActivity {
      * no changes have occurred, then exit this function.
      */
     private void saveToExternalDatabase() {
-
-    }
-
-    /**
-     * Gets data from the planned Demographic object, and then
-     * prefills it into empty text fields.
-     */
-    private void prefillValues() {
 
     }
 }
