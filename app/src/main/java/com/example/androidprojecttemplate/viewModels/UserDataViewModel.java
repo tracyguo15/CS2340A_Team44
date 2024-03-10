@@ -22,10 +22,11 @@ public class UserDataViewModel {
         return this.userData;
     }
 
-    public void updateData(int height, int weight, String gender) {
+    public void updateData(int height, int weight, String gender, int age) {
         userData.setHeight(height);
         userData.setWeight(weight);
         userData.setGender(gender);
+        userData.setAge(age);
     }
 
     public String heightText() {

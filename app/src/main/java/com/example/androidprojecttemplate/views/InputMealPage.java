@@ -146,11 +146,13 @@ public class InputMealPage extends AppCompatActivity {
                             String height = userDataSnapshot.child("height").getValue().toString();
                             String weight = userDataSnapshot.child("weight").getValue().toString();
                             String gender = userDataSnapshot.child("gender").getValue().toString();
+                            String age = userDataSnapshot.child("age").getValue().toString();
 
                             viewModel.updateData(
                                 Integer.parseInt(height),
                                 Integer.parseInt(weight),
-                                gender);
+                                gender,
+                                Integer.parseInt(age));
 
                             userHeight.setText(viewModel.heightText());
                             userWeight.setText(viewModel.weightText());
