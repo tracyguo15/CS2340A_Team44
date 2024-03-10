@@ -148,17 +148,8 @@ public class InputMealPage extends AppCompatActivity {
                             Log.d("test", weight);
                             Log.d("test", gender);
                         } else {
-
+                            
                         }
-                        //Found the email, can now add the data for that specific user
-                        //UserData theInfo = new personalInfo(height, weight, gender);
-                        //UserData data = new UserData();
-                        //data.setHeight(Integer.parseInt(height));
-                        //data.setWeight(Integer.parseInt(weight));
-                        //data.setGender(gender);
-
-                        //tempReference = reference.child(theSnapshot.child("name").getValue().toString());
-                        //tempReference.child("Personal Info").setValue(data);
                     }
 
                 }

@@ -6,9 +6,9 @@ public class UserDataViewModel {
     private static UserDataViewModel instance;
     final private UserData userData;
 
-    public UserDataViewModel() {
+    public UserDataViewModel(int height, int weight, int gender) {
         this.userData = new UserData();
-        //this.updateData(0, 0);      // should be updated with firebase
+        this.updateData(height, weight, gender);
     }
 
     public static synchronized UserDataViewModel getInstance() {
