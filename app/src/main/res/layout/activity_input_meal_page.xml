@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="4dp"
-                android:text="6'"
+                android:text=""
                 android:textSize="16sp" />
 
             <TextView
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="4dp"
-                android:text="160 lbs."
+                android:text=""
                 android:textSize="16sp" />
 
             <TextView
@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="male"
+                android:text=""
                 android:textSize="16sp" />
         </LinearLayout>
 

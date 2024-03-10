@@ -138,17 +138,25 @@ public class InputMealPage extends AppCompatActivity {
 
                     String theEmailFromFirebase = theSnapshot.child("username").getValue().toString();
                     if (theEmailFromFirebase.equals(email)) {
+                        viewModel = UserDataViewModel.getInstance();
+
                         DataSnapshot userDataSnapshot = theSnapshot.child("Personal Info");
 
                         if (userDataSnapshot != null) {
                             String height = userDataSnapshot.child("height").getValue().toString();
                             String weight = userDataSnapshot.child("weight").getValue().toString();
                             String gender = userDataSnapshot.child("gender").getValue().toString();
-                            Log.d("test", height);
-                            Log.d("test", weight);
-                            Log.d("test", gender);
+
+                            viewModel.updateData(
+                                Integer.parseInt(height),
+                                Integer.parseInt(weight),
+                                gender);
+
+                            userHeight.setText(viewModel.heightText());
+                            userWeight.setText(viewModel.weightText());
+                            userGender.setText(viewModel.genderText());
                         } else {
-                            
+                            userHeight.setText("no user data available");
                         }
                     }
 
