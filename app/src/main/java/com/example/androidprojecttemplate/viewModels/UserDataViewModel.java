@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate.viewModels;
+package com.example.androidprojecttemplate.viewmodels;
 
 import com.example.androidprojecttemplate.models.UserData;
 
