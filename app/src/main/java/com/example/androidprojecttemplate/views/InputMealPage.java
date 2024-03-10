@@ -3,6 +3,7 @@ package com.example.androidprojecttemplate.views;
 // Do not import android support because we are using androidx
 //import android.support.v4.widget.DrawerLayout;
 //import android.support.v7.app.ActionBarDrawerToggle;
+import com.example.androidprojecttemplate.viewModels.UserDataViewModel;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,6 +43,8 @@ public class InputMealPage extends AppCompatActivity {
 
     // state
     private static boolean isLoggedIn = false;
+    private UserDataViewModel viewModel;
+    FirebaseAuth firebaseAuth;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,6 +110,8 @@ public class InputMealPage extends AppCompatActivity {
                 return false;
             }
         });
+
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override
