@@ -83,7 +83,7 @@
             android:layout_marginEnd="66dp"
             android:layout_marginBottom="176dp"
             android:ems="10"
-            android:hint="Gender"
+            android:hint="enter 'M' or 'F'"
             android:inputType="text" />
 
         <Button

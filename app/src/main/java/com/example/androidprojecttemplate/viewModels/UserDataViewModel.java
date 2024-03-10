@@ -1,7 +1,6 @@
 package com.example.androidprojecttemplate.viewModels;
 
 import com.example.androidprojecttemplate.models.UserData;
-import com.example.androidprojecttemplate.models.UserData.Gender;
 
 public class UserDataViewModel {
     private static UserDataViewModel instance;
@@ -14,7 +13,7 @@ public class UserDataViewModel {
 
     public static synchronized UserDataViewModel getInstance() {
         if (instance == null) {
-            instance = new WellnessViewModel();
+            instance = new UserDataViewModel();
         }
         return instance;
     }
@@ -23,7 +22,7 @@ public class UserDataViewModel {
         return this.userData;
     }
 
-    public void updateData(int height, int weight, Gender gender) {
+    public void updateData(int height, int weight, String gender) {
         userData.setHeight(height);
         userData.setWeight(weight);
         userData.setGender(gender);

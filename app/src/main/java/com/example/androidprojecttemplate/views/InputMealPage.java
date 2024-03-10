@@ -3,10 +3,12 @@ package com.example.androidprojecttemplate.views;
 // Do not import android support because we are using androidx
 //import android.support.v4.widget.DrawerLayout;
 //import android.support.v7.app.ActionBarDrawerToggle;
+import com.example.androidprojecttemplate.models.UserData;
 import com.example.androidprojecttemplate.viewModels.UserDataViewModel;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,6 +25,16 @@ import com.example.androidprojecttemplate.R;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -47,6 +59,7 @@ public class InputMealPage extends AppCompatActivity {
     private UserDataViewModel viewModel;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
+    DatabaseReference reference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,9 +127,48 @@ public class InputMealPage extends AppCompatActivity {
         });
 
         firebaseAuth = FirebaseAuth.getInstance();
-        userId = savedInstanceState.getString("USER_ID");
+        user = firebaseAuth.getCurrentUser();
+        String email = user.getEmail();
 
-        Log.d("YourTag", userId);
+        reference = FirebaseDatabase.getInstance().getReference().child("Users");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot theSnapshot: snapshot.getChildren()) {
+
+                    String theEmailFromFirebase = theSnapshot.child("username").getValue().toString();
+                    if (theEmailFromFirebase.equals(email)) {
+                        DataSnapshot userDataSnapshot = theSnapshot.child("Personal Info");
+
+                        if (userDataSnapshot != null) {
+                            String height = userDataSnapshot.child("height").getValue().toString();
+                            String weight = userDataSnapshot.child("weight").getValue().toString();
+                            String gender = userDataSnapshot.child("gender").getValue().toString();
+                            Log.d("test", height);
+                            Log.d("test", weight);
+                            Log.d("test", gender);
+                        } else {
+
+                        }
+                        //Found the email, can now add the data for that specific user
+                        //UserData theInfo = new personalInfo(height, weight, gender);
+                        //UserData data = new UserData();
+                        //data.setHeight(Integer.parseInt(height));
+                        //data.setWeight(Integer.parseInt(weight));
+                        //data.setGender(gender);
+
+                        //tempReference = reference.child(theSnapshot.child("name").getValue().toString());
+                        //tempReference.child("Personal Info").setValue(data);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(InputMealPage.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override

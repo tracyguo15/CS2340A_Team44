@@ -119,7 +119,7 @@ public class PersonalInfo extends AppCompatActivity {
         user = auth.getCurrentUser();
         String theUsersEmail = user.getEmail();
 
-        String[] theNames = new String[15];
+        //String[] theNames = new String[15];
 
         // Will now focus on logging the data
         theButtonToLogData.setOnClickListener(v -> {
@@ -148,10 +148,14 @@ public class PersonalInfo extends AppCompatActivity {
                         String theEmailFromFirebase = theSnapshot.child("username").getValue().toString();
                         if (theEmailFromFirebase.equals(theUsersEmail)) {
                            //Found the email, can now add the data for that specific user
-                            personalInfo theInfo = new personalInfo(height, weight, gender);
+                            //UserData theInfo = new personalInfo(height, weight, gender);
+                            UserData data = new UserData();
+                            data.setHeight(Integer.parseInt(height));
+                            data.setWeight(Integer.parseInt(weight));
+                            data.setGender(gender);
 
                             tempReference = reference.child(theSnapshot.child("name").getValue().toString());
-                            tempReference.child("Personal Info").setValue(theInfo);
+                            tempReference.child("Personal Info").setValue(data);
                         }
 
                     }
