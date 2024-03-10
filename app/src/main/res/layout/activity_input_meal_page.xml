@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="calorie goal"
+            android:text="Calorie goal"
             android:textSize="16sp" />
 
         <TextView
@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="daily calorie intake"
+            android:text="Daily calories"
             android:textSize="16sp" />
 
         <EditText

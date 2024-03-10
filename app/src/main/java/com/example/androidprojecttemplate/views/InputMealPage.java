@@ -157,6 +157,7 @@ public class InputMealPage extends AppCompatActivity {
                             userHeight.setText(viewModel.heightText());
                             userWeight.setText(viewModel.weightText());
                             userGender.setText(viewModel.genderText());
+                            userCalorieGoal.setText(viewModel.calorieGoalText());
                         } else {
                             userHeight.setText("no user data available");
                         }

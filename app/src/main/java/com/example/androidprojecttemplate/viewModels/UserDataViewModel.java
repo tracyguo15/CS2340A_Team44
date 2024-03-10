@@ -50,10 +50,26 @@ public class UserDataViewModel {
     }
 
     public String genderText() {
-        if (userData.getGender() == "male") {
+        if (userData.getGender().equals("male")) {
             return "Male";
         }
 
         return "Female";
+    }
+
+    public String calorieGoalText() {
+        int height = (int)Math.round(userData.getHeight() * 2.54);       // in cm
+        int weight = (int)Math.round(userData.getWeight() * 0.454);      // in kg
+        int age = userData.getAge();
+
+        int calorieGoal;
+
+        if (userData.getGender() == "male") {
+            calorieGoal = (int)Math.round((10 * weight) + (6.25 * height) - (5 * age) + 5);
+        } else {
+            calorieGoal = (int)Math.round((10 * weight) + (6.25 * height) - (5 * age) - 161);
+        }
+
+        return String.format("Calorie goal: %d", calorieGoal);
     }
 }
