@@ -44,6 +44,7 @@ public class PersonalInfo extends AppCompatActivity {
     private EditText theWeightInput;
 
     private EditText theGenderInput;
+    private EditText theAgeInput;
 
     private Button theButtonToLogData;
 
@@ -65,6 +66,7 @@ public class PersonalInfo extends AppCompatActivity {
         theHeightInput = findViewById(R.id.theHeight);
         theWeightInput = findViewById(R.id.theWeight);
         theGenderInput = findViewById(R.id.theGener);
+        theAgeInput = findViewById(R.id.theAge);
         theButtonToLogData = findViewById(R.id.buttonToEnnterData);
 
 
@@ -127,6 +129,7 @@ public class PersonalInfo extends AppCompatActivity {
             String height = String.valueOf(theHeightInput.getText());
             String weight = String.valueOf(theWeightInput.getText());
             String gender = String.valueOf(theGenderInput.getText());
+            String age = String.valueOf(theAgeInput.getText());
 
             if (TextUtils.isEmpty(height)) {
                 Toast.makeText(PersonalInfo.this, "Please enter a height!", Toast.LENGTH_SHORT).show();
@@ -136,6 +139,9 @@ public class PersonalInfo extends AppCompatActivity {
                 return;
             } else if (TextUtils.isEmpty(gender)) {
                 Toast.makeText(PersonalInfo.this, "Please enter a gender!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(age)) {
+                Toast.makeText(PersonalInfo.this, "Please enter an age!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -153,6 +159,7 @@ public class PersonalInfo extends AppCompatActivity {
                             data.setHeight(Integer.parseInt(height));
                             data.setWeight(Integer.parseInt(weight));
                             data.setGender(gender);
+                            data.setAge(Integer.parseInt(age));
 
                             tempReference = reference.child(theSnapshot.child("name").getValue().toString());
                             tempReference.child("Personal Info").setValue(data);
