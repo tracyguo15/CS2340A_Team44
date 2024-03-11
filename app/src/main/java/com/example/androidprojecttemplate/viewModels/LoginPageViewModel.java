@@ -32,22 +32,15 @@ public class LoginPageViewModel {
     }
 
     public int toHomeScreenMethodFromLogin(String username, String password) {
-        // check validity of username and password
-        if (TextUtils.isEmpty(username)) {
-            temp = 1;
-        } else if (TextUtils.isEmpty(password)) {
-            temp = 2;
-        }
-
         // Can now login the user through firebase
         firebaseAuth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            temp = 3;
+                            temp = 1;
                         } else {
-                            temp = 4;
+                            temp = 2;
                         }
                     }
                 });

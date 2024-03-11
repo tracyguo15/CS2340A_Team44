@@ -43,18 +43,24 @@ public class LoginPageActivity extends AppCompatActivity {
             String username = String.valueOf(usernameInput.getText());
             String password = String.valueOf(passwordInput.getText());
 
-            int theResult = viewModel.toHomeScreenMethodFromLogin(username, password);
-            if (theResult == 1) {
+            // Check if the strings are empty
+            if (TextUtils.isEmpty(username)) {
                 Toast.makeText(LoginPageActivity.this, "Please enter an username!", Toast.LENGTH_SHORT).show();
-            } else if (theResult == 2) {
+                return;
+            } else if (TextUtils.isEmpty(password)) {
                 Toast.makeText(LoginPageActivity.this, "Please enter a password!", Toast.LENGTH_SHORT).show();
-            } else if (theResult == 3) {
+                return;
+            }
+
+            int theResult = viewModel.toHomeScreenMethodFromLogin(username, password);
+
+            if  (theResult == 1) {
                 Toast.makeText(LoginPageActivity.this, "Successfull", Toast.LENGTH_SHORT).show();
                 // switch to home page
                 Intent theIntent = new Intent(LoginPageActivity.this, HomePage.class);
                 startActivity(theIntent);
                 finish();
-            } else if (theResult == 4) {
+            } else if (theResult == 2) {
                 Toast.makeText(LoginPageActivity.this, "The username or password is wrong", Toast.LENGTH_SHORT).show();
             }
 

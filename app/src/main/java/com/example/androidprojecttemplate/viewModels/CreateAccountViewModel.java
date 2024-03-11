@@ -40,29 +40,18 @@ public class CreateAccountViewModel {
     public int toLoginScreenFromCreate(String username, String password, String confirmPassword, String name) {
         // check validity of username and password
 
-        // Username is empty
-        if (TextUtils.isEmpty(username)) {
-            temp = 1;
-            // Password is empty
-        } else if (TextUtils.isEmpty(password)) {
-            temp = 2;
             // password and confirmPassword don't equal
-        } else if (!TextUtils.equals(password, confirmPassword)) {
-            temp = 3;
+         if (!TextUtils.equals(password, confirmPassword)) {
+            temp = 1;
             // username is not a valid email
         } else if (!username.contains("@") || !username.contains(".com")) {
-            temp = 4;
+            temp = 2;
             // password is less than length 6
         } else if (password.length() < 6) {
-            temp = 5;
+            temp = 3;
             // Inputs have spaces
         } else if (username.contains(" ") || password.contains(" ") || confirmPassword.contains(" ")) {
-            temp = 6;
-            // confirmPassword is empty
-        } else if (TextUtils.isEmpty(confirmPassword)) {
-            temp = 7;
-        } else if (TextUtils.isEmpty(name)) {
-            temp = 10;
+            temp = 4;
         }
 
         // Checks are done, can now create the username and password
@@ -81,9 +70,9 @@ public class CreateAccountViewModel {
                             // Will track different usernames in the database by taking the first letter of their username (since you can't use the full username since it has special characters)
                             reference.child(name).setValue(theUser);
 
-                            temp = 8;
+                            temp = 5;
                         } else {
-                            temp = 9;
+                            temp = 6;
                         }
                     }
                 });
