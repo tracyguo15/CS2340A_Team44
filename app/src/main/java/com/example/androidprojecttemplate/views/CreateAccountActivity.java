@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidprojecttemplate.models.UserLoginData;
+import com.example.androidprojecttemplate.viewModels.CreateAccountViewModel;
 import com.example.androidprojecttemplate.views.HomePage;
 import com.example.androidprojecttemplate.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,13 +30,11 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     private Button toHomeScreen;
 
+    private CreateAccountViewModel viewModel;
 
     // For authentication
     FirebaseAuth firebaseAuth;
     private String userId;
-
-    // For real-time database
-    DatabaseReference reference;
 
 
 
@@ -44,6 +43,8 @@ public class CreateAccountActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
+
+        viewModel = CreateAccountViewModel.getInstance();
 
         usernameInput = findViewById(R.id.usernameInput);
         passwordInput = findViewById(R.id.passwordInput);
@@ -59,61 +60,33 @@ public class CreateAccountActivity extends AppCompatActivity {
             String confirmPassword = String.valueOf(confirmPasswordInput.getText());
             String name = String.valueOf(nameInput.getText());
 
-            // check validity of username and password
-            if (TextUtils.isEmpty(username)) {
+            int theResult = viewModel.toLoginScreenFromCreate(username, password, confirmPassword, name);
+
+            if (theResult == 1) {
                 Toast.makeText(CreateAccountActivity.this, "Please enter an username!", Toast.LENGTH_SHORT).show();
-                return;
-            } else if (TextUtils.isEmpty(password)) {
+            } else if (theResult == 2) {
                 Toast.makeText(CreateAccountActivity.this, "Please enter a password!", Toast.LENGTH_SHORT).show();
-                return;
-            } else if (TextUtils.isEmpty(name)) {
-                Toast.makeText(CreateAccountActivity.this, "Please enter a name!", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            // check that password and password confirmation match
-            if (!TextUtils.equals(password, confirmPassword)) {
+            } else if (theResult == 3) {
                 Toast.makeText(CreateAccountActivity.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
-                return;
+            }else if (theResult == 4) {
+                Toast.makeText(CreateAccountActivity.this, "Not a valid email", Toast.LENGTH_SHORT).show();
+            } else if (theResult == 5) {
+                Toast.makeText(CreateAccountActivity.this, "Passwords isn't long enough", Toast.LENGTH_SHORT).show();
+            } else if (theResult == 6) {
+                Toast.makeText(CreateAccountActivity.this, "No spaces allowed", Toast.LENGTH_SHORT).show();
+            } else if (theResult == 7) {
+                Toast.makeText(CreateAccountActivity.this, "Please put your password in confirmPassword!", Toast.LENGTH_SHORT).show();
+            } else if (theResult == 8) {
+                Toast.makeText(CreateAccountActivity.this, "Your account has been created, please login", Toast.LENGTH_SHORT).show();
+                // switch to home page
+                Intent theIntent = new Intent(CreateAccountActivity.this, LoginPageActivity.class);
+                startActivity(theIntent);
+                //finish();
+            } else if (theResult == 9) {
+                Toast.makeText(CreateAccountActivity.this, "An email has already been registered, please login", Toast.LENGTH_SHORT).show();
+            } else if (theResult == 10) {
+                Toast.makeText(CreateAccountActivity.this, "Please enter a name!", Toast.LENGTH_SHORT).show();
             }
-
-            // create user with firebase
-            firebaseAuth.createUserWithEmailAndPassword(username, password)
-            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        
-                        // login with firebase
-                        firebaseAuth.signInWithEmailAndPassword(username, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    Toast.makeText(CreateAccountActivity.this, "successful", Toast.LENGTH_SHORT).show();
-
-                                    // Add entires to the real-time database
-                                    reference = FirebaseDatabase.getInstance().getReference().child("Users");
-
-                                    UserLoginData theUser = new UserLoginData(username, password, name);
-
-                                    // Will track different usernames in the database by taking the first letter of their username (since you can't use the full username since it has special characters)
-                                    reference.child(name).setValue(theUser);
-
-                                    // switch to home page
-                                    Intent intent = new Intent(CreateAccountActivity.this, HomePage.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    Toast.makeText(CreateAccountActivity.this, "user login failed", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    } else {
-                        Toast.makeText(CreateAccountActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
         });
     }
 }

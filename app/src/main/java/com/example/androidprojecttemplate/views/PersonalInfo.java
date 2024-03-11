@@ -162,6 +162,7 @@ public class PersonalInfo extends AppCompatActivity {
 
                             tempReference = reference.child(theSnapshot.child("name").getValue().toString());
                             tempReference.child("Personal Info").setValue(data);
+                            Toast.makeText(PersonalInfo.this, "Thank you, your information has been recorded", Toast.LENGTH_SHORT).show();
                         }
 
                     }
