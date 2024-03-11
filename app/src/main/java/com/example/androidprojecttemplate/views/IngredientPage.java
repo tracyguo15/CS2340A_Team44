@@ -72,6 +72,10 @@ public class IngredientPage extends AppCompatActivity {
                     Intent intent = new Intent(IngredientPage.this, ListPage.class);
                     startActivity(intent);
                     return true;
+                } else if (id == R.id.personalinfo) {
+                    Intent intent = new Intent(IngredientPage.this, PersonalInfo.class);
+                    startActivity(intent);
+                    return true;
                 }
 
                 return false;

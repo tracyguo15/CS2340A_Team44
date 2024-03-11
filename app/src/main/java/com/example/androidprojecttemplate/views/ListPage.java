@@ -70,8 +70,11 @@ public class ListPage extends AppCompatActivity {
                         startActivity(intent);
                     }
                     return true;
+                } else if (id == R.id.personalinfo) {
+                    Intent intent = new Intent(ListPage.this, PersonalInfo.class);
+                    startActivity(intent);
+                    return true;
                 }
-
                 return false;
             }
         });

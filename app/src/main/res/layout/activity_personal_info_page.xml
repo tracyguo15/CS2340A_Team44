@@ -24,62 +24,29 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/ingredientTitleTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="0dp"
-            tools:context=".inputmeal">
-
-            <TextView
-                android:id="@+id/userHeight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="4dp"
-                android:text=""
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/userWeight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="4dp"
-                android:text=""
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/userGender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text=""
-                android:textSize="16sp" />
-        </LinearLayout>
+            android:layout_marginTop="16dp"
+            android:text="@string/personal_info"
+            android:textSize="40sp" />
 
         <TextView
-            android:id="@+id/userCalorieGoal"
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Calorie goal"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/userDailyCalorieIntake"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Daily calories"
+            android:layout_marginRight="4dp"
+            android:text="Please enter your height, weight, and gender below"
             android:textSize="16sp" />
 
         <EditText
-            android:id="@+id/mealInput"
+            android:id="@+id/theHeight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="meal"
+            android:hint="Height"
             android:inputType="text"
             android:layout_marginTop="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -90,12 +57,13 @@
             app:layout_constraintVertical_bias="0.317" />
 
         <EditText
-            android:id="@+id/calorieInput"
+            android:id="@+id/theWeight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="calories"
+            android:hint="Weight"
             android:inputType="text"
+            android:layout_marginTop="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
@@ -103,17 +71,35 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.317" />
 
-        <Button
-            android:id="@+id/submitMealData"
+        <EditText
+            android:id="@+id/theGender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Submit"
+            android:ems="10"
+            android:hint="Gender"
+            android:inputType="text"
+            android:layout_marginTop="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.641" />
+            app:layout_constraintVertical_bias="0.317" />
+
+        <EditText
+            android:id="@+id/theAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Age"
+            android:inputType="text"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.317" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,7 +107,7 @@
             android:layout_marginTop="4dp"
             android:orientation="horizontal"
             android:padding="0dp"
-            tools:context=".inputmeal">
+            tools:context=".inputpersonal">
 
             <View
                 android:layout_width="0dp"
@@ -129,27 +115,10 @@
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/displayVisualization1"
+                android:id="@+id/submitPersonalInfoData"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="display vis 1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.497"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.641" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/displayVisualization2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="display vis 2"
+                android:text="Submit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"

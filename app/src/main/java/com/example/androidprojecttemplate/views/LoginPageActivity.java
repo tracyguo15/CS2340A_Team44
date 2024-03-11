@@ -64,4 +64,21 @@ public class LoginPageActivity extends AppCompatActivity {
             });
         });
     }
+
+    //setters and getters for username and password input used for testing
+    public String getUsername() {
+        return String.valueOf(usernameInput.getText());
+    }
+
+    public void setUsername(String username) {
+        usernameInput.setText(username);
+    }
+
+    public String getPassword() {
+        return String.valueOf(passwordInput.getText());
+    }
+
+    public void setPassword(String password) {
+        passwordInput.setText(password);
+    }
 }
