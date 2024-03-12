@@ -9,111 +9,139 @@
     android:orientation="vertical"
     android:id="@+id/dl">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp"
-        tools:context=".personalinfo">
+        tools:context=".inputmeal">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/nav_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
 
         <TextView
             android:id="@+id/ingredientTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="16dp"
             android:text="@string/personal_info"
             android:textSize="40sp" />
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="367dp"
-            android:layout_height="67dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="31dp"
-            android:layout_marginTop="215dp"
-            android:layout_marginEnd="28dp"
-            android:layout_marginBottom="465dp"
-            android:text="Please enter your height, weight, and gender below" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
+            android:text="Please enter your height, weight, and gender below"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/theHeight"
-            android:layout_width="233dp"
-            android:layout_height="58dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="98dp"
-            android:layout_marginTop="296dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="361dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Height"
-            android:inputType="text" />
+            android:inputType="text"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.317" />
 
         <EditText
             android:id="@+id/theWeight"
-            android:layout_width="235dp"
-            android:layout_height="61dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="97dp"
-            android:layout_marginTop="375dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginBottom="279dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Weight"
-            android:inputType="text" />
+            android:inputType="text"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.317" />
 
         <EditText
-            android:id="@+id/theGener"
-            android:layout_width="221dp"
-            android:layout_height="71dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="108dp"
-            android:layout_marginTop="468dp"
-            android:layout_marginEnd="66dp"
-            android:layout_marginBottom="176dp"
+            android:id="@+id/theGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Gender"
-            android:inputType="text" />
+            android:inputType="text"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.317" />
 
-        <Button
-            android:id="@+id/buttonToEnnterData"
-            android:layout_width="259dp"
-            android:layout_height="105dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="110dp"
-            android:layout_marginEnd="90dp"
-            android:layout_marginBottom="47dp"
-            android:text="Click here to enter the data" />
-
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view"
+        <EditText
+            android:id="@+id/theAge"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            app:headerLayout="@layout/navigation_header"
-            app:menu="@menu/navigation_menu">
-        </com.google.android.material.navigation.NavigationView>
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/nav_toolbar"
-            android:layout_width="603dp"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme" />
-    </RelativeLayout>
+            android:ems="10"
+            android:hint="Age"
+            android:inputType="text"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.317" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            android:padding="0dp"
+            tools:context=".inputpersonal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/submitPersonalInfoData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.641" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navigation_header"
+        app:menu="@menu/navigation_menu">
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
