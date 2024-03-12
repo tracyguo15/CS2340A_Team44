@@ -12,23 +12,6 @@ import com.example.androidprojecttemplate.views.LoginPageActivity;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
-//    @Test
-//    public void unitTest() {
-        // initalizes the model with 0 for both sleep and fittness time
-//        WellnessViewModel test = new WellnessViewModel();
-//        assertEquals(0, test.getWellnessData().getSleepHours());
-//        assertEquals(0, test.getWellnessData().getFitnessMinutes());
-//        // updates the data
-//        test.updateData(30, 20);
-//        assertEquals(30, test.getWellnessData().getSleepHours());
-//        assertEquals(20, test.getWellnessData().getFitnessMinutes());
-//        // updates the data again with new numbers
-//        test.updateData(88, 12);
-//        assertEquals(88, test.getWellnessData().getSleepHours());
-//        assertEquals(12, test.getWellnessData().getFitnessMinutes());
-//        System.out.println("JUNITS have been completed.");
-//    }
-
     //Tracy
 //    @Test
 //    public void nullUsername() {
@@ -43,6 +26,21 @@ public class ExampleUnitTest {
 //        LoginPageActivity login = new LoginPageActivity();
 //        login.setPassword(null);
 //        assertEquals(null, login.getPassword());
+//    }
+//    //Michael Leonick
+//    @Test
+//    public void emptyUsername() {
+//        LoginPageActivity login = new LoginPageActivity();
+//        login.setUsername("");
+//        assertEquals("", login.getUsername());
+//    }
+//
+//    //Michael Leonick
+//    @Test
+//    public void emptyPassword() {
+//        LoginPageActivity login = new LoginPageActivity();
+//        login.setPassword("");
+//        assertEquals("", login.getPassword());
 //    }
 
 }
