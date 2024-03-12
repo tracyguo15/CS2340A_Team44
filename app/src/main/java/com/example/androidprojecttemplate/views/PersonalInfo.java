@@ -172,7 +172,6 @@ public class PersonalInfo extends AppCompatActivity {
                     Toast.makeText(PersonalInfo.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
                 }
             });
-
         });
     }
     @Override

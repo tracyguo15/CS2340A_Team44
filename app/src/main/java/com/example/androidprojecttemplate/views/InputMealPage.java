@@ -8,6 +8,7 @@ import com.example.androidprojecttemplate.viewModels.UserDataViewModel;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -170,6 +171,51 @@ public class InputMealPage extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(InputMealPage.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        /////// for the meal submission button
+        submitMealData.setOnClickListener(v -> {
+            // validate inputs
+            String meal = String.valueOf(mealInput.getText());
+            String calories = String.valueOf(calorieInput.getText());
+
+            if (TextUtils.isEmpty(meal)) {
+                Toast.makeText(PersonalInfo.this, "Please enter a meal!", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(calories)) {
+                Toast.makeText(PersonalInfo.this, "Please enter calories!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // 'meals' database reference
+            reference = FirebaseDatabase.getInstance().getReference().child("Meals");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for(DataSnapshot theSnapshot: snapshot.getChildren()) {
+
+                        /*
+                        String theEmailFromFirebase = theSnapshot.child("username").getValue().toString();
+                        if (theEmailFromFirebase.equals(theUsersEmail)) {
+                            //Found the email, can now add the data for that specific user
+                            //UserData theInfo = new personalInfo(height, weight, gender);
+                            UserData data = new UserData();
+                            data.setHeight(Integer.parseInt(height));
+                            data.setWeight(Integer.parseInt(weight));
+                            data.setGender(gender);
+                            data.setAge(Integer.parseInt(age));
+
+                            tempReference = reference.child(theSnapshot.child("name").getValue().toString());
+                            tempReference.child("Personal Info").setValue(data);
+                        }*/
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(PersonalInfo.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 
