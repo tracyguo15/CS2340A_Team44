@@ -187,6 +187,9 @@ public class InputMealPage extends AppCompatActivity {
             } else if (TextUtils.isEmpty(calories)) {
                 Toast.makeText(InputMealPage.this, "Please enter calories!", Toast.LENGTH_SHORT).show();
                 return;
+            } else if (Integer.parseInt(calories) <= 0) {
+                Toast.makeText(InputMealPage.this, "Calories cannot be zero or negative!", Toast.LENGTH_SHORT).show();
+                return;
             }
 
             // 'meals' database reference
