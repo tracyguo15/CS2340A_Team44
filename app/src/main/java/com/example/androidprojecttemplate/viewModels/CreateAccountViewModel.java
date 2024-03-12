@@ -17,7 +17,7 @@ public class CreateAccountViewModel {
     private static CreateAccountViewModel instance;
     final private CreateAccountActivity theData;
 
-    FirebaseAuth firebaseAuth;
+    FirebaseAuth theAuthenticationVariable;
 
     DatabaseReference reference;
 
@@ -25,7 +25,7 @@ public class CreateAccountViewModel {
 
     public CreateAccountViewModel() {
         theData = new CreateAccountActivity();
-        firebaseAuth = FirebaseAuth.getInstance();
+        theAuthenticationVariable = firebaseAuthSingleton.getInstance().getTheInstanceFromFirebase();
 
     }
 
@@ -57,7 +57,7 @@ public class CreateAccountViewModel {
         // Checks are done, can now create the username and password
 
         // create user with firebase
-        firebaseAuth.createUserWithEmailAndPassword(username, password)
+        theAuthenticationVariable.createUserWithEmailAndPassword(username, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

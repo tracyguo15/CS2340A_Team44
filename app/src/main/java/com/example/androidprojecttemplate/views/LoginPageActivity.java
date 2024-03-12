@@ -24,7 +24,6 @@ public class LoginPageActivity extends AppCompatActivity {
 
     private LoginPageViewModel viewModel;
 
-    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +36,6 @@ public class LoginPageActivity extends AppCompatActivity {
         passwordInput = findViewById(R.id.password);
         toHomeScreen = findViewById(R.id.toHomeScreen);
 
-        firebaseAuth = FirebaseAuth.getInstance();
 
         toHomeScreen.setOnClickListener(v -> {
             String username = String.valueOf(usernameInput.getText());

@@ -22,11 +22,10 @@ public class PersonalInfoViewModel {
     public static int temp = 0;
 
     // For firebase authentication (to get user's email)
-    FirebaseAuth auth;
+    FirebaseAuth theAuthenticationVariable;
     FirebaseUser user;
 
     // For real-time database
-    FirebaseDatabase rootNode;
     DatabaseReference reference;
     DatabaseReference tempReference;
 
@@ -46,9 +45,9 @@ public class PersonalInfoViewModel {
 
     public void getCurrentUser() {
         // Get the current user's email, which will be used further down the code
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-        theUsersEmail = user.getEmail();
+        theAuthenticationVariable = firebaseAuthSingleton.getInstance().getTheInstanceFromFirebase();
+        user = firebaseAuthSingleton.getInstance().getUser();
+        theUsersEmail = firebaseAuthSingleton.getInstance().getEmail();
     }
 
 

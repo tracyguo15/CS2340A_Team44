@@ -16,11 +16,15 @@ public class LoginPageViewModel {
 
     private static int temp = 0;
 
-    FirebaseAuth firebaseAuth;
+    // Below is for the login information. It uses singleton design principle
+    // since only one call to get the reference from the actual database is made.
+    // The variable is just used as a placeholder for that actual reference,
+    // but the reference is made only once
+    FirebaseAuth theAuthenticationVariable;
 
     public LoginPageViewModel() {
         theData = new LoginPageActivity();
-        firebaseAuth = FirebaseAuth.getInstance();
+        theAuthenticationVariable = firebaseAuthSingleton.getInstance().getTheInstanceFromFirebase();
     }
 
     public static synchronized LoginPageViewModel getInstance() {
@@ -33,7 +37,7 @@ public class LoginPageViewModel {
 
     public int toHomeScreenMethodFromLogin(String username, String password) {
         // Can now login the user through firebase
-        firebaseAuth.signInWithEmailAndPassword(username, password)
+        theAuthenticationVariable.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

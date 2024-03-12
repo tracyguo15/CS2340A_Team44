@@ -31,9 +31,6 @@ public class CreateAccountActivity extends AppCompatActivity {
     private Button toHomeScreen;
 
     private CreateAccountViewModel viewModel;
-
-    // For authentication
-    FirebaseAuth firebaseAuth;
     private String userId;
 
 
@@ -51,8 +48,6 @@ public class CreateAccountActivity extends AppCompatActivity {
         confirmPasswordInput = findViewById(R.id.confirmPasswordInput);
         toHomeScreen = findViewById(R.id.toHomeScreen);
         nameInput = findViewById(R.id.theName);
-
-        firebaseAuth = FirebaseAuth.getInstance();
 
         toHomeScreen.setOnClickListener(v -> {
             String username = String.valueOf(usernameInput.getText());
