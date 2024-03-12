@@ -235,21 +235,20 @@ public class InputMealPage extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int totalCalories = 0;
 
-                // get date
-                LocalDate currentDate = LocalDate.now();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-                String date = currentDate.format(formatter);
+                String currentDate = LocalDate.now().format(formatter);
 
-                for(DataSnapshot theSnapshot: snapshot.getChildren()) {
+                for (DataSnapshot theSnapshot : snapshot.getChildren()) {
                     String firebaseUsername = theSnapshot.child("username").getValue().toString();
                     String date = theSnapshot.child("date").getValue().toString();
 
-                    if (firebaseUsername.equals(email) || date.equals(currentDate)) {
-                        totalCalories += Integer.parseInt(snapshot.child("calories").getValue().toString());
+                    if (firebaseUsername.equals(email) && date.equals(currentDate)) {
+                        String calories = theSnapshot.child("calories").getValue().toString();
+                        totalCalories += Integer.parseInt(calories);
                     }
                 }
 
-                userDailyCalorieIntake.setText(totalCalories);
+                userDailyCalorieIntake.setText(String.format("Daily Calories: %d", totalCalories));
             }
 
             @Override
