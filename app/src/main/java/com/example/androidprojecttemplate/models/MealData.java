@@ -1,12 +1,12 @@
 package com.example.androidprojecttemplate.models;
 
 public class MealData {
-    private String name;
     private int calories;
+    private String username;
 
-    public String getName() { return this.name; }
     public int getHeight() { return this.calories; }
-
-    public void setName(String name) { this.name = name; }
+    public String getUsername() { return this.username; }
+    
     public void setCalories(int calories) { this.calories = calories; }
+    public void setUsername(String username) { this.username = username; }
 }
