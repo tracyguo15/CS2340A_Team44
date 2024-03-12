@@ -203,7 +203,7 @@ public class InputMealPage extends AppCompatActivity {
 
                     // reset input text
                     mealInput.setText("");
-                    caloriesInput.setText("");
+                    calorieInput.setText("");
 
                     // display toast
                     Toast.makeText(InputMealPage.this, "Meal submitted!", Toast.LENGTH_SHORT).show();
