@@ -4,6 +4,7 @@ package com.example.androidprojecttemplate.views;
 //import android.support.v4.widget.DrawerLayout;
 //import android.support.v7.app.ActionBarDrawerToggle;
 import com.example.androidprojecttemplate.models.UserData;
+import com.example.androidprojecttemplate.models.MealData;
 import com.example.androidprojecttemplate.viewModels.UserDataViewModel;
 
 import android.content.Intent;
@@ -60,7 +61,8 @@ public class InputMealPage extends AppCompatActivity {
     private UserDataViewModel viewModel;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
-    DatabaseReference reference;
+    DatabaseReference userReference;
+    DatabaseReference mealReference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -131,8 +133,8 @@ public class InputMealPage extends AppCompatActivity {
         user = firebaseAuth.getCurrentUser();
         String email = user.getEmail();
 
-        reference = FirebaseDatabase.getInstance().getReference().child("Users");
-        reference.addValueEventListener(new ValueEventListener() {
+        userReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot theSnapshot: snapshot.getChildren()) {
@@ -188,27 +190,17 @@ public class InputMealPage extends AppCompatActivity {
             }
 
             // 'meals' database reference
-            reference = FirebaseDatabase.getInstance().getReference().child("Meals");
-            reference.addValueEventListener(new ValueEventListener() {
+            mealReference = FirebaseDatabase.getInstance().getReference().child("Meals");
+            mealReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for(DataSnapshot theSnapshot: snapshot.getChildren()) {
+                    DatabaseReference tempReference = reference.child(theSnapshot.child("name").getValue().toString());
 
-                        /*
-                        String theEmailFromFirebase = theSnapshot.child("username").getValue().toString();
-                        if (theEmailFromFirebase.equals(theUsersEmail)) {
-                            //Found the email, can now add the data for that specific user
-                            //UserData theInfo = new personalInfo(height, weight, gender);
-                            UserData data = new UserData();
-                            data.setHeight(Integer.parseInt(height));
-                            data.setWeight(Integer.parseInt(weight));
-                            data.setGender(gender);
-                            data.setAge(Integer.parseInt(age));
-
-                            tempReference = reference.child(theSnapshot.child("name").getValue().toString());
-                            tempReference.child("Personal Info").setValue(data);
-                        }*/
-                    }
+                    MealData data = new MealData();
+                    data.setCalories(Integer.parseInt(calories));
+                    data.setUsername(email;)
+                   
+                    mealReference.child(meal).setValue(data);
                 }
 
                 @Override
