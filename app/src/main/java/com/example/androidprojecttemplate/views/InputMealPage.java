@@ -37,6 +37,9 @@ import com.anychart.enums.Anchor;
 import com.anychart.enums.MarkerType;
 import com.anychart.enums.TooltipPositionMode;
 import com.anychart.graphics.vector.Stroke;
+import com.anychart.charts.Pie;
+import com.anychart.enums.Align;
+import com.anychart.enums.LegendLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -372,7 +375,6 @@ public class InputMealPage extends AppCompatActivity {
 
             // chart
             Line series1 = cartesian.line(series1Mapping);
-            series1.name("Brandy");
             series1.hovered().markers().enabled(true);
             series1.hovered().markers()
                     .type(MarkerType.CIRCLE)
@@ -393,7 +395,29 @@ public class InputMealPage extends AppCompatActivity {
         });
 
         visual2.setOnClickListener(v -> {
-            
+            // chart setup
+            chart = findViewById(R.id.visualization);
+  
+            Pie pie = AnyChart.pie();
+
+            // series data
+            List<DataEntry> data = new ArrayList<>();
+            data.add(new ValueDataEntry("Today", totalCalories));
+            data.add(new ValueDataEntry("Goal", viewModel.calorieGoal()));
+
+            // continue chart setup
+            pie.data(data);
+
+            pie.title("Daily Calories");
+
+            pie.labels().position("outside");
+
+            pie.legend()
+                    .position("center-bottom")
+                    .itemsLayout(LegendLayout.HORIZONTAL)
+                    .align(Align.CENTER);
+
+            chart.setChart(pie);
         });
     }
 
