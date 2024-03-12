@@ -294,6 +294,44 @@ public class InputMealPage extends AppCompatActivity {
 
         /*
         private void setupChart() {
+            
+        }*/
+
+        // displaying visuals
+        visual1.setOnClickListener(v -> {
+            // parse total calories
+            List<Map<String, Integer>> parsedDailyCalorieData = new ArrayList<>();
+
+            // iterate over meal data
+            for (MealData mealData : meals) {
+                // parse meal data
+                String date = mealData.getDate();
+                int calories = mealData.getCalories();
+
+                // validate date key already in parsedDailyCalorieData
+                boolean dateFound = false;
+
+                for (Map<String, Integer> map : parsedDailyCalorieData) {
+                    if (map.containsKey(date)) {
+                        dateFound = true;
+
+                        // update parsedDailyCalorieData
+                        calories += map.get(date);
+                        map.put(date, calories);
+
+                        break;
+                    }
+                }
+
+                if (!dateFound) {
+                    // add new entry to data
+                    Map<String, Integer> newMap = new HashMap();
+                    newMap.put(date, calories);
+                    parsedDailyCalorieData.add(newMap);
+                }
+            }
+
+            // setup chart
             chart = findViewById(R.id.visualization);
 
             Cartesian cartesian = AnyChart.line();
@@ -314,59 +352,44 @@ public class InputMealPage extends AppCompatActivity {
 
             cartesian.yAxis(0).title("Calories");
             cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
-        }*/
 
-        // displaying visuals
-        visual1.setOnClickListener(v -> {
-            Log.d("test", "button 1 clicked");
-            //setupChart();
-
-            // parse total calories
-            List<Map<String, Integer>> parsedDailyCalorieData = new ArrayList<>();
-
-            // iterate over meal data
-           for (MealData mealData : meals) {
-                // parse meal data
-                String date = mealData.getDate();
-                int calories = mealData.getCalories();
-               Log.d("test", date);
-
-                // validate date key already in parsedDailyCalorieData
-                boolean dateFound = false;
-
-                for (Map<String, Integer> map : parsedDailyCalorieData) {
-                    Log.d("test", "iterating over parseDailyCalories");
-                    if (map.containsKey(date)) {
-                        Log.d("test", "date found");
-                        dateFound = true;
-
-                        // update parsedDailyCalorieData
-                        calories += map.get(date);
-                        map.put(date, calories);
-
-                        break;
-                    }
-                }
-
-                if (!dateFound) {
-                    Log.d("test", "not found");
-                    // add new entry to data
-                    Map<String, Integer> newMap = new HashMap();
-                    newMap.put(date, calories);
-                    parsedDailyCalorieData.add(newMap);
-                }
-           }
-
-           for (Map<String, Integer> map : parsedDailyCalorieData) {
-               Log.d("test", Arrays.asList(map).toString());
-           }
-            
-            // include meal data
+            // include meal series data
             List<DataEntry> seriesData = new ArrayList<>();
 
-            for (MealData mealData : meals) {
-                
+            for (Map<String, Integer> map : parsedDailyCalorieData) {
+                for (Map.Entry<String, Integer> entry : map.entrySet()) {
+                    String date = entry.getKey();
+                    Integer calories = entry.getValue();
+
+                    seriesData.add(new ValueDataEntry(date, calories));
+                }
             }
+
+            // data set
+            Set set = Set.instantiate();
+            set.data(seriesData);
+            Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+
+            // chart
+            Line series1 = cartesian.line(series1Mapping);
+            series1.name("Brandy");
+            series1.hovered().markers().enabled(true);
+            series1.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series1.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(5d)
+                    .offsetY(5d);
+
+            cartesian.legend().enabled(true);
+            cartesian.legend().fontSize(13d);
+            cartesian.legend().padding(0d, 0d, 10d, 0d);
+
+            chart.setChart(cartesian);
+
+            Log.d("test", "chart created");
         });
 
         visual2.setOnClickListener(v -> {
