@@ -37,6 +37,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import org.w3c.dom.Text;
 
@@ -196,6 +198,11 @@ public class InputMealPage extends AppCompatActivity {
                 return;
             }
 
+            // get date
+            LocalDate currentDate = LocalDate.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+            String date = currentDate.format(formatter);
+
             mealReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -203,6 +210,7 @@ public class InputMealPage extends AppCompatActivity {
                     MealData data = new MealData();
                     data.setCalories(Integer.parseInt(calories));
                     data.setUsername(email);
+                    data.setDate(date);
                    
                     mealReference.child(meal).setValue(data);
 
@@ -227,41 +235,21 @@ public class InputMealPage extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 int totalCalories = 0;
 
+                // get date
+                LocalDate currentDate = LocalDate.now();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+                String date = currentDate.format(formatter);
+
                 for(DataSnapshot theSnapshot: snapshot.getChildren()) {
                     String firebaseUsername = theSnapshot.child("username").getValue().toString();
+                    String date = theSnapshot.child("date").getValue().toString();
 
-                    if (firebaseUsername.equals(email)) {
-                        int calories = Integer.parseInt(snapshot.child("calories").getValue().toString());
-
-                        totalCalories += 0;
-                        
-                        /*
-                        viewModel = UserDataViewModel.getInstance();
-
-                        DataSnapshot userDataSnapshot = theSnapshot.child("Personal Info");
-
-                        if (userDataSnapshot != null) {
-                            String height = userDataSnapshot.child("height").getValue().toString();
-                            String weight = userDataSnapshot.child("weight").getValue().toString();
-                            String gender = userDataSnapshot.child("gender").getValue().toString();
-                            String age = userDataSnapshot.child("age").getValue().toString();
-
-                            viewModel.updateData(
-                                    Integer.parseInt(height),
-                                    Integer.parseInt(weight),
-                                    gender,
-                                    Integer.parseInt(age));
-
-                            userHeight.setText(viewModel.heightText());
-                            userWeight.setText(viewModel.weightText());
-                            userGender.setText(viewModel.genderText());
-                            userCalorieGoal.setText(viewModel.calorieGoalText());
-                        } else {
-                            userHeight.setText("no user data available");
-                        }*/
+                    if (firebaseUsername.equals(email) || date.equals(currentDate)) {
+                        totalCalories += Integer.parseInt(snapshot.child("calories").getValue().toString());
                     }
-
                 }
+
+                userDailyCalorieIntake.setText(totalCalories);
             }
 
             @Override

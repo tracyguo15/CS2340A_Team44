@@ -3,7 +3,7 @@ package com.example.androidprojecttemplate.models;
 public class MealData {
     private int calories;
     private String username;
-    private String date;
+    private String date;        // ISO8601 (yyyymmdd)
 
     public int getCalories() { return this.calories; }
     public String getUsername() { return this.username; }
