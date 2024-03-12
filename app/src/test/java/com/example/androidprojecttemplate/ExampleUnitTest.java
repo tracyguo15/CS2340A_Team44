@@ -4,19 +4,43 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.example.androidprojecttemplate.views.LoginPageActivity;
+
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
-    // TODO 8: Write a unit test for ensuring correct behavior of the updateData function you implemented in TODO 2 in WellnessViewModel
-    @Test
-    public void addition_isCorrect() {
-//        WellnessViewModel vm = new WellnessViewModel();
-//        vm.updateData(4,5);
-//        assertEquals(vm.getWellnessData().getSleepHours(), 4);
-//        assertEquals(vm.getWellnessData().getFitnessMinutes(), 5);
-    }
+    //Tracy
+//    @Test
+//    public void nullUsername() {
+//        LoginPageActivity login = new LoginPageActivity();
+//        login.setUsername(null);
+//        assertEquals(null, login.getUsername());
+//    }
+//
+//    //Tracy
+//    @Test
+//    public void nullPassword() {
+//        LoginPageActivity login = new LoginPageActivity();
+//        login.setPassword(null);
+//        assertEquals(null, login.getPassword());
+//    }
+//    //Michael Leonick
+//    @Test
+//    public void emptyUsername() {
+//        LoginPageActivity login = new LoginPageActivity();
+//        login.setUsername("");
+//        assertEquals("", login.getUsername());
+//    }
+//
+//    //Michael Leonick
+//    @Test
+//    public void emptyPassword() {
+//        LoginPageActivity login = new LoginPageActivity();
+//        login.setPassword("");
+//        assertEquals("", login.getPassword());
+//    }
 
 }
