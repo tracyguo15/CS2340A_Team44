@@ -182,10 +182,10 @@ public class InputMealPage extends AppCompatActivity {
             String calories = String.valueOf(calorieInput.getText());
 
             if (TextUtils.isEmpty(meal)) {
-                Toast.makeText(PersonalInfo.this, "Please enter a meal!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InputMealPage.this, "Please enter a meal!", Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(calories)) {
-                Toast.makeText(PersonalInfo.this, "Please enter calories!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InputMealPage.this, "Please enter calories!", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -194,18 +194,16 @@ public class InputMealPage extends AppCompatActivity {
             mealReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    DatabaseReference tempReference = reference.child(theSnapshot.child("name").getValue().toString());
-
                     MealData data = new MealData();
                     data.setCalories(Integer.parseInt(calories));
-                    data.setUsername(email;)
+                    data.setUsername(email);
                    
                     mealReference.child(meal).setValue(data);
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(PersonalInfo.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InputMealPage.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
                 }
             });
         });
