@@ -194,11 +194,19 @@ public class InputMealPage extends AppCompatActivity {
             mealReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    // update the meal data
                     MealData data = new MealData();
                     data.setCalories(Integer.parseInt(calories));
                     data.setUsername(email);
                    
                     mealReference.child(meal).setValue(data);
+
+                    // reset input text
+                    mealInput.setText("");
+                    caloriesInput.setText("");
+
+                    // display toast
+                    Toast.makeText(InputMealPage.this, "Meal submitted!", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
