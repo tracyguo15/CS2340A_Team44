@@ -4,21 +4,52 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.example.androidprojecttemplate.models.UserLoginData;
+
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
-    // TODO 8: Write a unit test for ensuring correct behavior of the updateData function you implemented in TODO 2 in WellnessViewModel
+    //Tracy Guo
     @Test
-    public void addition_isCorrect() {
-//        WellnessViewModel vm = new WellnessViewModel();
-//        vm.updateData(4,5);
-//        assertEquals(vm.getWellnessData().getSleepHours(), 4);
-//        assertEquals(vm.getWellnessData().getFitnessMinutes(), 5);
+    public void nullUsername() {
+        UserLoginData login = new UserLoginData(null, "password", "name");
+        assertEquals(null, login.getUsername());
     }
 
+    //Tracy Guo
+    @Test
+    public void nullPassword() {
+        UserLoginData login = new UserLoginData("Username", null, "null");
+        assertEquals(null, login.getPassword());
+    }
+    //Michael Leonick
+    @Test
+    public void emptyUsername() {
+        UserLoginData login = new UserLoginData("", "Password", "Name");
+        assertEquals("", login.getUsername());
+    }
 
+    //Michael Leonick
+    @Test
+    public void emptyPassword() {
+        UserLoginData login = new UserLoginData("Username", "", "Name");
+        assertEquals("", login.getPassword());
+    }
 
+    //Michael Vaden
+    @Test
+    public void whitespaceUsername() {
+        UserLoginData login = new UserLoginData(" ", "Password", "Name");
+        assertEquals(" ", login.getUsername());
+    }
+
+    //Michael Vaden
+    @Test
+    public void whitespacePassword() {
+        UserLoginData login = new UserLoginData("Username", " ", "Name");
+        assertEquals(" ", login.getPassword());
+    }
 }
