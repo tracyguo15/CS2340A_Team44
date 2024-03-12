@@ -60,6 +60,8 @@ public class InputMealPage extends AppCompatActivity {
 
     // state
     private static boolean isLoggedIn = false;
+    List<MealData> meals;
+    int totalCalories;
     private UserDataViewModel viewModel;
     FirebaseAuth firebaseAuth;
     FirebaseUser user;
@@ -229,12 +231,11 @@ public class InputMealPage extends AppCompatActivity {
             });
         });
 
-        // displaying daily calories
+        // displaying daily calories and collecting meal data
         mealReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int totalCalories = 0;
-
+                // current date
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
                 String currentDate = LocalDate.now().format(formatter);
 
@@ -242,9 +243,23 @@ public class InputMealPage extends AppCompatActivity {
                     String firebaseUsername = theSnapshot.child("username").getValue().toString();
                     String date = theSnapshot.child("date").getValue().toString();
 
+                    // query by username and date
                     if (firebaseUsername.equals(email) && date.equals(currentDate)) {
                         String calories = theSnapshot.child("calories").getValue().toString();
                         totalCalories += Integer.parseInt(calories);
+                    }
+
+                    // query by username
+                    if (firebaseUsername.equals(email)) {
+                        String calories = theSnapshot.child("calories").getValue().toString();
+
+                        // update meals
+                        MealData data = new MealData();
+                        data.setCalories(Integer.parseInt(calories));
+                        data.setUsername(email);
+                        data.setDate(date);
+
+                        meals.add(data);
                     }
                 }
 
