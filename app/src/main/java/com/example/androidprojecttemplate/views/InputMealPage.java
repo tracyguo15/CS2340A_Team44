@@ -25,6 +25,19 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.androidprojecttemplate.R;
 
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Cartesian;
+import com.anychart.core.cartesian.series.Line;
+import com.anychart.data.Mapping;
+import com.anychart.data.Set;
+import com.anychart.enums.Anchor;
+import com.anychart.enums.MarkerType;
+import com.anychart.enums.TooltipPositionMode;
+import com.anychart.graphics.vector.Stroke;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,6 +52,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 import org.w3c.dom.Text;
 
@@ -58,11 +72,12 @@ public class InputMealPage extends AppCompatActivity {
     private Button submitMealData;
     private Button visual1;
     private Button visual2;
+    private AnyChartView chart;
     private NavigationView nav_view;
 
     // state
     private static boolean isLoggedIn = false;
-    List<MealData> meals;
+    List<MealData> meals = new ArrayList<>();
     int totalCalories;
     private UserDataViewModel viewModel;
     FirebaseAuth firebaseAuth;
@@ -277,9 +292,81 @@ public class InputMealPage extends AppCompatActivity {
             }
         });
 
+        /*
+        private void setupChart() {
+            chart = findViewById(R.id.visualization);
+
+            Cartesian cartesian = AnyChart.line();
+
+            cartesian.animation(true);
+
+            cartesian.padding(10d, 20d, 5d, 20d);
+
+            cartesian.crosshair().enabled(true);
+            cartesian.crosshair()
+                .yLabel(true)
+                // TODO ystroke
+                .yStroke((Stroke) null, null, null, (String) null, (String) null);
+
+            cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+
+            cartesian.title("Daily Calories");
+
+            cartesian.yAxis(0).title("Calories");
+            cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
+        }*/
+
         // displaying visuals
         visual1.setOnClickListener(v -> {
+            Log.d("test", "button 1 clicked");
+            //setupChart();
+
+            // parse total calories
+            List<Map<String, Integer>> parsedDailyCalorieData = new ArrayList<>();
+
+            // iterate over meal data
+           for (MealData mealData : meals) {
+                // parse meal data
+                String date = mealData.getDate();
+                int calories = mealData.getCalories();
+               Log.d("test", date);
+
+                // validate date key already in parsedDailyCalorieData
+                boolean dateFound = false;
+
+                for (Map<String, Integer> map : parsedDailyCalorieData) {
+                    Log.d("test", "iterating over parseDailyCalories");
+                    if (map.containsKey(date)) {
+                        Log.d("test", "date found");
+                        dateFound = true;
+
+                        // update parsedDailyCalorieData
+                        calories += map.get(date);
+                        map.put(date, calories);
+
+                        break;
+                    }
+                }
+
+                if (!dateFound) {
+                    Log.d("test", "not found");
+                    // add new entry to data
+                    Map<String, Integer> newMap = new HashMap();
+                    newMap.put(date, calories);
+                    parsedDailyCalorieData.add(newMap);
+                }
+           }
+
+           for (Map<String, Integer> map : parsedDailyCalorieData) {
+               Log.d("test", Arrays.asList(map).toString());
+           }
             
+            // include meal data
+            List<DataEntry> seriesData = new ArrayList<>();
+
+            for (MealData mealData : meals) {
+                
+            }
         });
 
         visual2.setOnClickListener(v -> {
