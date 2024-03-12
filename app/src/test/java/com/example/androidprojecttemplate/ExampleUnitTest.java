@@ -4,7 +4,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.example.androidprojecttemplate.models.UserData;
 import com.example.androidprojecttemplate.views.LoginPageActivity;
+import com.example.androidprojecttemplate.views.PersonalInfo;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -42,5 +44,17 @@ public class ExampleUnitTest {
 //        login.setPassword("");
 //        assertEquals("", login.getPassword());
 //    }
+
+    //Adam Vaughn
+    public void nullName() {
+        UserLoginData login = new UserLoginData("Username", "null", null);
+        assertEquals(null, login.getName());
+    }
+    //Adam Vaughn
+    @Test
+    public void emptyName() {
+        UserLoginData login = new UserLoginData("User", "Password", "");
+        assertEquals("", login.getName());
+    }
 
 }
