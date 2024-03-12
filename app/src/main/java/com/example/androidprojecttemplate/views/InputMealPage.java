@@ -134,12 +134,16 @@ public class InputMealPage extends AppCompatActivity {
         String email = user.getEmail();
 
         userReference = FirebaseDatabase.getInstance().getReference().child("Users");
+        mealReference = FirebaseDatabase.getInstance().getReference().child("Meals");
+
+        // displaying user data
         userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot theSnapshot: snapshot.getChildren()) {
 
                     String theEmailFromFirebase = theSnapshot.child("username").getValue().toString();
+                    
                     if (theEmailFromFirebase.equals(email)) {
                         viewModel = UserDataViewModel.getInstance();
 
@@ -175,7 +179,7 @@ public class InputMealPage extends AppCompatActivity {
             }
         });
 
-        /////// for the meal submission button
+        // meal submission
         submitMealData.setOnClickListener(v -> {
             // validate inputs
             String meal = String.valueOf(mealInput.getText());
@@ -192,8 +196,6 @@ public class InputMealPage extends AppCompatActivity {
                 return;
             }
 
-            // 'meals' database reference
-            mealReference = FirebaseDatabase.getInstance().getReference().child("Meals");
             mealReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -217,6 +219,55 @@ public class InputMealPage extends AppCompatActivity {
                     Toast.makeText(InputMealPage.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
                 }
             });
+        });
+
+        // displaying daily calories
+        mealReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int totalCalories = 0;
+
+                for(DataSnapshot theSnapshot: snapshot.getChildren()) {
+                    String firebaseUsername = theSnapshot.child("username").getValue().toString();
+
+                    if (firebaseUsername.equals(email)) {
+                        int calories = Integer.parseInt(snapshot.child("calories").getValue().toString());
+
+                        totalCalories += 0;
+                        
+                        /*
+                        viewModel = UserDataViewModel.getInstance();
+
+                        DataSnapshot userDataSnapshot = theSnapshot.child("Personal Info");
+
+                        if (userDataSnapshot != null) {
+                            String height = userDataSnapshot.child("height").getValue().toString();
+                            String weight = userDataSnapshot.child("weight").getValue().toString();
+                            String gender = userDataSnapshot.child("gender").getValue().toString();
+                            String age = userDataSnapshot.child("age").getValue().toString();
+
+                            viewModel.updateData(
+                                    Integer.parseInt(height),
+                                    Integer.parseInt(weight),
+                                    gender,
+                                    Integer.parseInt(age));
+
+                            userHeight.setText(viewModel.heightText());
+                            userWeight.setText(viewModel.weightText());
+                            userGender.setText(viewModel.genderText());
+                            userCalorieGoal.setText(viewModel.calorieGoalText());
+                        } else {
+                            userHeight.setText("no user data available");
+                        }*/
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(InputMealPage.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
