@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidprojecttemplate.R;
+import com.example.androidprojecttemplate.viewModels.LoginPageViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -21,24 +22,26 @@ public class LoginPageActivity extends AppCompatActivity {
     private EditText passwordInput;
     private Button toHomeScreen;
 
-    FirebaseAuth firebaseAuth;
+    private LoginPageViewModel viewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
 
+        viewModel = LoginPageViewModel.getInstance();
+
         usernameInput = findViewById(R.id.username);
         passwordInput = findViewById(R.id.password);
         toHomeScreen = findViewById(R.id.toHomeScreen);
 
-        firebaseAuth = FirebaseAuth.getInstance();
 
         toHomeScreen.setOnClickListener(v -> {
             String username = String.valueOf(usernameInput.getText());
             String password = String.valueOf(passwordInput.getText());
 
-            // check validity of username and password
+            // Check if the strings are empty
             if (TextUtils.isEmpty(username)) {
                 Toast.makeText(LoginPageActivity.this, "Please enter an username!", Toast.LENGTH_SHORT).show();
                 return;
@@ -47,21 +50,18 @@ public class LoginPageActivity extends AppCompatActivity {
                 return;
             }
 
-            // login with firebase
-            firebaseAuth.signInWithEmailAndPassword(username, password)
-            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        // switch to home page
-                        Intent theIntent = new Intent(LoginPageActivity.this, HomePage.class);
-                        startActivity(theIntent);
-                        finish();
-                    } else {
-                        Toast.makeText(LoginPageActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
+            int theResult = viewModel.toHomeScreenMethodFromLogin(username, password);
+
+            if  (theResult == 1) {
+                Toast.makeText(LoginPageActivity.this, "Successfull", Toast.LENGTH_SHORT).show();
+                // switch to home page
+                Intent theIntent = new Intent(LoginPageActivity.this, HomePage.class);
+                startActivity(theIntent);
+                finish();
+            } else if (theResult == 2) {
+                Toast.makeText(LoginPageActivity.this, "The username or password is wrong", Toast.LENGTH_SHORT).show();
+            }
+
         });
     }
 
