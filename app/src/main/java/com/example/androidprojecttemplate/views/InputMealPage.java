@@ -1,9 +1,5 @@
 package com.example.androidprojecttemplate.views;
 
-// Do not import android support because we are using androidx
-//import android.support.v4.widget.DrawerLayout;
-//import android.support.v7.app.ActionBarDrawerToggle;
-import com.example.androidprojecttemplate.models.UserData;
 import com.example.androidprojecttemplate.models.MealData;
 import com.example.androidprojecttemplate.viewModels.UserDataViewModel;
 
@@ -44,23 +40,16 @@ import com.anychart.enums.LegendLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import org.w3c.dom.Text;
 
-
-// implements NavigationView.OnNavigationItemSelectedListener
 public class InputMealPage extends AppCompatActivity {
     // ui
     private DrawerLayout dl;
