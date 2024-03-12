@@ -111,8 +111,8 @@ public class InputMealPage extends AppCompatActivity {
         nav_view = (NavigationView) findViewById(R.id.nav_view);
 
         nav_view.setVisibility(View.GONE);
-        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
-        {
+        nav_view.setNavigationItemSelectedListener(new NavigationView
+                .OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 System.out.println(R.id.inputmeal);
@@ -155,20 +155,26 @@ public class InputMealPage extends AppCompatActivity {
         userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot theSnapshot: snapshot.getChildren()) {
+                for (DataSnapshot theSnapshot: snapshot.getChildren()) {
 
-                    String theEmailFromFirebase = theSnapshot.child("username").getValue().toString();
+                    String theEmailFromFirebase = theSnapshot.child("username")
+                            .getValue().toString();
                     
                     if (theEmailFromFirebase.equals(email)) {
                         viewModel = UserDataViewModel.getInstance();
 
-                        DataSnapshot userDataSnapshot = theSnapshot.child("Personal Info");
+                        DataSnapshot userDataSnapshot = theSnapshot
+                                .child("Personal Info");
 
                         if (userDataSnapshot != null) {
-                            String height = userDataSnapshot.child("height").getValue().toString();
-                            String weight = userDataSnapshot.child("weight").getValue().toString();
-                            String gender = userDataSnapshot.child("gender").getValue().toString();
-                            String age = userDataSnapshot.child("age").getValue().toString();
+                            String height = userDataSnapshot
+                                    .child("height").getValue().toString();
+                            String weight = userDataSnapshot
+                                    .child("weight").getValue().toString();
+                            String gender = userDataSnapshot
+                                    .child("gender").getValue().toString();
+                            String age = userDataSnapshot
+                                    .child("age").getValue().toString();
 
                             viewModel.updateData(
                                 Integer.parseInt(height),
@@ -190,7 +196,9 @@ public class InputMealPage extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(InputMealPage.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InputMealPage.this,
+                        "Something went wrong in the outer portion",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -201,13 +209,19 @@ public class InputMealPage extends AppCompatActivity {
             String calories = String.valueOf(calorieInput.getText());
 
             if (TextUtils.isEmpty(meal)) {
-                Toast.makeText(InputMealPage.this, "Please enter a meal!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InputMealPage.this,
+                        "Please enter a meal!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(calories)) {
-                Toast.makeText(InputMealPage.this, "Please enter calories!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InputMealPage.this,
+                        "Please enter calories!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (Integer.parseInt(calories) <= 0) {
-                Toast.makeText(InputMealPage.this, "Calories cannot be zero or negative!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InputMealPage.this,
+                        "Calories cannot be zero or negative!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -232,12 +246,16 @@ public class InputMealPage extends AppCompatActivity {
                     calorieInput.setText("");
 
                     // display toast
-                    Toast.makeText(InputMealPage.this, "Meal submitted!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InputMealPage.this,
+                            "Meal submitted!",
+                            Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(InputMealPage.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(InputMealPage.this,
+                            "Something went wrong in the outer portion",
+                            Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -280,7 +298,9 @@ public class InputMealPage extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(InputMealPage.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
+                Toast.makeText(InputMealPage.this,
+                        "Something went wrong in the outer portion",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 

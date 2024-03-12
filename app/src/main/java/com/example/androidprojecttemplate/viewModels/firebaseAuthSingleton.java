@@ -4,11 +4,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class firebaseAuthSingleton {
-    private volatile static firebaseAuthSingleton uniqueInstance;
+    private static volatile firebaseAuthSingleton uniqueInstance;
 
     FirebaseAuth firebaseAuth;
 
-    private firebaseAuthSingleton() {}
+    private firebaseAuthSingleton() { };
 
     public static firebaseAuthSingleton getInstance() {
         if (uniqueInstance == null) {

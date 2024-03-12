@@ -37,19 +37,23 @@ public class StartScreen extends AppCompatActivity {
                 databaseReference = FirebaseDatabase.getInstance().getReference("this is the path");
 
                 //change value
-                databaseReference.setValue("Hello this is a test").addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()) {
-                            Toast.makeText(StartScreen.this, "success", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(StartScreen.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                databaseReference.setValue("Hello this is a test")
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(StartScreen.this,
+                                            "success", Toast.LENGTH_SHORT).show();
+                                    }
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(StartScreen.this,
+                                        e.getMessage().toString(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
 
             }
         });

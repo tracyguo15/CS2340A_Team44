@@ -7,19 +7,19 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+//import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.androidprojecttemplate.models.UserLoginData;
+//import com.example.androidprojecttemplate.models.UserLoginData;
 import com.example.androidprojecttemplate.viewModels.CreateAccountViewModel;
-import com.example.androidprojecttemplate.views.HomePage;
+//import com.example.androidprojecttemplate.views.HomePage;
 import com.example.androidprojecttemplate.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+//import com.google.android.gms.tasks.OnCompleteListener;
+//import com.google.android.gms.tasks.Task;
+//import com.google.firebase.auth.AuthResult;
+//import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.database.DatabaseReference;
+//import com.google.firebase.database.FirebaseDatabase;
 
 public class CreateAccountActivity extends AppCompatActivity {
     private EditText usernameInput;
@@ -59,37 +59,58 @@ public class CreateAccountActivity extends AppCompatActivity {
 
             // Check if anything is empty
             if (TextUtils.isEmpty(username)) {
-                Toast.makeText(CreateAccountActivity.this, "Please enter an username!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateAccountActivity.this,
+                        "Please enter an username!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(password)) {
-                Toast.makeText(CreateAccountActivity.this, "Please enter a password!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateAccountActivity.this,
+                        "Please enter a password!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(confirmPassword)) {
-                Toast.makeText(CreateAccountActivity.this, "Please enter a confirm password!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateAccountActivity.this,
+                        "Please enter a confirm password!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(name)) {
-                Toast.makeText(CreateAccountActivity.this, "Please enter a name!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateAccountActivity.this,
+                        "Please enter a name!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            int theResult = viewModel.toLoginScreenFromCreate(username, password, confirmPassword, name);
+            int theResult = viewModel.toLoginScreenFromCreate(username, password,
+                    confirmPassword, name);
 
             if (theResult == 1) {
-                Toast.makeText(CreateAccountActivity.this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
-            }else if (theResult == 2) {
-                Toast.makeText(CreateAccountActivity.this, "Not a valid email", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateAccountActivity.this,
+                        "Passwords do not match!",
+                        Toast.LENGTH_SHORT).show();
+            } else if (theResult == 2) {
+                Toast.makeText(CreateAccountActivity.this,
+                        "Not a valid email",
+                        Toast.LENGTH_SHORT).show();
             } else if (theResult == 3) {
-                Toast.makeText(CreateAccountActivity.this, "Passwords isn't long enough", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateAccountActivity.this,
+                        "Passwords isn't long enough",
+                        Toast.LENGTH_SHORT).show();
             } else if (theResult == 4) {
-                Toast.makeText(CreateAccountActivity.this, "No spaces allowed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateAccountActivity.this,
+                        "No spaces allowed",
+                        Toast.LENGTH_SHORT).show();
             } else if (theResult == 5) {
-                Toast.makeText(CreateAccountActivity.this, "Your account has been created, please login", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateAccountActivity.this,
+                        "Your account has been created, please login",
+                        Toast.LENGTH_SHORT).show();
                 // switch to home page
                 Intent theIntent = new Intent(CreateAccountActivity.this, LoginPageActivity.class);
                 startActivity(theIntent);
                 //finish();
             } else if (theResult == 6) {
-                Toast.makeText(CreateAccountActivity.this, "An email has already been registered, please login", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateAccountActivity.this,
+                        "An email has already been registered, please login",
+                        Toast.LENGTH_SHORT).show();
             }
         });
 

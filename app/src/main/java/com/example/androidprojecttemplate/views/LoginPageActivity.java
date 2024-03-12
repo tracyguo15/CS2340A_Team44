@@ -7,15 +7,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+//import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidprojecttemplate.R;
 import com.example.androidprojecttemplate.viewModels.LoginPageViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+//import com.google.android.gms.tasks.OnCompleteListener;
+//import com.google.android.gms.tasks.Task;
+//import com.google.firebase.auth.AuthResult;
+//import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginPageActivity extends AppCompatActivity {
     private EditText usernameInput;
@@ -45,23 +45,31 @@ public class LoginPageActivity extends AppCompatActivity {
 
             // Check if the strings are empty
             if (TextUtils.isEmpty(username)) {
-                Toast.makeText(LoginPageActivity.this, "Please enter an username!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginPageActivity.this,
+                        "Please enter an username!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(password)) {
-                Toast.makeText(LoginPageActivity.this, "Please enter a password!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginPageActivity.this,
+                        "Please enter a password!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             }
 
             int theResult = viewModel.toHomeScreenMethodFromLogin(username, password);
 
             if  (theResult == 1) {
-                Toast.makeText(LoginPageActivity.this, "Successfull", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginPageActivity.this,
+                        "Successfull",
+                        Toast.LENGTH_SHORT).show();
                 // switch to home page
                 Intent theIntent = new Intent(LoginPageActivity.this, HomePage.class);
                 startActivity(theIntent);
                 finish();
             } else if (theResult == 2) {
-                Toast.makeText(LoginPageActivity.this, "The username or password is wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginPageActivity.this,
+                        "The username or password is wrong",
+                        Toast.LENGTH_SHORT).show();
             }
 
         });

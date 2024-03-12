@@ -4,7 +4,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.example.androidprojecttemplate.models.MealData;
 import com.example.androidprojecttemplate.models.UserLoginData;
+import com.example.androidprojecttemplate.views.InputMealPage;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -51,5 +53,29 @@ public class ExampleUnitTest {
     public void whitespacePassword() {
         UserLoginData login = new UserLoginData("Username", " ", "Name");
         assertEquals(" ", login.getPassword());
+    }
+
+    //Rohan Bhole
+    @Test
+    public void testMealData() {
+        MealData meal = new MealData();
+        meal.setCalories(500);
+        meal.setDate("20240312");
+        meal.setUsername("Rohan");
+        assertEquals(500, meal.getCalories());
+        assertEquals("20240312", meal.getDate());
+        assertEquals("Rohan", meal.getUsername());
+
+        MealData meal2 = new MealData("Rohan", "20240312", 500);
+        assertEquals(500, meal2.getCalories());
+        assertEquals("20240312", meal2.getDate());
+        assertEquals("Rohan", meal2.getUsername());
+    }
+
+    //Rohan Bhole
+    @Test
+    public void testNullMealData() {
+        MealData meal2 = new MealData(null, "20240312", 500);
+        assertEquals(null, meal2.getUsername());
     }
 }
