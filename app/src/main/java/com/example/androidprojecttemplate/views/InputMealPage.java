@@ -56,6 +56,8 @@ public class InputMealPage extends AppCompatActivity {
     private EditText mealInput;
     private EditText calorieInput;
     private Button submitMealData;
+    private Button visual1;
+    private Button visual2;
     private NavigationView nav_view;
 
     // state
@@ -82,6 +84,8 @@ public class InputMealPage extends AppCompatActivity {
         mealInput = findViewById(R.id.mealInput);
         calorieInput = findViewById(R.id.calorieInput);
         submitMealData = findViewById(R.id.submitMealData);
+        visual1 = findViewById(R.id.displayVisualization1);
+        visual2 = findViewById(R.id.displayVisualization2);
 
         // navbar
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
@@ -263,6 +267,7 @@ public class InputMealPage extends AppCompatActivity {
                     }
                 }
 
+                // update daily calories label
                 userDailyCalorieIntake.setText(String.format("Daily Calories: %d", totalCalories));
             }
 
@@ -270,6 +275,15 @@ public class InputMealPage extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(InputMealPage.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        // displaying visuals
+        visual1.setOnClickListener(v -> {
+            
+        });
+
+        visual2.setOnClickListener(v -> {
+            
         });
     }
 
