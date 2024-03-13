@@ -16,6 +16,15 @@
         android:padding="16dp"
         tools:context=".inputmeal">
 
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/navigation_header"
+            app:menu="@menu/navigation_menu">
+        </com.google.android.material.navigation.NavigationView>
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/nav_toolbar"
             android:layout_width="match_parent"
@@ -115,6 +124,11 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.641" />
 
+        <com.anychart.AnyChartView
+            android:id="@+id/visualization"
+            android:layout_width="match_parent"
+            android:layout_height="256dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,7 +146,7 @@
                 android:id="@+id/displayVisualization1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="display vis 1"
+                android:text="Calorie Goal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
@@ -149,7 +163,7 @@
                 android:id="@+id/displayVisualization2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="display vis 2"
+                android:text="Past Calorie Intake"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
@@ -165,14 +179,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/navigation_header"
-        app:menu="@menu/navigation_menu">
-    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

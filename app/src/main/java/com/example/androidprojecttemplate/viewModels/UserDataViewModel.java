@@ -57,7 +57,7 @@ public class UserDataViewModel {
         return "Female";
     }
 
-    public String calorieGoalText() {
+    public int calorieGoal() {
         int height = (int)Math.round(userData.getHeight() * 2.54);       // in cm
         int weight = (int)Math.round(userData.getWeight() * 0.454);      // in kg
         int age = userData.getAge();
@@ -74,6 +74,12 @@ public class UserDataViewModel {
             default:
                 break;
         }
+
+        return calorieGoal;
+    }
+
+    public String calorieGoalText() {
+        int calorieGoal = calorieGoal();
 
         return String.format("Calorie goal: %d", calorieGoal);
     }

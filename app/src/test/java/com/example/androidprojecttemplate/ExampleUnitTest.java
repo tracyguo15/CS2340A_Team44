@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import com.example.androidprojecttemplate.views.LoginPageActivity;
+import com.example.androidprojecttemplate.models.UserLoginData;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -12,37 +12,44 @@ import com.example.androidprojecttemplate.views.LoginPageActivity;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
-//    @Test
-//    public void unitTest() {
-        // initalizes the model with 0 for both sleep and fittness time
-//        WellnessViewModel test = new WellnessViewModel();
-//        assertEquals(0, test.getWellnessData().getSleepHours());
-//        assertEquals(0, test.getWellnessData().getFitnessMinutes());
-//        // updates the data
-//        test.updateData(30, 20);
-//        assertEquals(30, test.getWellnessData().getSleepHours());
-//        assertEquals(20, test.getWellnessData().getFitnessMinutes());
-//        // updates the data again with new numbers
-//        test.updateData(88, 12);
-//        assertEquals(88, test.getWellnessData().getSleepHours());
-//        assertEquals(12, test.getWellnessData().getFitnessMinutes());
-//        System.out.println("JUNITS have been completed.");
-//    }
+    //Tracy Guo
+    @Test
+    public void nullUsername() {
+        UserLoginData login = new UserLoginData(null, "password", "name");
+        assertEquals(null, login.getUsername());
+    }
 
-    //Tracy
-//    @Test
-//    public void nullUsername() {
-//        LoginPageActivity login = new LoginPageActivity();
-//        login.setUsername(null);
-//        assertEquals(null, login.getUsername());
-//    }
-//
-//    //Tracy
-//    @Test
-//    public void nullPassword() {
-//        LoginPageActivity login = new LoginPageActivity();
-//        login.setPassword(null);
-//        assertEquals(null, login.getPassword());
-//    }
+    //Tracy Guo
+    @Test
+    public void nullPassword() {
+        UserLoginData login = new UserLoginData("Username", null, "null");
+        assertEquals(null, login.getPassword());
+    }
+    //Michael Leonick
+    @Test
+    public void emptyUsername() {
+        UserLoginData login = new UserLoginData("", "Password", "Name");
+        assertEquals("", login.getUsername());
+    }
 
+    //Michael Leonick
+    @Test
+    public void emptyPassword() {
+        UserLoginData login = new UserLoginData("Username", "", "Name");
+        assertEquals("", login.getPassword());
+    }
+
+    //Michael Vaden
+    @Test
+    public void whitespaceUsername() {
+        UserLoginData login = new UserLoginData(" ", "Password", "Name");
+        assertEquals(" ", login.getUsername());
+    }
+
+    //Michael Vaden
+    @Test
+    public void whitespacePassword() {
+        UserLoginData login = new UserLoginData("Username", " ", "Name");
+        assertEquals(" ", login.getPassword());
+    }
 }
