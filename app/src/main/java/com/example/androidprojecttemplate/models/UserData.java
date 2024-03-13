@@ -32,6 +32,9 @@ public class UserData {
 
     public void setWeight(int weight) {
         this.weight = weight;
+        if (age < 0) {
+            throw new IllegalArgumentException("Weight is negative");
+        }
     }
 
     public void setGender(String gender) {
@@ -40,5 +43,8 @@ public class UserData {
 
     public void setAge(int age) {
         this.age = age;
+        if (age < 0) {
+            throw new IllegalArgumentException("Age is negative");
+        }
     }
 }
