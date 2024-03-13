@@ -25,6 +25,9 @@ public class UserData {
 
     public void setHeight(int height) {
         this.height = height;
+        if (height < 0) {
+            throw new IllegalArgumentException("Height is negative");
+        }
     }
 
     public void setWeight(int weight) {

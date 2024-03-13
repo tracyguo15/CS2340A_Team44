@@ -5,6 +5,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.example.androidprojecttemplate.models.MealData;
+import com.example.androidprojecttemplate.models.UserData;
 import com.example.androidprojecttemplate.models.UserLoginData;
 import com.example.androidprojecttemplate.views.InputMealPage;
 
@@ -78,4 +79,39 @@ public class ExampleUnitTest {
         MealData meal2 = new MealData(null, "20240312", 500);
         assertEquals(null, meal2.getUsername());
     }
-}
+
+    //Adam Vaughn
+    public void nullName() {
+        UserLoginData login = new UserLoginData("Username", "null", null);
+        assertEquals(null, login.getName());
+    }
+    //Adam Vaughn
+    @Test
+    public void emptyName() {
+        UserLoginData login = new UserLoginData("User", "Password", "");
+        assertEquals("", login.getName());
+    }
+
+    //Daniel Deller
+    @Test
+    public void negHeight() {
+        boolean heightExc = false;
+        UserData dataUse = new UserData();
+        try {
+            dataUse.setHeight(-10);
+        } catch (IllegalArgumentException e) {
+            heightExc = true;
+        }
+        assertEquals(heightExc,true);
+    }
+    //Daniel Deller
+    public void negAge() {
+        boolean ageExc = false;
+        UserData dataUse = new UserData();
+        try {
+            dataUse.setAge(-3);
+        } catch (IllegalArgumentException e) {
+            ageExc = true;
+        }
+        assertEquals(ageExc,true);
+}}
