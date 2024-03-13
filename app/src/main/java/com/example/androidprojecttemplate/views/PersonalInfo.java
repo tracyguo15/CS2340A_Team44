@@ -20,16 +20,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.androidprojecttemplate.R;
-import com.example.androidprojecttemplate.models.UserData;
+//import com.example.androidprojecttemplate.models.UserData;
 import com.example.androidprojecttemplate.viewModels.PersonalInfoViewModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+//import com.google.firebase.database.DataSnapshot;
+//import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+//import com.google.firebase.database.ValueEventListener;
 
 
 //implements NavigationView.OnNavigationItemSelectedListener
@@ -88,8 +88,8 @@ public class PersonalInfo extends AppCompatActivity {
         nav_view = (NavigationView) findViewById(R.id.nav_view);
 
         nav_view.setVisibility(View.GONE);
-        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
-        {
+        nav_view.setNavigationItemSelectedListener(new NavigationView
+                .OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
@@ -132,25 +132,40 @@ public class PersonalInfo extends AppCompatActivity {
             String age = String.valueOf(theAgeInput.getText());
 
             if (TextUtils.isEmpty(height)) {
-                Toast.makeText(PersonalInfo.this, "Please enter a height!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalInfo.this,
+                        "Please enter a height!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(weight)) {
-                Toast.makeText(PersonalInfo.this, "Please enter a weight!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalInfo.this,
+                        "Please enter a weight!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(gender)) {
-                Toast.makeText(PersonalInfo.this, "Please enter a gender!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalInfo.this,
+                        "Please enter a gender!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(age)) {
-                Toast.makeText(PersonalInfo.this, "Please enter an age!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalInfo.this,
+                        "Please enter an age!",
+                        Toast.LENGTH_SHORT).show();
                 return;
+            } else if (height.contains("-") || weight.contains("-") ||
+                    age.contains("-")) {
+                throw new IllegalArgumentException("Argument contains -");
             }
 
             int theResult = viewModel.putTheDataIntoFirebase(height, weight, gender, age);
 
             if (theResult == 1) {
-                Toast.makeText(PersonalInfo.this, "Thank you, your information has been recorded", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalInfo.this,
+                        "Thank you, your information has been recorded",
+                        Toast.LENGTH_SHORT).show();
             } else if (theResult == 2) {
-                Toast.makeText(PersonalInfo.this, "Something went wrong with firebase", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalInfo.this,
+                        "Something went wrong with firebase",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -161,6 +176,6 @@ public class PersonalInfo extends AppCompatActivity {
         } else {
             nav_view.setVisibility(View.VISIBLE);
         }
-        return true || abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return true;
     }
 }

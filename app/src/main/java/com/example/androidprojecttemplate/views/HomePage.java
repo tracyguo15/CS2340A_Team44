@@ -53,25 +53,25 @@ public class HomePage extends AppCompatActivity {
         nav_view = (NavigationView) findViewById(R.id.nav_view);
 
         nav_view.setVisibility(View.GONE);
-        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
-        {
+        nav_view.setNavigationItemSelectedListener(new NavigationView
+                .OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.inputmeal) {
-//                    Toast.makeText(HomePage.this, "InputMeal", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(HomePage.this, "InputMeal", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(HomePage.this, InputMealPage.class);
                     startActivity(intent);
                 } else if (id == R.id.recipe) {
-//                    Toast.makeText(HomePage.this, "Recipe", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(HomePage.this, "Recipe", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(HomePage.this, RecipePage.class);
                     startActivity(intent);
                 } else if (id == R.id.ingredient) {
-//                    Toast.makeText(HomePage.this, "Ingredient", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(HomePage.this, "Ingredient", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(HomePage.this, IngredientPage.class);
                     startActivity(intent);
                 } else if (id == R.id.list) {
-//                    Toast.makeText(HomePage.this, "ShoppingList", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(HomePage.this, "ShoppingList", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(HomePage.this, ListPage.class);
                     startActivity(intent);
                 } else if (id == R.id.personalinfo) {
@@ -90,7 +90,7 @@ public class HomePage extends AppCompatActivity {
         } else {
             nav_view.setVisibility(View.VISIBLE);
         }
-        return true || abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return true;
     }
 
     // Method to set the login state. remember to set login after login page is implemented
