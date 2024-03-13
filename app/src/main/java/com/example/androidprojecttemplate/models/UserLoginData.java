@@ -37,5 +37,4 @@ public class UserLoginData {
     public String getName() {
         return name;
     }
-
 }

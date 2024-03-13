@@ -1,6 +1,6 @@
 package com.example.androidprojecttemplate.viewModels;
 
-import android.text.TextUtils;
+//import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginPageViewModel {
     private static LoginPageViewModel instance;
-    final private LoginPageActivity theData;
+    private final LoginPageActivity theData;
 
     private static int temp = 0;
 
@@ -24,7 +24,8 @@ public class LoginPageViewModel {
 
     public LoginPageViewModel() {
         theData = new LoginPageActivity();
-        theAuthenticationVariable = firebaseAuthSingleton.getInstance().getTheInstanceFromFirebase();
+        theAuthenticationVariable = firebaseAuthSingleton.getInstance()
+                .getTheInstanceFromFirebase();
     }
 
     public static synchronized LoginPageViewModel getInstance() {

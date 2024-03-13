@@ -4,12 +4,12 @@ import com.example.androidprojecttemplate.models.WellnessData;
 
 public class WellnessViewModel {
     private static WellnessViewModel instance;
-    final private WellnessData wellnessData;
+    private final WellnessData wellnessData;
 
     // DO NOT MODIFY METHOD
     public WellnessViewModel() {
         wellnessData = new WellnessData();
-        this.updateData(0,0);
+        this.updateData(0, 0);
     }
 
     // DO NOT MODIFY METHOD

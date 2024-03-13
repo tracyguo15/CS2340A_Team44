@@ -3,6 +3,8 @@ package com.example.androidprojecttemplate.models;
 public class WellnessData {
     private int sleepHours;
     private int fitnessMinutes;
+
+
     public int getSleepHours() {
         return sleepHours;
     }
@@ -14,6 +16,7 @@ public class WellnessData {
     public void setSleepHours(int sleepHours) {
         this.sleepHours = sleepHours;
     }
+
     public void setFitnessMinutes(int fitnessMinutes) {
         this.fitnessMinutes = fitnessMinutes;
     }
