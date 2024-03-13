@@ -151,6 +151,9 @@ public class PersonalInfo extends AppCompatActivity {
                         "Please enter an age!",
                         Toast.LENGTH_SHORT).show();
                 return;
+            } else if (height.contains("-") || weight.contains("-") ||
+                    age.contains("-")) {
+                throw new IllegalArgumentException("Argument contains -");
             }
 
             int theResult = viewModel.putTheDataIntoFirebase(height, weight, gender, age);
