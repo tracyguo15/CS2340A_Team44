@@ -57,4 +57,29 @@ public class ExampleUnitTest {
         assertEquals("", login.getName());
     }
 
+    //Daniel Deller
+    @Test
+    public void nullAge() {
+        boolean ageExc = false;
+        UserData dataUse = new UserData();
+        try {
+            dataUse.setAge(null);
+        } catch (IllegalArgumentExceptionArgument, e) {
+            ageExc = true;
+        }
+        assertEquals(ageExc,true);
+    }
+    //Daniel Deller
+    public void negAge() {
+        boolean ageExc = false;
+        UserData dataUse = new UserData();
+        try {
+            dataUse.setAge("-3");
+        } catch (IllegalArgumentExceptionArgument, e) {
+            ageExc = true;
+        }
+        assertEquals(ageExc,true);
+    }
+
+
 }
