@@ -1,6 +1,7 @@
 package com.example.androidprojecttemplate.viewModels;
 
 import com.example.androidprojecttemplate.models.WellnessData;
+import com.example.androidprojecttemplate.models.firebaseAuthSingleton;
 
 public class WellnessViewModel {
     private static WellnessViewModel instance;
