@@ -46,8 +46,8 @@ public class RecipePage extends AppCompatActivity {
         nav_view = (NavigationView) findViewById(R.id.nav_view);
 
         nav_view.setVisibility(View.GONE);
-        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
-        {
+        nav_view.setNavigationItemSelectedListener(new NavigationView
+                .OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
@@ -82,6 +82,6 @@ public class RecipePage extends AppCompatActivity {
         } else {
             nav_view.setVisibility(View.VISIBLE);
         }
-        return true || abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return true;
     }
 }

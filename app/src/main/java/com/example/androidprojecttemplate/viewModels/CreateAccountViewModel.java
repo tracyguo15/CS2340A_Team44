@@ -15,7 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class CreateAccountViewModel {
     private static CreateAccountViewModel instance;
-    final private CreateAccountActivity theData;
+    private final CreateAccountActivity theData;
 
     FirebaseAuth theAuthenticationVariable;
 
@@ -25,7 +25,8 @@ public class CreateAccountViewModel {
 
     public CreateAccountViewModel() {
         theData = new CreateAccountActivity();
-        theAuthenticationVariable = firebaseAuthSingleton.getInstance().getTheInstanceFromFirebase();
+        theAuthenticationVariable = firebaseAuthSingleton.getInstance()
+                .getTheInstanceFromFirebase();
 
     }
 
@@ -37,11 +38,11 @@ public class CreateAccountViewModel {
         return instance;
     }
 
-    public int toLoginScreenFromCreate(String username, String password, String confirmPassword, String name) {
+    public int toLoginScreenFromCreate(String username, String password,
+                                       String confirmPassword, String name) {
         // check validity of username and password
-
-            // password and confirmPassword don't equal
-         if (!TextUtils.equals(password, confirmPassword)) {
+        // password and confirmPassword don't equal
+        if (!TextUtils.equals(password, confirmPassword)) {
             temp = 1;
             // username is not a valid email
         } else if (!username.contains("@") || !username.contains(".com")) {
@@ -50,7 +51,8 @@ public class CreateAccountViewModel {
         } else if (password.length() < 6) {
             temp = 3;
             // Inputs have spaces
-        } else if (username.contains(" ") || password.contains(" ") || confirmPassword.contains(" ")) {
+        } else if (username.contains(" ") || password.contains(" ")
+                || confirmPassword.contains(" ")) {
             temp = 4;
         }
 
@@ -61,13 +63,17 @@ public class CreateAccountViewModel {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
+                        if (task.isSuccessful()) {
                             // Add entires to the real-time database
-                            reference = FirebaseDatabase.getInstance().getReference().child("Users");
+                            reference = FirebaseDatabase.getInstance()
+                                    .getReference()
+                                    .child("Users");
 
                             UserLoginData theUser = new UserLoginData(username, password, name);
 
-                            // Will track different usernames in the database by taking the first letter of their username (since you can't use the full username since it has special characters)
+                            // Will track different usernames in the database by taking the first
+                            // letter of their username (since you can't use the full username since
+                            // it has special characters)
                             reference.child(name).setValue(theUser);
 
                             temp = 5;

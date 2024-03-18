@@ -4,7 +4,7 @@ import com.example.androidprojecttemplate.models.UserData;
 
 public class UserDataViewModel {
     private static UserDataViewModel instance;
-    final private UserData userData;
+    private final UserData userData;
 
     public UserDataViewModel() {
         this.userData = new UserData();
@@ -58,21 +58,21 @@ public class UserDataViewModel {
     }
 
     public int calorieGoal() {
-        int height = (int)Math.round(userData.getHeight() * 2.54);       // in cm
-        int weight = (int)Math.round(userData.getWeight() * 0.454);      // in kg
+        int height = (int) Math.round(userData.getHeight() * 2.54);       // in cm
+        int weight = (int) Math.round(userData.getWeight() * 0.454);      // in kg
         int age = userData.getAge();
 
-        int calorieGoal = (int)Math.round((10 * weight) + (6.25 * height) - (5 * age));
+        int calorieGoal = (int) Math.round((10 * weight) + (6.25 * height) - (5 * age));
 
         switch (userData.getGender()) {
-            case "male":
-                calorieGoal += 5;
-                break;
-            case "female":
-                calorieGoal -= 161;
-                break;
-            default:
-                break;
+        case "male":
+            calorieGoal += 5;
+            break;
+        case "female":
+            calorieGoal -= 161;
+            break;
+        default:
+            break;
         }
 
         return calorieGoal;
