@@ -10,6 +10,7 @@ public class firebaseAuthSingleton {
 
     private firebaseAuthSingleton() { };
 
+
     public static firebaseAuthSingleton getInstance() {
         if (uniqueInstance == null) {
             synchronized (firebaseAuthSingleton.class) {
