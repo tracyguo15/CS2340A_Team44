@@ -2,7 +2,7 @@ package com.example.androidprojecttemplate.viewModels;
 
 // android.text.TextUtils;
 //import android.widget.Toast;
-
+import com.example.androidprojecttemplate.models.firebaseAuthSingleton;
 import androidx.annotation.NonNull;
 
 import com.example.androidprojecttemplate.models.UserData;
