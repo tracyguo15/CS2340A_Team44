@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 //import android.widget.Toast;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 //import androidx.core.view.GravityCompat;
 import com.example.androidprojecttemplate.R;
 
+import com.example.androidprojecttemplate.viewModels.IngredientViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 
@@ -29,11 +33,28 @@ public class IngredientPage extends AppCompatActivity {
 
     private NavigationView nav_view;
 
+    private EditText ingredientName;
+    private EditText quantity;
+    private EditText calorieForIngredient;
+
+    private Button addIngredientToFirebase;
+
+    private IngredientViewModel viewModel;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_ingredient_page);
+
+        viewModel = IngredientViewModel.getInstance();
+
+        ingredientName = findViewById(R.id.nameOfIngredientInput);
+        quantity = findViewById(R.id.quantityInput);
+        calorieForIngredient = findViewById(R.id.ingredientCalorieInput);
+        addIngredientToFirebase = findViewById(R.id.buttonToInputIngredient);
+
 
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(homeToolBar);
@@ -80,6 +101,14 @@ public class IngredientPage extends AppCompatActivity {
 
                 return false;
             }
+        });
+
+
+        addIngredientToFirebase.setOnClickListener(v -> {
+            viewModel.getCurrentUser();;
+            Toast.makeText(IngredientPage.this,
+                    "Fuck you",
+                    Toast.LENGTH_SHORT).show();
         });
     }
     @Override
