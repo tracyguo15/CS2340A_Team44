@@ -29,9 +29,15 @@ public class Ingredient {
 
     public void replenish(int quantity) { }
 
-    public int getQuantity() {}
+    public int getQuantity() {
+        return quantity;
+    }
 
-    public double getPrice() {}
+    public double getPrice() {
+        return price;
+    }
 
-    public String getName() {}
+    public String getName() {
+        return name;
+    }
 }
