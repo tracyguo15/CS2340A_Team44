@@ -62,6 +62,7 @@ public class PersonalInfoViewModel {
 
                     String theEmailFromFirebase = theSnapshot.child("username")
                             .getValue().toString();
+
                     if (theEmailFromFirebase.equals(theUsersEmail)) {
                         //Found the email, can now add the data for that specific user
                         //UserData theInfo = new personalInfo(height, weight, gender);
@@ -85,10 +86,6 @@ public class PersonalInfoViewModel {
                temp = 2;
             }
         });
-
-
-
-
 
         return temp;
     }

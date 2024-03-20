@@ -72,6 +72,9 @@ public class LoginPageActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
 
+
+            System.out.println("Fuck you");
+
         });
 
         toWelcomePage.setOnClickListener(f -> {

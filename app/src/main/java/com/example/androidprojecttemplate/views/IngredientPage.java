@@ -6,6 +6,7 @@ package com.example.androidprojecttemplate.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 //import android.widget.Toast;
 import android.view.View;
@@ -37,6 +38,8 @@ public class IngredientPage extends AppCompatActivity {
     private EditText quantity;
     private EditText calorieForIngredient;
 
+    private EditText expirationDate;
+
     private Button addIngredientToFirebase;
 
     private IngredientViewModel viewModel;
@@ -54,6 +57,7 @@ public class IngredientPage extends AppCompatActivity {
         quantity = findViewById(R.id.quantityInput);
         calorieForIngredient = findViewById(R.id.ingredientCalorieInput);
         addIngredientToFirebase = findViewById(R.id.buttonToInputIngredient);
+        expirationDate = findViewById(R.id.theExpirationDateInput);
 
 
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
@@ -105,10 +109,42 @@ public class IngredientPage extends AppCompatActivity {
 
 
         addIngredientToFirebase.setOnClickListener(v -> {
-            viewModel.getCurrentUser();;
-            Toast.makeText(IngredientPage.this,
-                    "Fuck you",
-                    Toast.LENGTH_SHORT).show();
+            viewModel.getCurrentUser();
+
+            String theName = String.valueOf(ingredientName.getText());
+            String theQuantity = String.valueOf(quantity.getText());
+            String theCalories = String.valueOf(calorieForIngredient.getText());
+            String theExpirationDate = String.valueOf(expirationDate.getText());
+
+            // Checks if any of the (necessary) strings are empty
+            if (TextUtils.isEmpty(theName)) {
+                Toast.makeText(IngredientPage.this,
+                        "Please enter an ingredient name",
+                        Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(theQuantity)) {
+                Toast.makeText(IngredientPage.this,
+                        "Please enter an ingredient name",
+                        Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(theCalories)) {
+                Toast.makeText(IngredientPage.this,
+                        "Please enter an ingredient name",
+                        Toast.LENGTH_SHORT).show();
+            // Checks if expiration date is empty
+            }  else if (TextUtils.isEmpty(theExpirationDate)) {
+                theExpirationDate = "Not Avaliable";
+            }
+
+            int theResult = viewModel.addToFirebase(theName, theQuantity, theCalories, theExpirationDate);
+
+            if (theResult == 1) {
+                Toast.makeText(IngredientPage.this,
+                        "Success",
+                        Toast.LENGTH_SHORT).show();
+            } else if (theResult == 2) {
+                Toast.makeText(IngredientPage.this,
+                        "Something went wrong",
+                        Toast.LENGTH_SHORT).show();
+            }
         });
     }
     @Override
