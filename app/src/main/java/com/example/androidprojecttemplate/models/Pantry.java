@@ -73,4 +73,19 @@ public class Pantry extends AbstractDatabase<String, Ingredient> {
         }
         return recipeIngredients;
     }
+
+    /**
+     * Given a recipe, finds all the items needed to cook the recipe,
+     * and decrease the item count for all the items used to cook it.
+     * Before you cook, please see if you can cook the recipe, and
+     * you have the required ingredients in your pantry.
+     * @param recipe the recipe to cook
+     */
+    public void cook(Recipe recipe) {
+        ArrayList<Ingredient> list = recipe.getIngredients();
+        for (Ingredient item : list) {
+            Ingredient stuffInPantry = this.get(item.getName());
+            stuffInPantry.consume(item.getQuantity());
+        }
+    }
 }
