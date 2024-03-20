@@ -40,4 +40,8 @@ public class Ingredient {
     public String getName() {
         return name;
     }
+
+    public int getCalories() {
+        return calories;
+    }
 }

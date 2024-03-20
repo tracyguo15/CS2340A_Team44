@@ -21,6 +21,10 @@ public class AbstractDatabase<K,V> {
         return table.remove(key);
     }
 
+    public boolean contains(K key) {
+        return table.contains(key);
+    }
+
     public int size() {
         return table.size();
     }
