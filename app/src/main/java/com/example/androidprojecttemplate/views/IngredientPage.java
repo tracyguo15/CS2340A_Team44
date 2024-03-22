@@ -144,6 +144,10 @@ public class IngredientPage extends AppCompatActivity {
                 Toast.makeText(IngredientPage.this,
                         "Something went wrong",
                         Toast.LENGTH_SHORT).show();
+            } else if (theResult == 3) {
+                Toast.makeText(IngredientPage.this,
+                        "The ingredient already exists, can't add",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }

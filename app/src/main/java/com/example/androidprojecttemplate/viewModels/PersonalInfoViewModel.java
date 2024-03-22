@@ -29,7 +29,7 @@ public class PersonalInfoViewModel {
     DatabaseReference reference;
     DatabaseReference tempReference;
 
-    String theUsersEmail;
+    String theUsersEmailFromAuthenticationDatabase;
 
     public PersonalInfoViewModel() {
         theData = new PersonalInfo();
@@ -48,7 +48,7 @@ public class PersonalInfoViewModel {
         theAuthenticationVariable = firebaseAuthSingleton.getInstance()
                 .getTheInstanceFromFirebase();
         user = firebaseAuthSingleton.getInstance().getUser();
-        theUsersEmail = firebaseAuthSingleton.getInstance().getEmail();
+        theUsersEmailFromAuthenticationDatabase = firebaseAuthSingleton.getInstance().getEmail();
     }
 
 
@@ -63,7 +63,7 @@ public class PersonalInfoViewModel {
                     String theEmailFromFirebase = theSnapshot.child("username")
                             .getValue().toString();
 
-                    if (theEmailFromFirebase.equals(theUsersEmail)) {
+                    if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
                         //Found the email, can now add the data for that specific user
                         //UserData theInfo = new personalInfo(height, weight, gender);
                         UserData data = new UserData();
