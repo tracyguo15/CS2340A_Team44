@@ -50,38 +50,54 @@ public class IngredientViewModel {
         theUsersEmailFromAuthenticationDatabase = firebaseAuthSingleton.getInstance().getEmail();
     }
 
-    public int addToFirebase(String Name, String Quantity, String Calories, String ExpirationDate) {
+    public void addToFirebase(String name, String quantity, String calories, String expirationDate, IngredientCallback callback) {
         referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry");
+        // get the user-specific pantry reference
+        DatabaseReference userPantryRef = referenceForPantry.child(user.getDisplayName());
 
-        referenceForPantry.addValueEventListener(new ValueEventListener() {
+        userPantryRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot theSnapshot: snapshot.getChildren()) {
+                boolean exists = false;
+                // Check if the ingredient exists
+                if (snapshot.hasChild(name)) {
+                    exists = true;
+                }
 
-                    String theEmailFromFirebase = theSnapshot.child("username")
-                            .getValue().toString();
-
-                    if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
-                        //Found the associated email and name for the user
-                        // Can now check whether the ingredient already exists or not
-                        // Will do this in a helper method
-                        temp = checkAndThenAddIngredient(referenceForPantry.child(theSnapshot.child("name")
-                                .getValue().toString()), Name, Quantity, Calories, ExpirationDate);
-
-
+                if (exists) {
+                    // The ingredient already exists
+                    callback.onCompleted(3); // already exists error message
+                } else {
+                    //check if quantity is invalid
+                    int quantityInt;
+                    try {
+                        //parse from string into int
+                        quantityInt = Integer.parseInt(quantity);
+                    } catch (NumberFormatException e) {
+                        callback.onCompleted(2); //error message
+                        return; // Stop execution
                     }
 
+                    if (quantityInt <= 0) {
+                        //quantity is not positive
+                        callback.onCompleted(4); //quantity not positive error message
+                    } else {
+                        // Add the ingredient to Firebase since the quantity is positive
+                        IngredientData newIngredient = new IngredientData(name, quantity, calories, expirationDate);
+                        userPantryRef.child(name).setValue(newIngredient)
+                                .addOnSuccessListener(aVoid -> callback.onCompleted(1)) // Success
+                                .addOnFailureListener(e -> callback.onCompleted(2)); // Error
+                    }
                 }
-                //referenceForPantry.child(theData.getTheUsername()).child("Ingredients").child(theData.getTheName()).setValue(theData);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                temp = 2;
+                callback.onCompleted(2); // Error due to Firebase operation being cancelled
             }
         });
-
-        return temp;
     }
+
 
     private int checkAndThenAddIngredient(DatabaseReference theReferenceFromMethod, String Name, String Quantity, String Calories, String ExpirationDate) {
         referenceForUsersIngredients = theReferenceFromMethod.child("Ingredients");

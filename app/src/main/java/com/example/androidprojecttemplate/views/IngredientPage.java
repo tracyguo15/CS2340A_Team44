@@ -110,47 +110,44 @@ public class IngredientPage extends AppCompatActivity {
 
         addIngredientToFirebase.setOnClickListener(v -> {
             viewModel.getCurrentUser();
+            String theName = ingredientName.getText().toString();
+            String theQuantity = quantity.getText().toString();
+            String theCalories = calorieForIngredient.getText().toString();
+            String theExpirationDate = expirationDate.getText().toString();
 
-            String theName = String.valueOf(ingredientName.getText());
-            String theQuantity = String.valueOf(quantity.getText());
-            String theCalories = String.valueOf(calorieForIngredient.getText());
-            String theExpirationDate = String.valueOf(expirationDate.getText());
-
-            // Checks if any of the (necessary) strings are empty
+            // Validation checks
             if (TextUtils.isEmpty(theName)) {
-                Toast.makeText(IngredientPage.this,
-                        "Please enter an ingredient name",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(IngredientPage.this, "Please enter an ingredient name", Toast.LENGTH_SHORT).show();
+                return;
             } else if (TextUtils.isEmpty(theQuantity)) {
-                Toast.makeText(IngredientPage.this,
-                        "Please enter an ingredient name",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(IngredientPage.this, "Please enter the quantity", Toast.LENGTH_SHORT).show();
+                return;
             } else if (TextUtils.isEmpty(theCalories)) {
-                Toast.makeText(IngredientPage.this,
-                        "Please enter an ingredient name",
-                        Toast.LENGTH_SHORT).show();
-            // Checks if expiration date is empty
-            }  else if (TextUtils.isEmpty(theExpirationDate)) {
-                theExpirationDate = "Not Avaliable";
+                Toast.makeText(IngredientPage.this, "Please enter the calories", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(theExpirationDate)) {
+                theExpirationDate = "Not Available";
             }
 
-            int theResult = viewModel.addToFirebase(theName, theQuantity, theCalories, theExpirationDate);
-
-            if (theResult == 1) {
-                Toast.makeText(IngredientPage.this,
-                        "Success",
-                        Toast.LENGTH_SHORT).show();
-            } else if (theResult == 2) {
-                Toast.makeText(IngredientPage.this,
-                        "Something went wrong",
-                        Toast.LENGTH_SHORT).show();
-            } else if (theResult == 3) {
-                Toast.makeText(IngredientPage.this,
-                        "The ingredient already exists, can't add",
-                        Toast.LENGTH_SHORT).show();
-            }
+            viewModel.addToFirebase(theName, theQuantity, theCalories, theExpirationDate, result -> runOnUiThread(() -> {
+                switch (result) {
+                    case 1:
+                        Toast.makeText(IngredientPage.this, "Success", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        Toast.makeText(IngredientPage.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 3:
+                        Toast.makeText(IngredientPage.this, "The ingredient already exists, can't add", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 4:
+                        Toast.makeText(IngredientPage.this, "Quantity is not positive, can't add", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }));
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (nav_view.getVisibility() == View.VISIBLE) {

@@ -104,7 +104,7 @@
             android:layout_marginEnd="54dp"
             android:layout_marginBottom="386dp"
             android:ems="10"
-            android:hint="Calories"
+            android:hint="Calories Per Serving"
             android:inputType="text" />
 
         <EditText
@@ -120,7 +120,7 @@
             android:layout_marginEnd="21dp"
             android:layout_marginBottom="314dp"
             android:ems="10"
-            android:hint="Expiration Date"
+            android:hint="Expiration Date: XX-XX-XXXX"
             android:inputType="text" />
 
 
