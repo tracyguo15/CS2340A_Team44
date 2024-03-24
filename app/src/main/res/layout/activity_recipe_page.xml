@@ -8,22 +8,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/dl">
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp"
-        tools:context=".recipe">
-
-        <TextView
-            android:id="@+id/ingredientTitleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/recipes"
-            android:textSize="40sp"
-            android:layout_marginTop="55dp"/>
+        tools:context=".inputmeal">
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
@@ -36,12 +27,12 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/nav_toolbar"
-            android:layout_width="603dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>
