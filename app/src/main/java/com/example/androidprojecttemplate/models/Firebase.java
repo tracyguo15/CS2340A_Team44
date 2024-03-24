@@ -3,19 +3,18 @@ package com.example.androidprojecttemplate.models;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class FirebaseAuthSingleton {
-    private static volatile FirebaseAuthSingleton instance;
+public class Firebase {
+    private static volatile Firebase instance;
 
     FirebaseAuth firebaseAuth;
 
-    private FirebaseAuthSingleton() { };
+    private Firebase() { };
 
-
-    public static FirebaseAuthSingleton getInstance() {
+    public static Firebase getInstance() {
         if (instance == null) {
-            synchronized (FirebaseAuthSingleton.class) {
+            synchronized (Firebase.class) {
                 if (instance == null) {
-                    instance = new FirebaseAuthSingleton();
+                    instance = new Firebase();
                 }
             }
         }
