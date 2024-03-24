@@ -3,18 +3,16 @@ package com.example.androidprojecttemplate.models;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class Firebase {
-    private static volatile Firebase instance;
+public class FirebaseDB {
+    private static volatile FirebaseDB instance;
 
-    FirebaseAuth firebaseAuth;
+    private FirebaseDB() { };
 
-    private Firebase() { };
-
-    public static Firebase getInstance() {
+    public static FirebaseDB getInstance() {
         if (instance == null) {
-            synchronized (Firebase.class) {
+            synchronized (FirebaseDB.class) {
                 if (instance == null) {
-                    instance = new Firebase();
+                    instance = new FirebaseDB();
                 }
             }
         }
@@ -22,15 +20,17 @@ public class Firebase {
         return instance;
     }
 
-    public FirebaseAuth getFirebaseInstance() {
+    public FirebaseAuth getFirebaseAuth() {
         return FirebaseAuth.getInstance();
     }
 
     public FirebaseUser getUser() {
-        return getFirebaseInstance().getCurrentUser();
+        return getFirebaseAuth().getCurrentUser();
     }
 
     public String getEmail() {
         return getUser().getEmail();
     }
+
+    public String getUserId() { return getUser().getUid(); }
 }

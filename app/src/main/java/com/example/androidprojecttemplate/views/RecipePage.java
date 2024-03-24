@@ -38,7 +38,7 @@ public class RecipePage extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        navView = (NavigationView) findViewById(R.id.navView);
+        navView = (NavigationView) findViewById(R.id.nav_toolbar);
 
         navView.setVisibility(View.GONE);
         navView.setNavigationItemSelectedListener(new NavigationView
@@ -68,7 +68,7 @@ public class RecipePage extends AppCompatActivity {
 
                 return false;
             }
-        })
+        });
     }
 
     @Override
