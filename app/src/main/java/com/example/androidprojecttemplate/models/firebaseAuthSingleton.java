@@ -3,36 +3,35 @@ package com.example.androidprojecttemplate.models;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class firebaseAuthSingleton {
-    private static volatile firebaseAuthSingleton uniqueInstance;
+public class FirebaseAuthSingleton {
+    private static volatile FirebaseAuthSingleton instance;
 
     FirebaseAuth firebaseAuth;
 
-    private firebaseAuthSingleton() { };
+    private FirebaseAuthSingleton() { };
 
 
-    public static firebaseAuthSingleton getInstance() {
-        if (uniqueInstance == null) {
-            synchronized (firebaseAuthSingleton.class) {
-                if (uniqueInstance == null) {
-                    uniqueInstance = new firebaseAuthSingleton();
+    public static FirebaseAuthSingleton getInstance() {
+        if (instance == null) {
+            synchronized (FirebaseAuthSingleton.class) {
+                if (instance == null) {
+                    instance = new FirebaseAuthSingleton();
                 }
             }
         }
 
-        return uniqueInstance;
+        return instance;
     }
 
-    public FirebaseAuth getTheInstanceFromFirebase() {
+    public FirebaseAuth getFirebaseInstance() {
         return FirebaseAuth.getInstance();
     }
 
     public FirebaseUser getUser() {
-        return FirebaseAuth.getInstance().getCurrentUser();
+        return getFirebaseInstance().getCurrentUser();
     }
 
     public String getEmail() {
-        return FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        return getUser().getEmail();
     }
-
 }
