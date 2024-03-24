@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate.viewModels;
+package com.example.androidprojecttemplate.models;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -9,6 +9,7 @@ public class firebaseAuthSingleton {
     FirebaseAuth firebaseAuth;
 
     private firebaseAuthSingleton() { };
+
 
     public static firebaseAuthSingleton getInstance() {
         if (uniqueInstance == null) {

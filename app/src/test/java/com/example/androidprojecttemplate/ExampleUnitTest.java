@@ -81,6 +81,7 @@ public class ExampleUnitTest {
     }
 
     //Adam Vaughn
+    @Test
     public void nullName() {
         UserLoginData login = new UserLoginData("Username", "null", null);
         assertEquals(null, login.getName());
@@ -105,6 +106,7 @@ public class ExampleUnitTest {
         assertEquals(heightExc,true);
     }
     //Daniel Deller
+    @Test
     public void negAge() {
         boolean ageExc = false;
         UserData dataUse = new UserData();
