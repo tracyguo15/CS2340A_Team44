@@ -25,7 +25,7 @@ public class Pantry extends AbstractDatabase<String, Ingredient> {
      * @param recipe the recipe to be cooked
      * @return true if the recipe can be cooked, false otherwise
      */
-    public boolean canCook(Recipe recipe) {
+    public boolean canCook(RecipeData recipe) {
         if (this.size() == 0) {
             return false;
         }
@@ -51,7 +51,7 @@ public class Pantry extends AbstractDatabase<String, Ingredient> {
      * @return an ArrayList containing the missing ingredients, or an empty list if all
      * the ingredients exist
      */
-    public ArrayList<Ingredient> getMissingIngredients(Recipe recipe) {
+    public ArrayList<Ingredient> getMissingIngredients(RecipeData recipe) {
         ArrayList<Ingredient> ingredientsNeeded = new ArrayList<>();
         ArrayList<Ingredient> recipeIngredients = recipe.getIngredients();
         if (this.size() > 0 || recipeIngredients.size() <= this.size()) {
@@ -81,7 +81,7 @@ public class Pantry extends AbstractDatabase<String, Ingredient> {
      * you have the required ingredients in your pantry.
      * @param recipe the recipe to cook
      */
-    public void cook(Recipe recipe) {
+    public void cook(RecipeData recipe) {
         ArrayList<Ingredient> list = recipe.getIngredients();
         for (Ingredient item : list) {
             Ingredient stuffInPantry = this.get(item.getName());

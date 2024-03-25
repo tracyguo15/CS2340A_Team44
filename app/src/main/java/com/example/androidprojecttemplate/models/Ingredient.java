@@ -21,9 +21,6 @@ public class Ingredient {
         this.price = price;
         this.calories = calories;
     }
-    public void consume(int quantity) { }
-
-    public void replenish(int quantity) { }
 
     public double getPrice() {
         return price;
