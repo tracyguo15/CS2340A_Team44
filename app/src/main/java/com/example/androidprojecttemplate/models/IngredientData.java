@@ -1,12 +1,11 @@
 package com.example.androidprojecttemplate.models;
 
-public class Ingredient {
-    private double price;
-    private int calories;
-
+public class IngredientData {
     private String name;
-
-    public Ingredient(String name, double price, int calories) {
+    private int calories;
+    private double price;
+    
+    public IngredientData(String name, double price, int calories) {
         if (name == null) {
             throw new IllegalArgumentException("Name is null, please enter a proper value");
         }
@@ -22,15 +21,11 @@ public class Ingredient {
         this.calories = calories;
     }
 
-    public double getPrice() {
-        return price;
-    }
+    public void setName(String name) { this.name = name; }
+    public void setCalories(int quantity) { this.quantity = quantity; }
+    public void setPrice(double price) { this.price = price; }
 
-    public String getName() {
-        return name;
-    }
-
-    public int getCalories() {
-        return calories;
-    }
+    public String getName() { return name; }
+    public int getCalories() { return calories; }
+    public double getPrice() { return price; }
 }
