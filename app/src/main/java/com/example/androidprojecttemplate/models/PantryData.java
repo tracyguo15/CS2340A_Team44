@@ -49,8 +49,20 @@ public class PantryData extends AbstractDatabase<String, Pair<IngredientData, In
      * @return an ArrayList containing the missing ingredients, or an empty list if all
      * the ingredients exist
      */
-    public ArrayList<Ingredient> getMissingIngredients(RecipeData recipe) {
-        
+    public ArrayList<IngredientData> getMissingIngredients(RecipeData recipe) {
+        ArrayList<IngredientData> missing = new ArrayList<>();
+
+        for (String requiredItemName : recipe.keySet()) {
+            Pair<IngredientData, Integer> requiredItem = recipe.get(requiredItemName);
+            Pair<IngredientData, Integer> pantryItem = this.get(requiredItemName);
+
+            int requiredQuantity = requiredItem.getValue();
+            int pantryQuantity = requiredItem.getValue();
+
+            if (pantryQuantity < requiredQuantity) {
+                missing.add(pantryItem);
+            }
+        }
     }
 
     /**
