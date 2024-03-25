@@ -50,7 +50,7 @@ public class IngredientViewModel {
         user = firebaseAuthSingleton.getInstance().getUser();
         theUsersEmailFromAuthenticationDatabase = firebaseAuthSingleton.getInstance().getEmail();
     }
-
+    Set<String> ingredients = new HashSet<String> ();
     public void addToFirebase(String name, String quantity, String calories, String expirationDate, IngredientCallback callback) {
         referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry");
         // get the user-specific pantry reference
@@ -59,7 +59,6 @@ public class IngredientViewModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
-                    Set<String> ingredients = new HashSet<String> ();
 
                     // Check if the ingredient exists
                     //snapshot.hasChild(name)
