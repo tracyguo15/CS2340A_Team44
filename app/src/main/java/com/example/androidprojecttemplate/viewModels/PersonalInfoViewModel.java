@@ -45,9 +45,9 @@ public class PersonalInfoViewModel {
 
     public void getCurrentUser() {
         // Get the current user's email, which will be used further down the code
-        firebaseAuth = FirebaseDB.getFirebaseAuth();
-        user = FirebaseDB.getUser();
-        theUsersEmail = FirebaseDB.getEmail();
+        firebaseAuth = FirebaseDB.getInstance().getFirebaseAuth();
+        user = FirebaseDB.getInstance().getUser();
+        email = FirebaseDB.getInstance().getEmail();
     }
 
 

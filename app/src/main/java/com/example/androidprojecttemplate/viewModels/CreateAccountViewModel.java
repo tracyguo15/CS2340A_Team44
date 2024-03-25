@@ -26,8 +26,8 @@ public class CreateAccountViewModel {
     private static int temp = 0;
 
     public CreateAccountViewModel() {
-        theData = new CreateAccountActivity();
-        theAuthenticationVariable = FirebaseDB.getFirebaseAuth();
+        data = new CreateAccountActivity();
+        theAuthenticationVariable = FirebaseDB.getInstance().getFirebaseAuth();
 
     }
 

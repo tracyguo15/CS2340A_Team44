@@ -5,6 +5,8 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:background="@color/design_default_color_primary_variant">
+    <!--    color can be changed-->
+
     <ImageView
         android:layout_width="180dp"
         android:layout_height="130dp"

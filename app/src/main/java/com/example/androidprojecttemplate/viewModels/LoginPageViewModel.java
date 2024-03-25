@@ -25,7 +25,7 @@ public class LoginPageViewModel {
 
     public LoginPageViewModel() {
         data = new LoginPageActivity();
-        firebaseAuth = FirebaseDB.getFirebaseAuth()
+        firebaseAuth = FirebaseDB.getInstance().getFirebaseAuth();
     }
 
     public static synchronized LoginPageViewModel getInstance() {
@@ -38,7 +38,7 @@ public class LoginPageViewModel {
 
     public int toHomeScreenMethodFromLogin(String username, String password) {
         // Can now login the user through firebase
-        theAuthenticationVariable.signInWithEmailAndPassword(username, password)
+        firebaseAuth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
