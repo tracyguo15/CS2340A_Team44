@@ -2,8 +2,8 @@ package com.example.androidprojecttemplate.models;
 
 import java.util.ArrayList;
 
-public class PantryData extends AbstractDatabase<String, Pair<IngredientData, int>> {
-    public PantryData(ArrayList<Pair<IngredientData, int>> ingredients) {
+public class PantryData extends AbstractDatabase<String, Pair<IngredientData, Integer>> {
+    public PantryData(ArrayList<Pair<IngredientData, Integer>> ingredients) {
         if (ingredients == null) {
             throw new IllegalArgumentException("ingredients shouldn't be null");
         }
@@ -27,7 +27,19 @@ public class PantryData extends AbstractDatabase<String, Pair<IngredientData, in
      * @return true if the recipe can be cooked, false otherwise
      */
     public boolean canCook(RecipeData recipe) {
-        
+        for (String requiredItemName : recipe.keySet()) {
+            Pair<IngredientData, Integer> requiredItem = recipe.get(requiredItemName);
+            Pair<IngredientData, Integer> pantryItem = this.get(requiredItemName);
+
+            int requiredQuantity = requiredItem.getValue();
+            int pantryQuantity = requiredItem.getValue();
+
+            if (pantryItem == null || pantryQuantity < requiredQuantity) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
