@@ -40,7 +40,13 @@ public class Recipe {
     }
 
     public int getCalories() {
-        return calories;
+        int totalCalories = 0;
+
+        for (Ingredient i : this.ingredients) {
+            totalCalories += i.getCalories();
+        }
+
+        return totalCalories;
     }
 
     public int getTime() {
