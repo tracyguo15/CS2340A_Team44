@@ -32,7 +32,7 @@ public class PantryData extends AbstractDatabase<String, Pair<IngredientData, In
             Pair<IngredientData, Integer> pantryItem = this.get(requiredItemName);
 
             int requiredQuantity = requiredItem.getValue();
-            int pantryQuantity = requiredItem.getValue();
+            int pantryQuantity = pantryItem.getValue();
 
             if (pantryItem == null || pantryQuantity < requiredQuantity) {
                 return false;
@@ -57,12 +57,14 @@ public class PantryData extends AbstractDatabase<String, Pair<IngredientData, In
             Pair<IngredientData, Integer> pantryItem = this.get(requiredItemName);
 
             int requiredQuantity = requiredItem.getValue();
-            int pantryQuantity = requiredItem.getValue();
+            int pantryQuantity = pantryItem.getValue();
 
             if (pantryQuantity < requiredQuantity) {
                 missing.add(pantryItem);
             }
         }
+
+        return missing;
     }
 
     /**
@@ -73,6 +75,27 @@ public class PantryData extends AbstractDatabase<String, Pair<IngredientData, In
      * @param recipe the recipe to cook
      */
     public void cook(RecipeData recipe) {
-        
+        for (String requiredItemName : recipe.keySet()) {
+            Pair<IngredientData, Integer> requiredItem = recipe.get(requiredItemName);
+            Pair<IngredientData, Integer> pantryItem = this.get(requiredItemName);
+
+            Ingredient pantryIngredient = pantryItem.getKey();
+
+            int requiredQuantity = requiredItem.getValue();
+            int pantryQuantity = pantryItem.getValue();
+
+            // if checked properly this should never be negative
+            int newPantryQuantity = pantryQuantity - requiredQuantity;
+
+            if (newPantryQuantity == 0) {
+                // remove ingredient from pantry
+                this.remove(requiredItemName);
+            } else {
+                // update ingredient quantity
+                this.put(
+                    requiredItemName, 
+                    Pair<IngredientData, Integer>(pantryIngredient, newPantryQuantity))
+            }
+        }
     }
 }
