@@ -13,8 +13,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+<<<<<<< HEAD
         android:padding="0dp"
         tools:context=".recipe">
+=======
+        android:padding="16dp"
+        tools:context=".inputmeal">
+>>>>>>> 562790dc773604d10f900b704e7f3d34066ad1a4
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
@@ -32,6 +37,7 @@
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme" />
 
+<<<<<<< HEAD
         <TextView
             android:id="@+id/u"
             android:layout_width="wrap_content"
@@ -40,6 +46,9 @@
             android:layout_marginRight="4dp"
             android:text="New Meal"
             android:textSize="16sp" />
+=======
+    </LinearLayout>
+>>>>>>> 562790dc773604d10f900b704e7f3d34066ad1a4
 
         <LinearLayout
             android:layout_width="match_parent"
