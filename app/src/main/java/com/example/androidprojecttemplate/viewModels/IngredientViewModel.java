@@ -67,32 +67,31 @@ public class IngredientViewModel {
                         return;
                     }
 
-//                     if {
-                        //check if quantity is invalid
-                        int quantityInt;
-                        try {
-                            //parse from string into int
-                            quantityInt = Integer.parseInt(quantity);
-                        } catch (NumberFormatException e) {
-                            callback.onCompleted(2); //error message
-                            return; // Stop execution
-                        }
+                    //check if quantity is invalid
+                    int quantityInt;
+                    try {
+                        //parse from string into int
+                        quantityInt = Integer.parseInt(quantity);
+                    } catch (NumberFormatException e) {
+                        callback.onCompleted(2); //error message
+                        return; // Stop execution
+                    }
 
-                        if (quantityInt <= 0) {
-                            //quantity is not positive
-                            callback.onCompleted(4); //quantity not positive error message
-                            return;
-                        }
+                    if (quantityInt <= 0) {
+                        //quantity is not positive
+                        callback.onCompleted(4); //quantity not positive error message
+                        return;
+                    }
 
-                        // Add the ingredient to Firebase since the quantity is positive
-                        //(referenceForPantry.child(theSnapshot.child("name").getValue().toString()), Name, Quantity, Calories, ExpirationDate)
-                        IngredientData newIngredient = new IngredientData(name, quantity, calories, expirationDate);
-                        referenceForPantry.child(theSnapshot.child("name").getValue().toString()).child("Ingredients").child(name).setValue(newIngredient)
-                                .addOnSuccessListener(aVoid -> {
-                                    ingredients.add(name);
-                                    callback.onCompleted(1);
-                                }) // Success
-                                .addOnFailureListener(e -> callback.onCompleted(2)); // Error
+                    // Add the ingredient to Firebase since the quantity is positive
+                    //(referenceForPantry.child(theSnapshot.child("name").getValue().toString()), Name, Quantity, Calories, ExpirationDate)
+                    IngredientData newIngredient = new IngredientData(name, quantity, calories, expirationDate);
+                    referenceForPantry.child(theSnapshot.child("name").getValue().toString()).child("Ingredients").child(name).setValue(newIngredient)
+                            .addOnSuccessListener(aVoid -> {
+                                ingredients.add(name);
+                                callback.onCompleted(1);
+                            }) // Success
+                            .addOnFailureListener(e -> callback.onCompleted(2)); // Error
 
                 }
 
