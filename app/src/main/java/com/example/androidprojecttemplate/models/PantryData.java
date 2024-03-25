@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class PantryData extends AbstractDatabase<String, Pair<IngredientData, int>> {
     public PantryData(ArrayList<Pair<IngredientData, int>> ingredients) {
-        if (ingredient == null) {
+        if (ingredients == null) {
             throw new IllegalArgumentException("ingredients shouldn't be null");
         }
 
