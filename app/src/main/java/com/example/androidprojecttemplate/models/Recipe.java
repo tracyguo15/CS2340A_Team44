@@ -4,17 +4,16 @@ import java.util.ArrayList;
 
 public class Recipe {
     private ArrayList<Ingredient> ingredients;
-    private int calories;
     private int time;
 
     private String name;
 
-    public Recipe(String name, int calories, int time, ArrayList<Ingredient> list) {
+    public Recipe(String name, int time, ArrayList<Ingredient> list) {
         if (name == null) {
             throw new IllegalArgumentException("Name is empty, please enter a valid string.");
         }
         if (time < 0) {
-            throw new IllegalArgumentException("Time to cook is less than 0, please enter a nonnegative number.");
+            throw new IllegalArgumentException("Time to cook is less than 0, please enter a positive number.");
         }
         if (list == null) {
             throw new IllegalArgumentException("The list of ingredients is null, please enter a valid list.");
@@ -30,7 +29,6 @@ public class Recipe {
             }
         }
         this.name = name;
-        this.calories = calories;
         this.time = time;
         this.ingredients = list;
     }
