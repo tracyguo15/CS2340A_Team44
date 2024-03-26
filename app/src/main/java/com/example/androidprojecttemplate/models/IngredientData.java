@@ -5,11 +5,11 @@ public class IngredientData {
     private int calories;
     private double price;
 
-    private double quantity;
+    private String quantity;
 
     private String expirationDate;
 
-    public IngredientData(String name, double quantity, double calories, String expirationDate) {
+    public IngredientData(String name, String quantity, int calories, String expirationDate) {
         if (name == null) {
             throw new IllegalArgumentException("Name is null, please enter a proper value");
         }
@@ -18,7 +18,7 @@ public class IngredientData {
         }
 
         this.name = name;
-        this.price = price;
+        this.calories = calories;
         this.quantity = quantity;
         this.expirationDate = expirationDate;
     }
@@ -42,7 +42,7 @@ public class IngredientData {
 
 
     public void setName(String name) { this.name = name; }
-    public void setCalories(int quantity) { this.quantity = quantity; }
+    public void setCalories(String quantity) { this.quantity = quantity;}
     public void setPrice(double price) { this.price = price; }
 
     public String getName() { return name; }

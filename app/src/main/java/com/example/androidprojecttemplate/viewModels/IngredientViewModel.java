@@ -77,7 +77,7 @@ public class IngredientViewModel {
                     }
 
                     // Add the ingredient to Firebase
-                    IngredientData newIngredient = new IngredientData(name, Double.parseDouble(quantity), Double.parseDouble(calories), expirationDate);
+                    IngredientData newIngredient = new IngredientData(name, quantity, Integer.parseInt(calories), expirationDate);
                     referenceForPantry.child(theSnapshot.child("name").getValue().toString()).child("Ingredients").child(name).setValue(newIngredient)
                             .addOnSuccessListener(aVoid -> {
                                 ingredients.add(name);
