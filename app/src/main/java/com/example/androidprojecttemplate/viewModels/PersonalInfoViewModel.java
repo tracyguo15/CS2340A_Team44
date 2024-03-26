@@ -2,7 +2,7 @@ package com.example.androidprojecttemplate.viewModels;
 
 // android.text.TextUtils;
 //import android.widget.Toast;
-import com.example.androidprojecttemplate.models.firebaseAuthSingleton;
+import com.example.androidprojecttemplate.models.FirebaseDB;
 import androidx.annotation.NonNull;
 
 import com.example.androidprojecttemplate.models.UserData;
@@ -18,21 +18,21 @@ import com.google.firebase.database.ValueEventListener;
 
 public class PersonalInfoViewModel {
     private static PersonalInfoViewModel instance;
-    private final PersonalInfo theData;
+    private final PersonalInfo data;
     public static int temp = 0;
 
     // For firebase authentication (to get user's email)
-    FirebaseAuth theAuthenticationVariable;
+    FirebaseAuth firebaseAuth;
     FirebaseUser user;
 
     // For real-time database
     DatabaseReference reference;
     DatabaseReference tempReference;
 
-    String theUsersEmail;
+    String email;
 
     public PersonalInfoViewModel() {
-        theData = new PersonalInfo();
+        data = new PersonalInfo();
     }
 
     public static synchronized PersonalInfoViewModel getInstance() {
@@ -45,10 +45,9 @@ public class PersonalInfoViewModel {
 
     public void getCurrentUser() {
         // Get the current user's email, which will be used further down the code
-        theAuthenticationVariable = firebaseAuthSingleton.getInstance()
-                .getTheInstanceFromFirebase();
-        user = firebaseAuthSingleton.getInstance().getUser();
-        theUsersEmail = firebaseAuthSingleton.getInstance().getEmail();
+        firebaseAuth = FirebaseDB.getInstance().getFirebaseAuth();
+        user = FirebaseDB.getInstance().getUser();
+        email = FirebaseDB.getInstance().getEmail();
     }
 
 
@@ -62,18 +61,18 @@ public class PersonalInfoViewModel {
 
                     String theEmailFromFirebase = theSnapshot.child("username")
                             .getValue().toString();
-                    if (theEmailFromFirebase.equals(theUsersEmail)) {
+                    if (theEmailFromFirebase.equals(email)) {
                         //Found the email, can now add the data for that specific user
                         //UserData theInfo = new personalInfo(height, weight, gender);
-                        UserData data = new UserData();
-                        data.setHeight(Integer.parseInt(height));
-                        data.setWeight(Integer.parseInt(weight));
-                        data.setGender(gender);
-                        data.setAge(Integer.parseInt(age));
+                        UserData userData = new UserData();
+                        userData.setHeight(Integer.parseInt(height));
+                        userData.setWeight(Integer.parseInt(weight));
+                        userData.setGender(gender);
+                        userData.setAge(Integer.parseInt(age));
 
                         tempReference = reference.child(theSnapshot.child("name")
                                 .getValue().toString());
-                        tempReference.child("Personal Info").setValue(data);
+                        tempReference.child("Personal Info").setValue(userData);
                         temp = 1;
                     }
 
@@ -85,10 +84,6 @@ public class PersonalInfoViewModel {
                temp = 2;
             }
         });
-
-
-
-
 
         return temp;
     }

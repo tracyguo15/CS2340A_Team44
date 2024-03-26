@@ -15,7 +15,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-
 //implements NavigationView.OnNavigationItemSelectedListener
 public class HomePage extends AppCompatActivity {
     private DrawerLayout dl;

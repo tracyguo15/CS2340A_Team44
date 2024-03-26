@@ -2,7 +2,7 @@ package com.example.androidprojecttemplate.viewModels;
 
 import android.text.TextUtils;
 
-import com.example.androidprojecttemplate.models.firebaseAuthSingleton;
+import com.example.androidprojecttemplate.models.FirebaseDB;
 
 import androidx.annotation.NonNull;
 
@@ -17,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class CreateAccountViewModel {
     private static CreateAccountViewModel instance;
-    private final CreateAccountActivity theData;
+    private final CreateAccountActivity data;
 
     FirebaseAuth theAuthenticationVariable;
 
@@ -26,9 +26,8 @@ public class CreateAccountViewModel {
     private static int temp = 0;
 
     public CreateAccountViewModel() {
-        theData = new CreateAccountActivity();
-        theAuthenticationVariable = firebaseAuthSingleton.getInstance()
-                .getTheInstanceFromFirebase();
+        data = new CreateAccountActivity();
+        theAuthenticationVariable = FirebaseDB.getInstance().getFirebaseAuth();
 
     }
 

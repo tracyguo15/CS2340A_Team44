@@ -28,4 +28,8 @@ public class AbstractDatabase<K,V> {
     public int size() {
         return table.size();
     }
+
+    public Set keySet() {
+        return table.keySet();
+    }
 }
