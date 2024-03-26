@@ -2,9 +2,7 @@ package com.example.androidprojecttemplate.viewModels;
 
 import android.text.TextUtils;
 
-import com.example.androidprojecttemplate.models.IngredientData;
-import com.example.androidprojecttemplate.models.NameData;
-import com.example.androidprojecttemplate.models.firebaseAuthSingleton;
+import com.example.androidprojecttemplate.models.FirebaseDB;
 
 import androidx.annotation.NonNull;
 
@@ -19,20 +17,17 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class CreateAccountViewModel {
     private static CreateAccountViewModel instance;
-    private final CreateAccountActivity theData;
+    private final CreateAccountActivity data;
 
     FirebaseAuth theAuthenticationVariable;
 
     DatabaseReference reference;
-    DatabaseReference referenceForPantry;
-    DatabaseReference childForReferenceForPantry;
 
     private static int temp = 0;
 
     public CreateAccountViewModel() {
-        theData = new CreateAccountActivity();
-        theAuthenticationVariable = firebaseAuthSingleton.getInstance()
-                .getTheInstanceFromFirebase();
+        data = new CreateAccountActivity();
+        theAuthenticationVariable = FirebaseDB.getInstance().getFirebaseAuth();
 
     }
 
@@ -81,21 +76,6 @@ public class CreateAccountViewModel {
                             // letter of their username (since you can't use the full username since
                             // it has special characters)
                             reference.child(name).setValue(theUser);
-
-
-
-                            // Furthermore, will also add the user's name to the pantry database
-                            // This is just for organizational purposes
-                            referenceForPantry = FirebaseDatabase.getInstance()
-                                    .getReference()
-                                    .child("Pantry");
-
-                            NameData theName = new NameData(name, username);
-                            referenceForPantry.child(name).setValue(theName);
-
-                            childForReferenceForPantry = referenceForPantry.child(name);
-                            IngredientData tempValue = new IngredientData(name);
-                            childForReferenceForPantry.child("Ingredients").setValue(tempValue);
 
                             temp = 5;
                         } else {

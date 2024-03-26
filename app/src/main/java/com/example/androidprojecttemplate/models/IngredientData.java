@@ -1,53 +1,31 @@
 package com.example.androidprojecttemplate.models;
 
 public class IngredientData {
-    private String Name;
-    private String Quantity;
-    private String Calories;
-    private String ExpirationDate;
+    private String name;
+    private int calories;
+    private double price;
+    
+    public IngredientData(String name, double price, int calories) {
+        if (name == null) {
+            throw new IllegalArgumentException("Name is null, please enter a proper value");
+        }
+        if (price < 0) {
+            throw new IllegalArgumentException("The price is negative, please enter a positive number.");
+        }
+        if (calories < 0) {
+            throw new IllegalArgumentException("Ingredient must have positive number of calories.");
+        }
 
-    public IngredientData(String Name, String Quantity, String Calories, String ExpirationDate) {
-        this.Name = Name;
-        this.Quantity = Quantity;
-        this.Calories = Calories;
-        this.ExpirationDate = ExpirationDate;
-
+        this.name = name;
+        this.price = price;
+        this.calories = calories;
     }
 
-    public IngredientData(String Name) {
-        this.Name = Name;
-    }
+    public void setName(String name) { this.name = name; }
+    public void setCalories(int quantity) { this.quantity = quantity; }
+    public void setPrice(double price) { this.price = price; }
 
-    // Getter and Setter methods
-    public void setTheName(String theNewName) {
-        Name = theNewName;
-    }
-
-    public String getTheName() {
-        return Name;
-    }
-
-    public void setTheQuantity(String theNewQuantity) {
-        Quantity = theNewQuantity;
-    }
-
-    public String getTheQuantity() {
-        return Quantity;
-    }
-
-    public void setTheCalories(String theNewCalories) {
-        Calories = theNewCalories;
-    }
-
-    public String getTheCalories() {
-        return Calories;
-    }
-
-    public void setTheExpirationDate(String theNewExpirationDate) {
-        ExpirationDate = theNewExpirationDate;
-    }
-    public String getTheExpirationDate() {
-        return ExpirationDate;
-    }
-
+    public String getName() { return name; }
+    public int getCalories() { return calories; }
+    public double getPrice() { return price; }
 }

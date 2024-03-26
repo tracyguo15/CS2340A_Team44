@@ -1,7 +1,7 @@
 package com.example.androidprojecttemplate.viewModels;
 
 import com.example.androidprojecttemplate.models.UserData;
-import com.example.androidprojecttemplate.models.firebaseAuthSingleton;
+import com.example.androidprojecttemplate.models.FirebaseDB;
 
 public class UserDataViewModel {
     private static UserDataViewModel instance;
