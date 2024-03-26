@@ -71,10 +71,6 @@ public class LoginPageActivity extends AppCompatActivity {
                         "The username or password is wrong",
                         Toast.LENGTH_SHORT).show();
             }
-
-
-            System.out.println("Fuck you");
-
         });
 
         toWelcomePage.setOnClickListener(f -> {
