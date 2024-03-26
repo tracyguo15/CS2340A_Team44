@@ -18,6 +18,7 @@ public class RecipeData extends AbstractDatabase<String, Pair<IngredientData, In
 
         this.name = name;
         this.time = time;
+        
         this.description = description;
     }
 
