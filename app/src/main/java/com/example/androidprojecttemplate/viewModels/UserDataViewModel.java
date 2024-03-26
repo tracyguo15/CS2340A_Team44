@@ -1,10 +1,11 @@
 package com.example.androidprojecttemplate.viewModels;
 
 import com.example.androidprojecttemplate.models.UserData;
+import com.example.androidprojecttemplate.models.FirebaseDB;
 
 public class UserDataViewModel {
     private static UserDataViewModel instance;
-    final private UserData userData;
+    private final UserData userData;
 
     public UserDataViewModel() {
         this.userData = new UserData();
@@ -57,23 +58,29 @@ public class UserDataViewModel {
         return "Female";
     }
 
-    public String calorieGoalText() {
-        int height = (int)Math.round(userData.getHeight() * 2.54);       // in cm
-        int weight = (int)Math.round(userData.getWeight() * 0.454);      // in kg
+    public int calorieGoal() {
+        int height = (int) Math.round(userData.getHeight() * 2.54);       // in cm
+        int weight = (int) Math.round(userData.getWeight() * 0.454);      // in kg
         int age = userData.getAge();
 
-        int calorieGoal = (int)Math.round((10 * weight) + (6.25 * height) - (5 * age));
+        int calorieGoal = (int) Math.round((10 * weight) + (6.25 * height) - (5 * age));
 
         switch (userData.getGender()) {
-            case "male":
-                calorieGoal += 5;
-                break;
-            case "female":
-                calorieGoal -= 161;
-                break;
-            default:
-                break;
+        case "male":
+            calorieGoal += 5;
+            break;
+        case "female":
+            calorieGoal -= 161;
+            break;
+        default:
+            break;
         }
+
+        return calorieGoal;
+    }
+
+    public String calorieGoalText() {
+        int calorieGoal = calorieGoal();
 
         return String.format("Calorie goal: %d", calorieGoal);
     }

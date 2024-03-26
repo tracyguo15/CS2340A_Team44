@@ -20,15 +20,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.androidprojecttemplate.R;
-import com.example.androidprojecttemplate.models.UserData;
+//import com.example.androidprojecttemplate.models.UserData;
+import com.example.androidprojecttemplate.viewModels.PersonalInfoViewModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+//import com.google.firebase.database.DataSnapshot;
+//import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+//import com.google.firebase.database.ValueEventListener;
 
 
 //implements NavigationView.OnNavigationItemSelectedListener
@@ -48,6 +49,8 @@ public class PersonalInfo extends AppCompatActivity {
 
     private Button theButtonToLogData;
 
+    private PersonalInfoViewModel viewModel;
+
     // For firebase authentication (to get user's email)
     FirebaseAuth auth;
     FirebaseUser user;
@@ -61,6 +64,8 @@ public class PersonalInfo extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        viewModel = PersonalInfoViewModel.getInstance();
 
         setContentView(R.layout.activity_personal_info_page);
         theHeightInput = findViewById(R.id.theHeight);
@@ -83,8 +88,8 @@ public class PersonalInfo extends AppCompatActivity {
         nav_view = (NavigationView) findViewById(R.id.nav_view);
 
         nav_view.setVisibility(View.GONE);
-        nav_view.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener()
-        {
+        nav_view.setNavigationItemSelectedListener(new NavigationView
+                .OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
@@ -115,15 +120,11 @@ public class PersonalInfo extends AppCompatActivity {
             }
         });
 
-        // Get the current user's email, which will be used further down the code
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
-        String theUsersEmail = user.getEmail();
-
-        //String[] theNames = new String[15];
-
         // Will now focus on logging the data
         theButtonToLogData.setOnClickListener(v -> {
+            // Used to get the current user
+            viewModel.getCurrentUser();
+
             // Check if the the inputs from the edit text are valid or not
             String height = String.valueOf(theHeightInput.getText());
             String weight = String.valueOf(theWeightInput.getText());
@@ -131,48 +132,41 @@ public class PersonalInfo extends AppCompatActivity {
             String age = String.valueOf(theAgeInput.getText());
 
             if (TextUtils.isEmpty(height)) {
-                Toast.makeText(PersonalInfo.this, "Please enter a height!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalInfo.this,
+                        "Please enter a height!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(weight)) {
-                Toast.makeText(PersonalInfo.this, "Please enter a weight!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalInfo.this,
+                        "Please enter a weight!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(gender)) {
-                Toast.makeText(PersonalInfo.this, "Please enter a gender!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalInfo.this,
+                        "Please enter a gender!",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(age)) {
-                Toast.makeText(PersonalInfo.this, "Please enter an age!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalInfo.this,
+                        "Please enter an age!",
+                        Toast.LENGTH_SHORT).show();
                 return;
+            } else if (height.contains("-") || weight.contains("-") ||
+                    age.contains("-")) {
+                throw new IllegalArgumentException("Argument contains -");
             }
 
-            reference = FirebaseDatabase.getInstance().getReference().child("Users");
-            reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for(DataSnapshot theSnapshot: snapshot.getChildren()) {
+            int theResult = viewModel.putTheDataIntoFirebase(height, weight, gender, age);
 
-                        String theEmailFromFirebase = theSnapshot.child("username").getValue().toString();
-                        if (theEmailFromFirebase.equals(theUsersEmail)) {
-                           //Found the email, can now add the data for that specific user
-                            //UserData theInfo = new personalInfo(height, weight, gender);
-                            UserData data = new UserData();
-                            data.setHeight(Integer.parseInt(height));
-                            data.setWeight(Integer.parseInt(weight));
-                            data.setGender(gender);
-                            data.setAge(Integer.parseInt(age));
-
-                            tempReference = reference.child(theSnapshot.child("name").getValue().toString());
-                            tempReference.child("Personal Info").setValue(data);
-                        }
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(PersonalInfo.this, "Something went wrong in the outer portion", Toast.LENGTH_SHORT).show();
-                }
-            });
-
+            if (theResult == 1) {
+                Toast.makeText(PersonalInfo.this,
+                        "Thank you, your information has been recorded",
+                        Toast.LENGTH_SHORT).show();
+            } else if (theResult == 2) {
+                Toast.makeText(PersonalInfo.this,
+                        "Something went wrong with firebase",
+                        Toast.LENGTH_SHORT).show();
+            }
         });
     }
     @Override
@@ -182,6 +176,6 @@ public class PersonalInfo extends AppCompatActivity {
         } else {
             nav_view.setVisibility(View.VISIBLE);
         }
-        return true || abdt.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
+        return true;
     }
 }
