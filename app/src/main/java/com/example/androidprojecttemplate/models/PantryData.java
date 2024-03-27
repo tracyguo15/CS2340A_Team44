@@ -2,13 +2,14 @@ package com.example.androidprojecttemplate.models;
 
 import java.util.ArrayList;
 
+
 public class PantryData extends AbstractDatabase<String, Pair<IngredientData, Integer>> {
     public PantryData(ArrayList<Pair<IngredientData, Integer>> ingredients) {
         if (ingredients == null) {
             throw new IllegalArgumentException("ingredients shouldn't be null");
         }
 
-        for (Pair<IngredientData, int> i : ingredients) {
+        for (Pair<IngredientData, Integer> i : ingredients) {
             this.put(i);
         }
     }
