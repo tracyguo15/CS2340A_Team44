@@ -53,7 +53,7 @@ public class ListPage extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.inputmeal) {
-                    Intent intent = new Intent(ListPage.this, IngredientPage.class);
+                    Intent intent = new Intent(ListPage.this, InputMealPage.class);
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.recipe) {

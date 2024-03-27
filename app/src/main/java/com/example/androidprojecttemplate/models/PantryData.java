@@ -1,5 +1,7 @@
 package com.example.androidprojecttemplate.models;
 
+import android.util.Pair;
+
 import java.util.ArrayList;
 
 public class PantryData extends AbstractDatabase<String, Pair<IngredientData, Integer>> {
@@ -8,7 +10,7 @@ public class PantryData extends AbstractDatabase<String, Pair<IngredientData, In
             throw new IllegalArgumentException("ingredients shouldn't be null");
         }
 
-        for (Pair<IngredientData, int> i : ingredients) {
+        for (Pair<IngredientData, Integer> i : ingredients) {
             this.put(i);
         }
     }
