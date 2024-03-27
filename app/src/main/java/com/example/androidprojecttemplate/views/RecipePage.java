@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -30,20 +31,23 @@ public class RecipePage extends AppCompatActivity {
 
     private NavigationView navView;
 
-    public Button createButton(LinearLayout container, String text) {
-        Button button = new Button(this);
+    private LinearLayout ingredientContainer;
 
-        button.setLayoutParams(new ViewGroup.LayoutParams(
+    public void createIngredientRow() {
+        // remove button
+        Button removeButton = new Button(this);
+
+        removeButton.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
         // dynamically sets drawable attributes based on render
-        button.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        removeButton.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                button.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                removeButton.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                int cornerRadius = button.getHeight() / 2;
+                int cornerRadius = removeButton.getHeight() / 2;
 
                 GradientDrawable drawable = new GradientDrawable();
 
@@ -52,19 +56,24 @@ public class RecipePage extends AppCompatActivity {
 
                 drawable.setColor(Color.rgb(102, 80, 164)); // purple
 
-                button.setPadding(80, 4, 80, 4);
-                button.setBackground(drawable);
+                removeButton.setPadding(80, 4, 80, 4);
+                removeButton.setBackground(drawable);
             }
         });
 
-        button.setAllCaps(false);
-        button.setTextColor(Color.WHITE);
-        button.setText(text);
-        button.setTextSize(14);
+        removeButton.setAllCaps(false);
+        removeButton.setTextColor(Color.WHITE);
+        removeButton.setText("-");
+        removeButton.setTextSize(14);
 
-        container.addView(button);
+        // ingredient input
+        EditText input = new EditText(this);
 
-        return button;
+        input.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        //container.addView(button);
     }
 
     @Override
@@ -122,8 +131,7 @@ public class RecipePage extends AppCompatActivity {
         });
 
         // page functionality
-        LinearLayout container = findViewById(R.id.container);
-        this.createButton(container, "button");
+        ingredientContainer = findViewById(R.id.container);
     }
 
     @Override
