@@ -14,6 +14,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -32,6 +33,9 @@ public class RecipePage extends AppCompatActivity {
     private NavigationView navView;
 
     private LinearLayout ingredientContainer;
+    private Button addIngredient;
+    private final int MAX_INGREDIENTS = 10;
+    private int ingredientCount;
 
     public void createIngredientRow() {
         // remove button
@@ -73,7 +77,28 @@ public class RecipePage extends AppCompatActivity {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        //container.addView(button);
+        // row layout
+        LinearLayout row = new LinearLayout(this);
+        row.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        row.setOrientation(LinearLayout.HORIZONTAL);
+
+        // remove button functionality
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ingredientContainer.removeView(row);
+                ingredientCount--;
+            }
+        });
+
+        // row composition
+        row.addView(input);
+        row.addView(removeButton);
+
+        // ingredients container composition
+        ingredientContainer.addView(row);
     }
 
     @Override
@@ -132,6 +157,19 @@ public class RecipePage extends AppCompatActivity {
 
         // page functionality
         ingredientContainer = findViewById(R.id.container);
+        addIngredient = findViewById(R.id.addIngredientRow);
+
+        addIngredient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ingredientCount < MAX_INGREDIENTS) {
+                    createIngredientRow();
+                    ingredientCount++;
+                } else {
+                    Toast.makeText(RecipePage.this, "Max 10 ingredients", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
