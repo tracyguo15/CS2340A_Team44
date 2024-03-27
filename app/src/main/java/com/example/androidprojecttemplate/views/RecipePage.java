@@ -2,10 +2,16 @@ package com.example.androidprojecttemplate.views;
 
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,6 +28,41 @@ public class RecipePage extends AppCompatActivity {
     private ActionBarDrawerToggle abdt;
 
     private NavigationView navView;
+
+    public Button createButton(LinearLayout container) {
+        Button button = new Button(this);
+
+        button.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        // dynamically sets drawable attributes based on render
+        button.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                button.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                int cornerRadius = button.getHeight() / 2;
+
+                GradientDrawable drawable = new GradientDrawable();
+
+                drawable.setShape(GradientDrawable.RECTANGLE);
+                drawable.setCornerRadius(cornerRadius);
+
+                drawable.setColor(Color.RED); // should be default purple
+
+                button.setPadding(64, 16, 64, 16);
+                button.setBackground(drawable);
+            }
+        });
+
+        button.setAllCaps(false);
+        button.setText("Add Button");
+
+        container.addView(button);
+
+        return button;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,19 +119,8 @@ public class RecipePage extends AppCompatActivity {
         });
 
         // page functionality
-        Button addButton = new Button(this);
-        
-        addButton.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        addButton.setText("Add Button");
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createButton();
-            }
-        });
-        container.addView(addButton);
+        LinearLayout container = findViewById(R.id.container);
+        this.createButton(container);
     }
 
     @Override
