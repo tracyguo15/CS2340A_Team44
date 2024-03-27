@@ -2,8 +2,12 @@ package com.example.androidprojecttemplate.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -12,6 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.androidprojecttemplate.R;
 
+import com.example.androidprojecttemplate.viewModels.IngredientViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 
@@ -22,11 +27,31 @@ public class IngredientPage extends AppCompatActivity {
 
     private NavigationView nav_view;
 
+    private EditText ingredientName;
+    private EditText quantity;
+    private EditText calorieForIngredient;
+
+    private EditText expirationDate;
+
+    private Button addIngredientToFirebase;
+
+    private IngredientViewModel viewModel;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_ingredient_page);
+
+        viewModel = IngredientViewModel.getInstance();
+
+        ingredientName = findViewById(R.id.nameOfIngredientInput);
+        quantity = findViewById(R.id.quantityInput);
+        calorieForIngredient = findViewById(R.id.ingredientCalorieInput);
+        addIngredientToFirebase = findViewById(R.id.buttonToInputIngredient);
+        expirationDate = findViewById(R.id.theExpirationDateInput);
+
 
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(homeToolBar);
@@ -74,7 +99,48 @@ public class IngredientPage extends AppCompatActivity {
                 return false;
             }
         });
+
+
+        addIngredientToFirebase.setOnClickListener(v -> {
+            viewModel.getCurrentUser();
+            String theName = ingredientName.getText().toString();
+            String theQuantity = quantity.getText().toString();
+            String theCalories = calorieForIngredient.getText().toString();
+            String theExpirationDate = expirationDate.getText().toString();
+
+            // Validation checks
+            if (TextUtils.isEmpty(theName)) {
+                Toast.makeText(IngredientPage.this, "Please enter an ingredient name", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(theQuantity)) {
+                Toast.makeText(IngredientPage.this, "Please enter the quantity", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(theCalories)) {
+                Toast.makeText(IngredientPage.this, "Please enter the calories", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(theExpirationDate)) {
+                theExpirationDate = "Not Available";
+            }
+
+            viewModel.addToFirebase(theName, theQuantity, theCalories, theExpirationDate, result -> runOnUiThread(() -> {
+                switch (result) {
+                    case 1:
+                        Toast.makeText(IngredientPage.this, "Success", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        Toast.makeText(IngredientPage.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 3:
+                        Toast.makeText(IngredientPage.this, "The ingredient already exists, can't add", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 4:
+                        Toast.makeText(IngredientPage.this, "Quantity is not positive, can't add", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }));
+        });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (nav_view.getVisibility() == View.VISIBLE) {
