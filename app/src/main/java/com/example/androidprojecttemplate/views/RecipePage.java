@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -75,6 +76,21 @@ public class RecipePage extends AppCompatActivity {
                 return false;
             }
         });
+
+        // page functionality
+        Button addButton = new Button(this);
+        
+        addButton.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        addButton.setText("Add Button");
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createButton();
+            }
+        });
+        container.addView(addButton);
     }
 
     @Override
