@@ -47,6 +47,7 @@ public class IngredientData {
 
     public void setQuantity(String quantity) { this.quantity = quantity;}
 
+
     public void setPrice(double price) { this.price = price; }
 
     public String getName() { return name; }
