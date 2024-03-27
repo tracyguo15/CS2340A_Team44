@@ -3,6 +3,7 @@ package com.example.androidprojecttemplate.views;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Layout;
@@ -29,7 +30,7 @@ public class RecipePage extends AppCompatActivity {
 
     private NavigationView navView;
 
-    public Button createButton(LinearLayout container) {
+    public Button createButton(LinearLayout container, String text) {
         Button button = new Button(this);
 
         button.setLayoutParams(new ViewGroup.LayoutParams(
@@ -49,15 +50,17 @@ public class RecipePage extends AppCompatActivity {
                 drawable.setShape(GradientDrawable.RECTANGLE);
                 drawable.setCornerRadius(cornerRadius);
 
-                drawable.setColor(Color.RED); // should be default purple
+                drawable.setColor(Color.rgb(102, 80, 164)); // purple
 
-                button.setPadding(64, 16, 64, 16);
+                button.setPadding(80, 4, 80, 4);
                 button.setBackground(drawable);
             }
         });
 
         button.setAllCaps(false);
-        button.setText("Add Button");
+        button.setTextColor(Color.WHITE);
+        button.setText(text);
+        button.setTextSize(14);
 
         container.addView(button);
 
@@ -120,7 +123,7 @@ public class RecipePage extends AppCompatActivity {
 
         // page functionality
         LinearLayout container = findViewById(R.id.container);
-        this.createButton(container);
+        this.createButton(container, "button");
     }
 
     @Override
