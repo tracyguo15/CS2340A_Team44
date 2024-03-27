@@ -30,7 +30,7 @@ public class AbstractDatabase<K,V> {
         return table.size();
     }
 
-    public Set keySet() {
+    public Set<K> keySet() {
         return table.keySet();
     }
 }
