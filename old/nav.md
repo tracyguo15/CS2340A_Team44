@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.androidprojecttemplate.views.Nav">
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/navView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

@@ -32,5 +32,6 @@ public class FirebaseDB {
         return getUser().getEmail();
     }
 
-    public String getUserId() { return getUser().getUid(); }
+    public String getUserId() {
+        return getUser().getUid(); }
 }

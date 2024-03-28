@@ -19,9 +19,9 @@ public class CreateAccountViewModel {
     private static CreateAccountViewModel instance;
     private final CreateAccountActivity data;
 
-    FirebaseAuth theAuthenticationVariable;
+    private FirebaseAuth theAuthenticationVariable;
 
-    DatabaseReference reference;
+    private DatabaseReference reference;
 
     private static int temp = 0;
 

@@ -25,7 +25,7 @@ public class IngredientPage extends AppCompatActivity {
     private ActionBarDrawerToggle abdt;
     private static boolean isLoggedIn = false;
 
-    private NavigationView nav_view;
+    private NavigationView navView;
 
     private EditText ingredientName;
     private EditText quantity;
@@ -64,10 +64,10 @@ public class IngredientPage extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        navView = (NavigationView) findViewById(R.id.navView);
 
-        nav_view.setVisibility(View.GONE);
-        nav_view.setNavigationItemSelectedListener(new NavigationView
+        navView.setVisibility(View.GONE);
+        navView.setNavigationItemSelectedListener(new NavigationView
                 .OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -110,43 +110,54 @@ public class IngredientPage extends AppCompatActivity {
 
             // Validation checks
             if (TextUtils.isEmpty(theName)) {
-                Toast.makeText(IngredientPage.this, "Please enter an ingredient name", Toast.LENGTH_SHORT).show();
+                Toast.makeText(IngredientPage.this,
+                        "Please enter an ingredient name",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(theQuantity)) {
-                Toast.makeText(IngredientPage.this, "Please enter the quantity", Toast.LENGTH_SHORT).show();
+                Toast.makeText(IngredientPage.this,
+                        "Please enter the quantity",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(theCalories)) {
-                Toast.makeText(IngredientPage.this, "Please enter the calories", Toast.LENGTH_SHORT).show();
+                Toast.makeText(IngredientPage.this,
+                        "Please enter the calories",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(theExpirationDate)) {
                 theExpirationDate = "Not Available";
             }
 
-            viewModel.addToFirebase(theName, theQuantity, theCalories, theExpirationDate, result -> runOnUiThread(() -> {
-                switch (result) {
-                    case 1:
-                        Toast.makeText(IngredientPage.this, "Success", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        Toast.makeText(IngredientPage.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 3:
-                        Toast.makeText(IngredientPage.this, "The ingredient already exists, can't add", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 4:
-                        Toast.makeText(IngredientPage.this, "Quantity is not positive, can't add", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }));
+            viewModel.addToFirebase(theName, theQuantity,
+                    theCalories, theExpirationDate,
+                    result -> runOnUiThread(() -> {
+                        if (result == 1) {
+                            Toast.makeText(IngredientPage.this,
+                                    "Success",
+                                    Toast.LENGTH_SHORT).show();
+                        } else if (result == 2) {
+                            Toast.makeText(IngredientPage.this,
+                                    "Something went wrong",
+                                    Toast.LENGTH_SHORT).show();
+                        } else if (result == 3) {
+                            Toast.makeText(IngredientPage.this,
+                                    "The ingredient already exists, can't add",
+                                    Toast.LENGTH_SHORT).show();
+                        } else if (result == 4) {
+                            Toast.makeText(IngredientPage.this,
+                                    "Quantity is not positive, can't add",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }));
         });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (nav_view.getVisibility() == View.VISIBLE) {
-            nav_view.setVisibility(View.GONE);
+        if (navView.getVisibility() == View.VISIBLE) {
+            navView.setVisibility(View.GONE);
         } else {
-            nav_view.setVisibility(View.VISIBLE);
+            navView.setVisibility(View.VISIBLE);
         }
         return true;
     }

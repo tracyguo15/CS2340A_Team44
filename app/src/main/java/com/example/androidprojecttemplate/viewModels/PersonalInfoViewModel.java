@@ -22,14 +22,14 @@ public class PersonalInfoViewModel {
     public static int temp = 0;
 
     // For firebase authentication (to get user's email)
-    FirebaseAuth firebaseAuth;
-    FirebaseUser user;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
 
     // For real-time database
-    DatabaseReference reference;
-    DatabaseReference tempReference;
+    private DatabaseReference reference;
+    private DatabaseReference tempReference;
 
-    String email;
+    private String email;
 
     public PersonalInfoViewModel() {
         data = new PersonalInfo();
@@ -81,7 +81,7 @@ public class PersonalInfoViewModel {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-               temp = 2;
+                temp = 2;
             }
         });
 
