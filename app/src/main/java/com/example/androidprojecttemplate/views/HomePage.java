@@ -15,7 +15,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 
-
 //implements NavigationView.OnNavigationItemSelectedListener
 public class HomePage extends AppCompatActivity {
     private DrawerLayout dl;
@@ -94,7 +93,7 @@ public class HomePage extends AppCompatActivity {
     }
 
     // Method to set the login state. remember to set login after login page is implemented
-    public static void setLoggedIn(boolean value) {
-        isLoggedIn = value;
-    }
+//    public static void setLoggedIn(boolean value) {
+//        isLoggedIn = value;
+//    }
 }
