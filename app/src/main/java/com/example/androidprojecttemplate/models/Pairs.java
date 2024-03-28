@@ -1,12 +1,16 @@
 package com.example.androidprojecttemplate.models;
+import android.util.Pair;
 
-public class Pair<U, V> {
+public class Pairs<U, V> extends Pair<U, V> {
     private U first;
     private V second;
 
-    public Pair(U first, V second) {
-        this.first = first;
-        this.second = second;
+    public Pairs(U first, V second) {
+        super(first, second);
+        /*
+          this.first = first;
+          this.second = second;
+         */
     }
 
     public U getFirst() {

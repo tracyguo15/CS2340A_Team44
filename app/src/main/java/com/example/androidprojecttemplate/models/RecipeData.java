@@ -1,19 +1,19 @@
 package com.example.androidprojecttemplate.models;
 
 import java.util.ArrayList;
-import android.util.Pair;
 
-public class RecipeData extends AbstractDatabase<String, Pair<IngredientData, Integer>> {
+public class RecipeData extends AbstractDatabase<String, Pairs<IngredientData, Integer>> {
     private String name;
     private int time;
     private String description;
 
-    public RecipeData(ArrayList<Pair<IngredientData, Integer>> ingredients, String name, int time, String description) {
+    public RecipeData(ArrayList<Pairs<IngredientData, Integer>> ingredients,
+                      String name, int time, String description) {
         if (ingredients == null) {
             throw new IllegalArgumentException("ingredients shouldn't be null");
         }
 
-        for (Pair<IngredientData, Integer> i : ingredients) {
+        for (Pairs<IngredientData, Integer> i : ingredients) {
             String ingredientName = i.getFirst().getName();
 
             this.put(ingredientName, i);
@@ -27,7 +27,7 @@ public class RecipeData extends AbstractDatabase<String, Pair<IngredientData, In
     public void add(IngredientData ingredient, int quantity) {
         String name = ingredient.getName();
 
-        this.put(name, new Pair<>(ingredient, quantity));
+        this.put(name, new Pairs<>(ingredient, quantity));
     }
 
     public void delete(IngredientData ingredient, int quantity) {
