@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,14 +39,38 @@ public class RecipePage extends AppCompatActivity {
     private int ingredientCount;
 
     public void createIngredientRow() {
-        // remove button
+        // create row
+        LinearLayout row = new LinearLayout(this);
+        row.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        row.setOrientation(LinearLayout.HORIZONTAL);
+
+        // row elements
+        EditText input = new EditText(this);
+        EditText quantityInput = new EditText(this);
         Button removeButton = new Button(this);
 
+        row.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int width = row.getWidth();
+                Log.d("test", String.valueOf(width));
+            }
+        });
+
         removeButton.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
+                205,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+
+        quantityInput.setLayoutParams(new ViewGroup.LayoutParams(
+                205,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        // dynamically sets drawable attributes based on render
+        input.setLayoutParams(new ViewGroup.LayoutParams(
+                959,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+
         removeButton.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -60,31 +85,11 @@ public class RecipePage extends AppCompatActivity {
 
                 drawable.setColor(Color.rgb(102, 80, 164)); // purple
 
-                removeButton.setPadding(80, 4, 80, 4);
+                removeButton.setPadding(40, 4, 40, 4);
                 removeButton.setBackground(drawable);
             }
         });
 
-        removeButton.setAllCaps(false);
-        removeButton.setTextColor(Color.WHITE);
-        removeButton.setText("-");
-        removeButton.setTextSize(14);
-
-        // ingredient input
-        EditText input = new EditText(this);
-
-        input.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-
-        // row layout
-        LinearLayout row = new LinearLayout(this);
-        row.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        row.setOrientation(LinearLayout.HORIZONTAL);
-
-        // remove button functionality
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,11 +98,15 @@ public class RecipePage extends AppCompatActivity {
             }
         });
 
-        // row composition
+        removeButton.setAllCaps(false);
+        removeButton.setTextColor(Color.WHITE);
+        removeButton.setText("-");
+        removeButton.setTextSize(14);
+
         row.addView(input);
+        row.addView(quantityInput);
         row.addView(removeButton);
 
-        // ingredients container composition
         ingredientContainer.addView(row);
     }
 
