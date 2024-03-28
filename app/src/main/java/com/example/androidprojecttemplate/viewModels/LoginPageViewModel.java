@@ -21,7 +21,7 @@ public class LoginPageViewModel {
     // since only one call to get the reference from the actual database is made.
     // The variable is just used as a placeholder for that actual reference,
     // but the reference is made only once
-    FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
 
     public LoginPageViewModel() {
         data = new LoginPageActivity();

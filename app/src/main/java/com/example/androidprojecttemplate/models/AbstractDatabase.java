@@ -1,9 +1,10 @@
 package com.example.androidprojecttemplate.models;
 
 import java.util.Hashtable;
+import java.util.Set;
 
-public class AbstractDatabase<K,V> {
-    private Hashtable<K,V> table;
+public class AbstractDatabase<K, V> {
+    private Hashtable<K, V> table;
 
     public AbstractDatabase() {
         table = new Hashtable<>();
