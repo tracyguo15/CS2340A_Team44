@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:headerLayout="@layout/navigation_header"
             app:menu="@menu/navigation_menu"></com.google.android.material.navigation.NavigationView>
 
@@ -32,7 +32,7 @@
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
-            android:visibility="visible" />
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/u"

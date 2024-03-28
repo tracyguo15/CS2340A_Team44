@@ -1,6 +1,7 @@
 package com.example.androidprojecttemplate.models;
 
 import java.util.ArrayList;
+import android.util.Pair;
 
 public class RecipeData extends AbstractDatabase<String, Pair<IngredientData, Integer>> {
     private String name;
@@ -13,7 +14,9 @@ public class RecipeData extends AbstractDatabase<String, Pair<IngredientData, In
         }
 
         for (Pair<IngredientData, Integer> i : ingredients) {
-            this.put(i);
+            String ingredientName = i.getFirst().getName();
+
+            this.put(ingredientName, i);
         }
 
         this.name = name;
@@ -22,18 +25,28 @@ public class RecipeData extends AbstractDatabase<String, Pair<IngredientData, In
     }
 
     public void add(IngredientData ingredient, int quantity) {
-        this.put(new Pair<>(ingredient, quantity));
+        String name = ingredient.getName();
+
+        this.put(name, new Pair<>(ingredient, quantity));
     }
 
     public void delete(IngredientData ingredient, int quantity) {
-        this.remove(new Pair<>(ingredient, quantity));
+        String name = ingredient.getName();
+
+        this.remove(name);
     }
 
-    public void setName(String name) { this.name = name; }
-    public void setTime(int time) { this.time = time; }
-    public void setDescription(String description) { this.description = description};
+    public void setName(String name) {
+        this.name = name; }
+    public void setTime(int time) {
+        this.time = time; }
+    public void setDescription(String description) {
+        this.description = description; }
 
-    public String getName() { return this.name; }
-    public int getTime() { return this.time; }
-    public String getDescription() { return this.description; }
+    public String getName() {
+        return this.name; }
+    public int getTime() {
+        return this.time; }
+    public String getDescription() {
+        return this.description; }
 }

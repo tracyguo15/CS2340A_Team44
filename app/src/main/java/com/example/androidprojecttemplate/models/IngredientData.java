@@ -41,14 +41,17 @@ public class IngredientData {
     }
 
 
-
+    //Setters
     public void setName(String name) {
         this.name = name; }
-    public void setCalories(String quantity) {
+    public void setCalories(int calories) {
+        this.calories = calories; }
+    public void setQuantity(String quantity) {
         this.quantity = quantity; }
     public void setPrice(double price) {
         this.price = price; }
 
+    //Getters
     public String getName() {
         return name; }
     public int getCalories() {

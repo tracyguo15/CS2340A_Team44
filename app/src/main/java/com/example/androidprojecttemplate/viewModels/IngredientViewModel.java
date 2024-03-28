@@ -45,7 +45,7 @@ public class IngredientViewModel {
     }
 
     //used to check for duplicate ingredients
-    private Set<String> ingredients = new HashSet<String>();
+    private Set<String> addedIngredientNames = new HashSet<String> ();
 
     public void addToFirebase(String name, String quantity, String calories,
                               String expirationDate, IngredientCallback callback) {
@@ -57,7 +57,7 @@ public class IngredientViewModel {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
 
                     // Check if the ingredient exists in set
-                    if (ingredients.contains(name)) {
+                    if (addedIngredientNames.contains(name)) {
                         callback.onCompleted(3); // already exists error message
                         return;
                     }
@@ -84,7 +84,7 @@ public class IngredientViewModel {
                                     .toString()).child("Ingredients")
                             .child(name).setValue(newIngredient)
                             .addOnSuccessListener(aVoid -> {
-                                ingredients.add(name);
+                                addedIngredientNames.add(name);
                                 callback.onCompleted(1); // Success
                             })
                             .addOnFailureListener(e -> callback.onCompleted(2)); // Error
