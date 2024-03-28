@@ -4,7 +4,7 @@ package com.example.androidprojecttemplate.viewModels;
 import androidx.annotation.NonNull;
 
 import com.example.androidprojecttemplate.models.IngredientData;
-import com.example.androidprojecttemplate.models.UserData;
+//import com.example.androidprojecttemplate.models.UserData;
 import com.example.androidprojecttemplate.models.FirebaseDB;
 import com.example.androidprojecttemplate.views.IngredientPage;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,7 +45,7 @@ public class IngredientViewModel {
     }
 
     //used to check for duplicate ingredients
-    Set<String> ingredients = new HashSet<String> ();
+    private Set<String> addedIngredientNames = new HashSet<String> ();
 
     public void addToFirebase(String name, String quantity, String calories, String expirationDate, IngredientCallback callback) {
         referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry");
@@ -56,7 +56,7 @@ public class IngredientViewModel {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
 
                     // Check if the ingredient exists in set
-                    if (ingredients.contains(name)) {
+                    if (addedIngredientNames.contains(name)) {
                         callback.onCompleted(3); // already exists error message
                         return;
                     }
@@ -80,7 +80,7 @@ public class IngredientViewModel {
                     IngredientData newIngredient = new IngredientData(name, quantity, Integer.parseInt(calories), expirationDate);
                     referenceForPantry.child(theSnapshot.child("name").getValue().toString()).child("Ingredients").child(name).setValue(newIngredient)
                             .addOnSuccessListener(aVoid -> {
-                                ingredients.add(name);
+                                addedIngredientNames.add(name);
                                 callback.onCompleted(1); // Success
                             })
                             .addOnFailureListener(e -> callback.onCompleted(2)); // Error
