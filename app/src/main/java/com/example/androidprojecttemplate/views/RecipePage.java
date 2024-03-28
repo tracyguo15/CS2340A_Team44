@@ -48,7 +48,7 @@ public class RecipePage extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        navView = (NavigationView) findViewById(R.id.nav_view);
+        navView = (NavigationView) findViewById(R.id.navView);
         navView.setVisibility(View.GONE);
         navView.setNavigationItemSelectedListener(new NavigationView
                 .OnNavigationItemSelectedListener() {
