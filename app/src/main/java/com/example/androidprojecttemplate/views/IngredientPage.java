@@ -131,26 +131,22 @@ public class IngredientPage extends AppCompatActivity {
             viewModel.addToFirebase(theName, theQuantity,
                     theCalories, theExpirationDate,
                     result -> runOnUiThread(() -> {
-                        switch (result) {
-                        case 1:
+                        if (result == 1) {
                             Toast.makeText(IngredientPage.this,
-                                "Success",
-                                Toast.LENGTH_SHORT).show();
-                            break;
-                        case 2:
-                            Toast.makeText(IngredientPage.this,
-                                "Something went wrong", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 3:
-                            Toast.makeText(IngredientPage.this,
-                                "The ingredient already exists, can't add",
+                                    "Success",
                                     Toast.LENGTH_SHORT).show();
-                            break;
-                        case 4:
+                        } else if (result == 2) {
                             Toast.makeText(IngredientPage.this,
-                                "Quantity is not positive, can't add",
-                                Toast.LENGTH_SHORT).show();
-                            break;
+                                    "Something went wrong",
+                                    Toast.LENGTH_SHORT).show();
+                        } else if (result == 3) {
+                            Toast.makeText(IngredientPage.this,
+                                    "The ingredient already exists, can't add",
+                                    Toast.LENGTH_SHORT).show();
+                        } else if (result == 4) {
+                            Toast.makeText(IngredientPage.this,
+                                    "Quantity is not positive, can't add",
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }));
         });
