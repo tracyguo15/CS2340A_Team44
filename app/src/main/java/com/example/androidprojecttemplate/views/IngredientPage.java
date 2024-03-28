@@ -110,34 +110,49 @@ public class IngredientPage extends AppCompatActivity {
 
             // Validation checks
             if (TextUtils.isEmpty(theName)) {
-                Toast.makeText(IngredientPage.this, "Please enter an ingredient name", Toast.LENGTH_SHORT).show();
+                Toast.makeText(IngredientPage.this,
+                        "Please enter an ingredient name",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(theQuantity)) {
-                Toast.makeText(IngredientPage.this, "Please enter the quantity", Toast.LENGTH_SHORT).show();
+                Toast.makeText(IngredientPage.this,
+                        "Please enter the quantity",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(theCalories)) {
-                Toast.makeText(IngredientPage.this, "Please enter the calories", Toast.LENGTH_SHORT).show();
+                Toast.makeText(IngredientPage.this,
+                        "Please enter the calories",
+                        Toast.LENGTH_SHORT).show();
                 return;
             } else if (TextUtils.isEmpty(theExpirationDate)) {
                 theExpirationDate = "Not Available";
             }
 
-            viewModel.addToFirebase(theName, theQuantity, theCalories, theExpirationDate, result -> runOnUiThread(() -> {
-                switch (result) {
-                    case 1:
-                        Toast.makeText(IngredientPage.this, "Success", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        Toast.makeText(IngredientPage.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 3:
-                        Toast.makeText(IngredientPage.this, "The ingredient already exists, can't add", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 4:
-                        Toast.makeText(IngredientPage.this, "Quantity is not positive, can't add", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }));
+            viewModel.addToFirebase(theName, theQuantity,
+                    theCalories, theExpirationDate,
+                    result -> runOnUiThread(() -> {
+                        switch (result) {
+                        case 1:
+                            Toast.makeText(IngredientPage.this,
+                                "Success",
+                                Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            Toast.makeText(IngredientPage.this,
+                                "Something went wrong", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 3:
+                            Toast.makeText(IngredientPage.this,
+                                "The ingredient already exists, can't add",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                        case 4:
+                            Toast.makeText(IngredientPage.this,
+                                "Quantity is not positive, can't add",
+                                Toast.LENGTH_SHORT).show();
+                            break;
+                        }
+                    }));
         });
     }
 

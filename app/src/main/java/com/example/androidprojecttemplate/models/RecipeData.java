@@ -7,7 +7,7 @@ public class RecipeData extends AbstractDatabase<String, Pair<IngredientData, In
     private int time;
     private String description;
 
-    public RecipeData(ArrayList<Pair<IngredientData, Integer>> ingredients, Strings name, int time, String description) {
+    public RecipeData(ArrayList<Pair<IngredientData, Integer>> ingredients, String name, int time, String description) {
         if (ingredients == null) {
             throw new IllegalArgumentException("ingredients shouldn't be null");
         }
@@ -18,7 +18,6 @@ public class RecipeData extends AbstractDatabase<String, Pair<IngredientData, In
 
         this.name = name;
         this.time = time;
-        
         this.description = description;
     }
 

@@ -23,7 +23,7 @@ public class NameData {
         name = theNewName;
     }
 
-    public void setUsername (String theNewUsername) {
+    public void setUsername(String theNewUsername) {
         username = theNewUsername;
     }
 

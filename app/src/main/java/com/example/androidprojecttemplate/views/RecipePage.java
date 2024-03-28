@@ -14,13 +14,20 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.androidprojecttemplate.R;
 
 import com.google.android.material.navigation.NavigationView;
-
+/*
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+*/
 public class RecipePage extends AppCompatActivity {
     // ui
     private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
-
     private NavigationView navView;
+
+    //private EditText
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,6 +82,19 @@ public class RecipePage extends AppCompatActivity {
                 return false;
             }
         });
+        // nav menu end
+
+        // Show all recipes
+        // Will create a button to a page for each recipe in the database
+        // We'll see if this is the best way to go about this
+        /*
+        for(RecipeData recipe : ) {
+            Button button = new Button(this);
+            button.setId("recipe" + i);
+            yourView.add(button);
+        }
+        yuh
+         */
     }
 
     @Override

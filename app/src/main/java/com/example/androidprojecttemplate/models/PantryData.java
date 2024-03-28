@@ -96,7 +96,7 @@ public class PantryData extends AbstractDatabase<String, Pair<IngredientData, In
                 // update ingredient quantity
                 this.put(
                     requiredItemName, 
-                    Pair<IngredientData, Integer>(pantryIngredient, newPantryQuantity))
+                    Pair<IngredientData, Integer>(pantryIngredient, newPantryQuantity));
             }
         }
     }

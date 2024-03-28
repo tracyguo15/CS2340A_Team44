@@ -92,8 +92,10 @@ public class HomePage extends AppCompatActivity {
         return true;
     }
 
-    // Method to set the login state. remember to set login after login page is implemented
-//    public static void setLoggedIn(boolean value) {
-//        isLoggedIn = value;
-//    }
+    /*
+    Method to set the login state. remember to set login after login page is implemented
+    public static void setLoggedIn(boolean value) {
+        isLoggedIn = value;
+    }
+     */
 }

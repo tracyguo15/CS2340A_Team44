@@ -65,13 +65,13 @@ public class InputMealPage extends AppCompatActivity {
 
     // state
     private static boolean isLoggedIn = false;
-    List<MealData> meals = new ArrayList<>();
-    int totalCalories;
+    private List<MealData> meals = new ArrayList<>();
+    private int totalCalories;
     private UserDataViewModel viewModel;
-    FirebaseAuth firebaseAuth;
-    FirebaseUser user;
-    DatabaseReference userReference;
-    DatabaseReference mealReference;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+    private DatabaseReference userReference;
+    private DatabaseReference mealReference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

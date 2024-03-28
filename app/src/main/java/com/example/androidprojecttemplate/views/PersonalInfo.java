@@ -52,14 +52,14 @@ public class PersonalInfo extends AppCompatActivity {
     private PersonalInfoViewModel viewModel;
 
     // For firebase authentication (to get user's email)
-    FirebaseAuth auth;
-    FirebaseUser user;
+    private FirebaseAuth auth;
+    private FirebaseUser user;
 
 
     // For real-time database
-    FirebaseDatabase rootNode;
-    DatabaseReference reference;
-    DatabaseReference tempReference;
+    private FirebaseDatabase rootNode;
+    private DatabaseReference reference;
+    private DatabaseReference tempReference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -151,8 +151,8 @@ public class PersonalInfo extends AppCompatActivity {
                         "Please enter an age!",
                         Toast.LENGTH_SHORT).show();
                 return;
-            } else if (height.contains("-") || weight.contains("-") ||
-                    age.contains("-")) {
+            } else if (height.contains("-") || weight.contains("-")
+                    || age.contains("-")) {
                 throw new IllegalArgumentException("Argument contains -");
             }
 

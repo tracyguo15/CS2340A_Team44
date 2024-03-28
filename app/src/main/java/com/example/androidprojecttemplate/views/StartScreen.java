@@ -17,7 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class StartScreen extends AppCompatActivity {
 
-    DatabaseReference databaseReference;
+    private DatabaseReference databaseReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
