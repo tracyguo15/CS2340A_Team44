@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.Layout;
 import android.util.Log;
 import android.view.MenuItem;
@@ -24,7 +25,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.androidprojecttemplate.R;
 
+import com.example.androidprojecttemplate.models.IngredientData;
+import com.example.androidprojecttemplate.models.MealData;
+import com.example.androidprojecttemplate.models.Pair;
+import com.example.androidprojecttemplate.models.RecipeData;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class RecipePage extends AppCompatActivity {
     // ui
@@ -35,8 +47,11 @@ public class RecipePage extends AppCompatActivity {
 
     private LinearLayout ingredientContainer;
     private Button addIngredient;
-    private final int MAX_INGREDIENTS = 10;
+    private Button submit;
+    private final int MAX_INGREDIENTS = 5;
     private int ingredientCount;
+    private ArrayList<EditText> ingredients;
+    private ArrayList<EditText> quantities;
 
     public void createIngredientRow() {
         // create row
@@ -94,6 +109,8 @@ public class RecipePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ingredientContainer.removeView(row);
+                ingredients.remove(input);
+                quantities.remove(quantityInput);
                 ingredientCount--;
             }
         });
@@ -103,11 +120,19 @@ public class RecipePage extends AppCompatActivity {
         removeButton.setText("-");
         removeButton.setTextSize(14);
 
+        input.setHint("ingredient");
+
+        quantityInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+        quantityInput.setHint("0");
+
         row.addView(input);
         row.addView(quantityInput);
         row.addView(removeButton);
 
         ingredientContainer.addView(row);
+
+        ingredients.add(input);
+        quantities.add(quantityInput);
     }
 
     @Override
@@ -167,6 +192,10 @@ public class RecipePage extends AppCompatActivity {
         // page functionality
         ingredientContainer = findViewById(R.id.container);
         addIngredient = findViewById(R.id.addIngredientRow);
+        submit = findViewById(R.id.submitRecipeData);
+
+        ingredients = new ArrayList<>();
+        quantities = new ArrayList<>();
 
         addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,6 +208,106 @@ public class RecipePage extends AppCompatActivity {
                 }
             }
         });
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference cookbookReference = FirebaseDatabase.getInstance().getReference().child("Cookbook");
+                DatabaseReference ingredientReference = FirebaseDatabase.getInstance().getReference().child("Ingredients");
+
+                ArrayList<IngredientData> ingredientsDB = new ArrayList<>();
+                // get ingredients from ingredients database
+                ingredientReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot ingredient : snapshot.getChildren()) {
+                            int ingredientId = Integer.parseInt(ingredient.getKey());
+                            String ingredientName = ingredient.getValue().toString();
+                            ingredientsDB.add(new IngredientData(
+                                    ingredientId,
+                                    ingredientName,
+                                    0,
+                                    0
+                            ));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(RecipePage.this,
+                                "Something went wrong in the outer portion",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                int time = 0;
+                String description = "test";
+                String name = "example";
+                cookbookReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        RecipeData data = new RecipeData();
+
+                        boolean allIngredientsFound = true;
+
+                        // iterate through ingredients on this page
+                        for (int i = 0; i < ingredients.size(); i++) {
+                            String ingredientName = ingredients.get(i).getText().toString();
+                            int ingredientQuantity = Integer.parseInt(quantities.get(i).getText().toString());
+                            int ingredientId = 0;
+
+                            // iterate through ingredients in database to check if ingredient is here
+                            boolean ingredientFound = false;
+
+                            for (IngredientData j : ingredientsDB) {
+                                if (j.getName() == ingredientName) {
+                                    ingredientFound = true;
+                                    ingredientId = j.getId();
+                                }
+                            }
+
+                            if (ingredientFound) {
+                                data.add(ingredientId, ingredientQuantity);
+                            } else {
+                                allIngredientsFound = false;
+                            }
+                        }
+
+                        if (allIngredientsFound) {
+                            data.setDescription(description);
+                            data.setName(name);
+                            data.setTime(time);
+                        }
+                        // update the meal data
+                        /*
+                        MealData data = new MealData();
+                        data.setCalories(Integer.parseInt(calories));
+                        data.setUsername(email);
+                        data.setDate(date);
+
+                        mealReference.child(meal).setValue(data);
+
+                        // reset input text
+                        mealInput.setText("");
+                        calorieInput.setText("");
+
+                        // display toast
+                        Toast.makeText(RecipePage.this,
+                                "Meal submitted!",
+                                Toast.LENGTH_SHORT).show();*/
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(RecipePage.this,
+                                "Something went wrong in the outer portion",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+
     }
 
     @Override

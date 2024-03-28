@@ -2,32 +2,19 @@ package com.example.androidprojecttemplate.models;
 
 import java.util.ArrayList;
 
-public class RecipeData extends AbstractDatabase<String, Pair<IngredientData, Integer>> {
+public class RecipeData extends AbstractDatabase<String, Pair<Integer, Integer>> {
     private String name;
     private int time;
     private String description;
 
-    public RecipeData(ArrayList<Pair<IngredientData, Integer>> ingredients, String name, int time, String description) {
-        if (ingredients == null) {
-            throw new IllegalArgumentException("ingredients shouldn't be null");
-        }
-
-        for (Pair<IngredientData, Integer> i : ingredients) {
-            String ingredientName = i.getFirst().getName();
-
-            this.put(ingredientName, i);
-        }
-
-        this.name = name;
-        this.time = time;
-        
-        this.description = description;
+    public RecipeData() {
+        this.name = "";
+        this.time = 0;
+        this.description = "";
     }
 
-    public void add(IngredientData ingredient, int quantity) {
-        String name = ingredient.getName();
-
-        this.put(name, new Pair<>(ingredient, quantity));
+    public void add(int id, int quantity) {
+        this.put(name, new Pair<>(id, quantity));
     }
 
     public void delete(IngredientData ingredient) {
