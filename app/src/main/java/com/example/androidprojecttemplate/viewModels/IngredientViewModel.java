@@ -1,6 +1,8 @@
 package com.example.androidprojecttemplate.viewModels;
 
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.example.androidprojecttemplate.models.IngredientData;
@@ -50,11 +52,14 @@ public class IngredientViewModel {
     public void addToFirebase(String name, String quantity, String calories,
                               String expirationDate, IngredientCallback callback) {
         referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry");
+        Log.d("TheReference", referenceForPantry.toString());
+
 
         referenceForPantry.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+
 
                     // Check if the ingredient exists in set
                     if (addedIngredientNames.contains(name)) {
@@ -77,19 +82,29 @@ public class IngredientViewModel {
                         return;
                     }
 
-                    // Add the ingredient to Firebase
-                    IngredientData newIngredient = new IngredientData(name,
-                            quantity, Integer.parseInt(calories), expirationDate);
-                    referenceForPantry.child(theSnapshot.child("name").getValue()
-                                    .toString()).child("Ingredients")
-                            .child(name).setValue(newIngredient)
-                            .addOnSuccessListener(aVoid -> {
-                                addedIngredientNames.add(name);
-                                callback.onCompleted(1); // Success
-                            })
-                            .addOnFailureListener(e -> callback.onCompleted(2)); // Error
+
+                    String theEmailFromFirebase = theSnapshot.child("username")
+                            .getValue().toString();
+
+                    String theUsersName = theSnapshot.child("name").getValue().toString();
+
+                    if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
+                        // Add the ingredient to Firebase
+                        IngredientData newIngredient = new IngredientData(name,
+                                quantity, Integer.parseInt(calories), expirationDate);
+
+
+                        //referenceForPantry.child("nicole").child("Ingredients").child(name).setValue(newIngredient)
+                        referenceForPantry.child(theUsersName).child("Ingredients").child(name).setValue(newIngredient)
+                                .addOnSuccessListener(aVoid -> {
+                                    addedIngredientNames.add(name);
+                                    callback.onCompleted(1); // Success
+                                })
+                                .addOnFailureListener(e -> callback.onCompleted(2)); // Error
+                    }
 
                 }
+
 
             }
             @Override
