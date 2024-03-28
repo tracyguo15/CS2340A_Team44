@@ -48,6 +48,8 @@ public class RecipePage extends AppCompatActivity {
     private LinearLayout ingredientContainer;
     private Button addIngredient;
     private Button submit;
+    private EditText nameInput;
+    private EditText descriptionInput;
     private final int MAX_INGREDIENTS = 5;
     private int ingredientCount;
     private ArrayList<EditText> ingredients;
@@ -193,9 +195,15 @@ public class RecipePage extends AppCompatActivity {
         ingredientContainer = findViewById(R.id.container);
         addIngredient = findViewById(R.id.addIngredientRow);
         submit = findViewById(R.id.submitRecipeData);
+        nameInput = findViewById(R.id.nameInput);
+        descriptionInput = findViewById(R.id.descriptionInput);
 
         ingredients = new ArrayList<>();
         quantities = new ArrayList<>();
+
+        // create initial row
+        createIngredientRow();
+        ingredientCount++;
 
         addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,27 +282,10 @@ public class RecipePage extends AppCompatActivity {
                         }
 
                         if (allIngredientsFound) {
-                            data.setDescription(description);
-                            data.setName(name);
+                            data.setDescription(descriptionInput.getText().toString());
+                            data.setName(nameInput.getText().toString());
                             data.setTime(time);
                         }
-                        // update the meal data
-                        /*
-                        MealData data = new MealData();
-                        data.setCalories(Integer.parseInt(calories));
-                        data.setUsername(email);
-                        data.setDate(date);
-
-                        mealReference.child(meal).setValue(data);
-
-                        // reset input text
-                        mealInput.setText("");
-                        calorieInput.setText("");
-
-                        // display toast
-                        Toast.makeText(RecipePage.this,
-                                "Meal submitted!",
-                                Toast.LENGTH_SHORT).show();*/
                     }
 
                     @Override
