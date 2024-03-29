@@ -22,9 +22,11 @@ public class AbstractDatabase<K,V> {
         return table.remove(key);
     }
 
-    public boolean contains(K key) {
-        return table.contains(key);
+    public boolean contains(V value) {
+        return table.contains(value);
     }
+
+    public boolean containsKey(K key) { return table.containsKey(key); }
 
     public int size() {
         return table.size();

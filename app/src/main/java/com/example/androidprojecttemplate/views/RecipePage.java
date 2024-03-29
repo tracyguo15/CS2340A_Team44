@@ -75,7 +75,6 @@ public class RecipePage extends AppCompatActivity {
             @Override
             public void onGlobalLayout() {
                 int width = row.getWidth();
-                Log.d("test", String.valueOf(width));
             }
         });
 
@@ -225,67 +224,85 @@ public class RecipePage extends AppCompatActivity {
                 DatabaseReference ingredientReference = FirebaseDatabase.getInstance().getReference().child("Ingredients");
 
                 // get copy of ingredients from Ingredients database
-                AbstractDatabase<String, IngredientData> ingredientsDB = new AbstractDatabase<>();
-                
-                ingredientReference.addValueEventListener(new ValueEventListener() {
+                ingredientReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    public void onDataChange(DataSnapshot snapshot) {
+                        AbstractDatabase<String, IngredientData> ingredientsDB = new AbstractDatabase<>();
+
                         for (DataSnapshot ingredient : snapshot.getChildren()) {
                             IngredientData data = new IngredientData(
-                                    (double)ingredient.child("price").getValue(),
-                                    (int)ingredient.child("calories").getValue()
+                                    (double) ingredient.child("price").getValue(),
+                                    Math.toIntExact((long) ingredient.child("calories").getValue())
                             );
 
-                            ingredientsDB.put(ingredient.getKey(), data);
+                            ingredientsDB.put(ingredient.getKey().toString(), data);
                         }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(RecipePage.this,
-                                "Something went wrong in the outer portion",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        cookbookReference.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String recipeName = nameInput.getText().toString();
+                                String recipeDescription = descriptionInput.getText().toString();
+                                int recipeTime = Integer.parseInt(timeInput.getText().toString());
 
-                cookbookReference.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String recipeName = nameInput.getText().toString();
-                        String recipeDescription = descriptionInput.getText().toString();
-                        int recipeTime = Integer.parseInt(timeInput.getText().toString());
+                                RecipeData data = new RecipeData(recipeDescription, recipeTime);
 
-                        RecipeData data = new RecipeData(recipeDescription, recipeTime);
+                                boolean allIngredientsFound = true;
 
-                        boolean allIngredientsFound = true;
+                                // iterate through ingredients on this page
+                                for (int i = 0; i < ingredients.size(); i++) {
+                                    String ingredientName = ingredients.get(i).getText().toString();
+                                    Log.d("name", ingredientName);
+                                    int ingredientQuantity = Integer.parseInt(quantities.get(i).getText().toString());
 
-                        // iterate through ingredients on this page
-                        for (int i = 0; i < ingredients.size(); i++) {
-                            String ingredientName = ingredients.get(i).getText().toString();
-                            int ingredientQuantity = Integer.parseInt(quantities.get(i).getText().toString());
+                                    if (ingredientsDB.containsKey(ingredientName)) {
+                                        data.add(ingredientName, ingredientQuantity);
+                                    } else {
+                                        Toast.makeText(RecipePage.this,
+                                                String.format("%s is not a valid ingredient.", ingredientName),
+                                                Toast.LENGTH_SHORT).show();
+                                        allIngredientsFound = false;
+                                        break;
+                                    }
+                                }
 
-                            if (ingredientsDB.contains(ingredientName)) {
-                                data.add(ingredientName, ingredientQuantity);
-                            } else {
-                                Toast.makeText(RecipePage.this,
-                                        String.format("%s is not a valid ingredient.", ingredientName),
-                                        Toast.LENGTH_SHORT).show();
-                                allIngredientsFound = false;
-                                break;
+                                if (allIngredientsFound) {
+                                    data.setDescription(descriptionInput.getText().toString());
+                                    data.setTime(Integer.parseInt(timeInput.getText().toString()));
+
+                                    // submit to firebase
+                                    cookbookReference
+                                            .child(recipeName)
+                                            .child("description")
+                                            .setValue(recipeDescription);
+                                    cookbookReference
+                                            .child(recipeName)
+                                            .child("time")
+                                            .setValue(recipeTime);
+
+                                    for (String ingredientsKey : data.keySet()) {
+                                        cookbookReference
+                                                .child(recipeName)
+                                                .child("ingredients")
+                                                .child(ingredientsKey)
+                                                .child("quantity")
+                                                .setValue(data.get(ingredientsKey));
+                                    }
+                                }
                             }
-                        }
 
-                        if (allIngredientsFound) {
-                            data.setDescription(descriptionInput.getText().toString());
-                            data.setTime(Integer.parseInt(timeInput.getText().toString()));
-                        }
-
-                        // submit to firebase
-
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Toast.makeText(RecipePage.this,
+                                        "Something went wrong in the outer portion",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                    public void onCancelled(DatabaseError databaseError) {
+                        // handle potential errors
                         Toast.makeText(RecipePage.this,
                                 "Something went wrong in the outer portion",
                                 Toast.LENGTH_SHORT).show();
