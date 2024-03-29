@@ -55,6 +55,7 @@ public class RecipePage extends AppCompatActivity {
 
     private EditText timeInput;
     private EditText descriptionInput;
+    private EditText nameInput;
 
     public void createIngredientRow() {
         // create row
@@ -202,6 +203,7 @@ public class RecipePage extends AppCompatActivity {
 
         timeInput = findViewById(R.id.timeInput);
         descriptionInput = findViewById(R.id.descriptionInput);
+        nameInput = findViewById(R.id.nameInput);
 
         addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,9 +249,6 @@ public class RecipePage extends AppCompatActivity {
                     }
                 });
 
-                int time = 0;
-                String description = "test";
-                String name = "example";
                 cookbookReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -283,7 +282,7 @@ public class RecipePage extends AppCompatActivity {
                         if (allIngredientsFound) {
                             data.setDescription(descriptionInput.getText().toString());
                             data.setTime(Integer.parseInt(timeInput.getText().toString()));
-                            data.setName(name);
+                            data.setName(nameInput.getText().toString());
                         }
                     }
 
