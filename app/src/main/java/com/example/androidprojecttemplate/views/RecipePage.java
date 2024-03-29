@@ -48,12 +48,13 @@ public class RecipePage extends AppCompatActivity {
     private LinearLayout ingredientContainer;
     private Button addIngredient;
     private Button submit;
-    private EditText nameInput;
-    private EditText descriptionInput;
     private final int MAX_INGREDIENTS = 5;
     private int ingredientCount;
     private ArrayList<EditText> ingredients;
     private ArrayList<EditText> quantities;
+
+    private EditText timeInput;
+    private EditText descriptionInput;
 
     public void createIngredientRow() {
         // create row
@@ -195,15 +196,14 @@ public class RecipePage extends AppCompatActivity {
         ingredientContainer = findViewById(R.id.container);
         addIngredient = findViewById(R.id.addIngredientRow);
         submit = findViewById(R.id.submitRecipeData);
-        nameInput = findViewById(R.id.nameInput);
-        descriptionInput = findViewById(R.id.descriptionInput);
+
+        time
 
         ingredients = new ArrayList<>();
         quantities = new ArrayList<>();
 
-        // create initial row
-        createIngredientRow();
-        ingredientCount++;
+        timeInput = findViewById(R.id.timeInput);
+        descriptionInput = findViewById(R.descriptionInput);
 
         addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,8 +223,9 @@ public class RecipePage extends AppCompatActivity {
                 DatabaseReference cookbookReference = FirebaseDatabase.getInstance().getReference().child("Cookbook");
                 DatabaseReference ingredientReference = FirebaseDatabase.getInstance().getReference().child("Ingredients");
 
+                // get copy of ingredients from ingredients database
                 ArrayList<IngredientData> ingredientsDB = new ArrayList<>();
-                // get ingredients from ingredients database
+                
                 ingredientReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -283,8 +284,8 @@ public class RecipePage extends AppCompatActivity {
 
                         if (allIngredientsFound) {
                             data.setDescription(descriptionInput.getText().toString());
-                            data.setName(nameInput.getText().toString());
-                            data.setTime(time);
+                            data.setTime(timeInput.getText().toString());
+                            data.setName(name);
                         }
                     }
 
