@@ -9,12 +9,10 @@
     android:orientation="vertical"
     android:id="@+id/dl">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        tools:context=".ingredient">
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/nav_toolbar"
@@ -29,8 +27,17 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:visibility="gone"
             app:headerLayout="@layout/navigation_header"
             app:menu="@menu/navigation_menu"></com.google.android.material.navigation.NavigationView>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        tools:context=".ingredient">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,7 +63,68 @@
 
             <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="349dp" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/ingredient_name_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ingredient"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/ingredient_quantity_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Quantity"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/ingredient_price_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="$0.00"
+                    android:textSize="24sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/minusButton"
+                            android:layout_width="195dp"
+                            android:layout_height="wrap_content"
+                            android:text="-"
+                            android:textSize="24sp" />
+
+                        <Button
+                            android:id="@+id/plusButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="+"
+                            android:textSize="24sp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
