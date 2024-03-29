@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate.viewModels;
+package com.example.androidprojecttemplate.viewModel;
 
 /**
  * This interface is used as a callback for when we're doing something with ingredients,

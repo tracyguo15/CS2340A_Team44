@@ -7,7 +7,7 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.androidprojecttemplate.viewModels.CreateAccountViewModel;
+import com.example.androidprojecttemplate.viewModel.CreateAccountViewModel;
 import com.example.androidprojecttemplate.R;
 
 public class CreateAccountActivity extends AppCompatActivity {

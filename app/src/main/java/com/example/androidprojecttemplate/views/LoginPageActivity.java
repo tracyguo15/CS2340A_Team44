@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidprojecttemplate.R;
-import com.example.androidprojecttemplate.viewModels.LoginPageViewModel;
+import com.example.androidprojecttemplate.viewModel.LoginPageViewModel;
 //import com.google.android.gms.tasks.OnCompleteListener;
 //import com.google.android.gms.tasks.Task;
 //import com.google.firebase.auth.AuthResult;

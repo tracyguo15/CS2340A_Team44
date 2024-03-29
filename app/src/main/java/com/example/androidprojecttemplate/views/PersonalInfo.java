@@ -21,7 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.androidprojecttemplate.R;
 //import com.example.androidprojecttemplate.models.UserData;
-import com.example.androidprojecttemplate.viewModels.PersonalInfoViewModel;
+import com.example.androidprojecttemplate.viewModel.PersonalInfoViewModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

@@ -1,7 +1,7 @@
 package com.example.androidprojecttemplate.views;
 
 import com.example.androidprojecttemplate.models.MealData;
-import com.example.androidprojecttemplate.viewModels.UserDataViewModel;
+import com.example.androidprojecttemplate.viewModel.UserDataViewModel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;

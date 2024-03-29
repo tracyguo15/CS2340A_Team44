@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate.viewModels;
+package com.example.androidprojecttemplate.viewModel;
 
 
 import androidx.annotation.NonNull;
