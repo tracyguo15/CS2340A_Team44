@@ -1,7 +1,5 @@
 package com.example.androidprojecttemplate.views;
 
-import com.example.androidprojecttemplate.R;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -13,10 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.androidprojecttemplate.R;
 import com.google.android.material.navigation.NavigationView;
 
-//implements NavigationView.OnNavigationItemSelectedListener
-public class HomePage extends AppCompatActivity {
+public class PantryPage extends AppCompatActivity {
+
     private ActionBarDrawerToggle abdt;
     private DrawerLayout dl;
     private static boolean isLoggedIn = false;
@@ -27,7 +26,7 @@ public class HomePage extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_ingredient_pantry_page);
 
         // Check if user is logged in before going on home page
         if (isLoggedIn) {
@@ -59,22 +58,22 @@ public class HomePage extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == R.id.inputmeal) {
                     //Toast.makeText(HomePage.this, "InputMeal", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, InputMealPage.class);
+                    Intent intent = new Intent(PantryPage.this, InputMealPage.class);
                     startActivity(intent);
                 } else if (id == R.id.recipe) {
                     //Toast.makeText(HomePage.this, "Recipe", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, RecipePage.class);
+                    Intent intent = new Intent(PantryPage.this, RecipePage.class);
                     startActivity(intent);
                 } else if (id == R.id.ingredient) {
                     //Toast.makeText(HomePage.this, "Ingredient", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, IngredientPage.class);
+                    Intent intent = new Intent(PantryPage.this, IngredientPage.class);
                     startActivity(intent);
                 } else if (id == R.id.list) {
                     //Toast.makeText(HomePage.this, "ShoppingList", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, ListPage.class);
+                    Intent intent = new Intent(PantryPage.this, ListPage.class);
                     startActivity(intent);
                 } else if (id == R.id.personalinfo) {
-                    Intent intent = new Intent(HomePage.this, PersonalInfo.class);
+                    Intent intent = new Intent(PantryPage.this, PersonalInfo.class);
                     startActivity(intent);
                 }
                 return true;
