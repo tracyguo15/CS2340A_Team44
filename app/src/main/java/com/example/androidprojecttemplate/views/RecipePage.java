@@ -197,13 +197,11 @@ public class RecipePage extends AppCompatActivity {
         addIngredient = findViewById(R.id.addIngredientRow);
         submit = findViewById(R.id.submitRecipeData);
 
-        time
-
         ingredients = new ArrayList<>();
         quantities = new ArrayList<>();
 
         timeInput = findViewById(R.id.timeInput);
-        descriptionInput = findViewById(R.descriptionInput);
+        descriptionInput = findViewById(R.id.descriptionInput);
 
         addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -284,7 +282,7 @@ public class RecipePage extends AppCompatActivity {
 
                         if (allIngredientsFound) {
                             data.setDescription(descriptionInput.getText().toString());
-                            data.setTime(timeInput.getText().toString());
+                            data.setTime(Integer.parseInt(timeInput.getText().toString()));
                             data.setName(name);
                         }
                     }
