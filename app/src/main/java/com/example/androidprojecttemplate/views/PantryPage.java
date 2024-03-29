@@ -1,17 +1,22 @@
 package com.example.androidprojecttemplate.views;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.androidprojecttemplate.R;
+import com.example.androidprojecttemplate.viewModel.PantryPageViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 public class PantryPage extends AppCompatActivity {
@@ -21,6 +26,8 @@ public class PantryPage extends AppCompatActivity {
     private static boolean isLoggedIn = false;
 
     private NavigationView navView;
+
+    private PantryPageViewModel viewmodel = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,6 +86,11 @@ public class PantryPage extends AppCompatActivity {
                 return true;
             }
         });
+
+        viewmodel = new PantryPageViewModel();
+
+        LinearLayout group = findViewById(R.id.pantry_layout_group);
+
 
     }
     @Override
