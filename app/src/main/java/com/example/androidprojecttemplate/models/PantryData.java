@@ -19,10 +19,6 @@ public class PantryData extends AbstractDatabase<String, Integer> {
         this.put(ingredientName, quantity);
     }
 
-    public void remove(String ingredientName) {
-        this.remove(ingredientName);
-    }
-
     public void delete(String ingredientName) {
         this.remove(ingredientName);
     }

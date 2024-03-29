@@ -25,6 +25,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.androidprojecttemplate.R;
 
+import com.example.androidprojecttemplate.models.AbstractDatabase;
 import com.example.androidprojecttemplate.models.IngredientData;
 import com.example.androidprojecttemplate.models.MealData;
 import com.example.androidprojecttemplate.models.Pair;
@@ -223,21 +224,19 @@ public class RecipePage extends AppCompatActivity {
                 DatabaseReference cookbookReference = FirebaseDatabase.getInstance().getReference().child("Cookbook");
                 DatabaseReference ingredientReference = FirebaseDatabase.getInstance().getReference().child("Ingredients");
 
-                // get copy of ingredients from ingredients database
-                ArrayList<IngredientData> ingredientsDB = new ArrayList<>();
+                // get copy of ingredients from Ingredients database
+                AbstractDatabase<String, IngredientData> ingredientsDB = new AbstractDatabase<>();
                 
                 ingredientReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot ingredient : snapshot.getChildren()) {
-                            int ingredientId = Integer.parseInt(ingredient.getKey());
-                            String ingredientName = ingredient.getValue().toString();
-                            ingredientsDB.add(new IngredientData(
-                                    ingredientId,
-                                    ingredientName,
-                                    0,
-                                    0
-                            ));
+                            IngredientData data = new IngredientData(
+                                    (double)ingredient.child("price").getValue(),
+                                    (int)ingredient.child("calories").getValue()
+                            );
+
+                            ingredientsDB.put(ingredient.getKey(), data);
                         }
                     }
 
@@ -252,7 +251,11 @@ public class RecipePage extends AppCompatActivity {
                 cookbookReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        RecipeData data = new RecipeData();
+                        String recipeName = nameInput.getText().toString();
+                        String recipeDescription = descriptionInput.getText().toString();
+                        int recipeTime = Integer.parseInt(timeInput.getText().toString());
+
+                        RecipeData data = new RecipeData(recipeDescription, recipeTime);
 
                         boolean allIngredientsFound = true;
 
@@ -260,30 +263,25 @@ public class RecipePage extends AppCompatActivity {
                         for (int i = 0; i < ingredients.size(); i++) {
                             String ingredientName = ingredients.get(i).getText().toString();
                             int ingredientQuantity = Integer.parseInt(quantities.get(i).getText().toString());
-                            int ingredientId = 0;
 
-                            // iterate through ingredients in database to check if ingredient is here
-                            boolean ingredientFound = false;
-
-                            for (IngredientData j : ingredientsDB) {
-                                if (j.getName() == ingredientName) {
-                                    ingredientFound = true;
-                                    ingredientId = j.getId();
-                                }
-                            }
-
-                            if (ingredientFound) {
-                                data.add(ingredientId, ingredientQuantity);
+                            if (ingredientsDB.contains(ingredientName)) {
+                                data.add(ingredientName, ingredientQuantity);
                             } else {
+                                Toast.makeText(RecipePage.this,
+                                        String.format("%s is not a valid ingredient.", ingredientName),
+                                        Toast.LENGTH_SHORT).show();
                                 allIngredientsFound = false;
+                                break;
                             }
                         }
 
                         if (allIngredientsFound) {
                             data.setDescription(descriptionInput.getText().toString());
                             data.setTime(Integer.parseInt(timeInput.getText().toString()));
-                            data.setName(nameInput.getText().toString());
                         }
+
+                        // submit to firebase
+
                     }
 
                     @Override
