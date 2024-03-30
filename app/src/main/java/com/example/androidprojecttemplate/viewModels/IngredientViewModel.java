@@ -202,4 +202,8 @@ public class IngredientViewModel {
             }
         });
     }
+
+    public HashSet<String> getTheHashMap() {
+        return addedIngredientNames;
+    }
 }
