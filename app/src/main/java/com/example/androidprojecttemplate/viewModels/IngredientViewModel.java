@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.androidprojecttemplate.models.DataForPantry;
 import com.example.androidprojecttemplate.models.IngredientData;
 //import com.example.androidprojecttemplate.models.UserData;
 import com.example.androidprojecttemplate.models.FirebaseDB;
@@ -26,8 +27,10 @@ public class IngredientViewModel {
     private FirebaseUser user;
     private DatabaseReference referenceForPantry;
     private DatabaseReference referenceForSpecifcUser;
+    private DatabaseReference referenceForIngredientDatabase;
 
     private String theUsersEmailFromAuthenticationDatabase;
+    private boolean isItInIngredientDatabase = false;
 
     public IngredientViewModel() {
         theData = new IngredientPage();
@@ -151,12 +154,15 @@ public class IngredientViewModel {
 
                     if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
                         // Add the ingredient to Firebase
-                        IngredientData newIngredient = new IngredientData(name,
-                                quantity, Integer.parseInt(calories), expirationDate);
+                        DataForPantry newIngre = new DataForPantry(name, quantity, expirationDate);
 
-                        referenceForPantry.child(theUsersName).child("Ingredients").child(name).setValue(newIngredient)
+                        referenceForPantry.child(theUsersName).child("Ingredients").child(name).setValue(newIngre)
                                 .addOnSuccessListener(aVoid -> {
                                     addedIngredientNames.add(name);
+
+                                    // Have to add it to the ingredient database
+                                    addToIngredientFirebase(name, "0",calories);
+
                                     Log.d("Added:", addedIngredientNames.toString());
                                     callback.onCompleted(1); // Success
                                 })
@@ -167,6 +173,32 @@ public class IngredientViewModel {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 callback.onCompleted(2); // Error due to Firebase operation being cancelled
+            }
+        });
+    }
+
+    private void addToIngredientFirebase(String name, String calories, String price) {
+        referenceForIngredientDatabase = FirebaseDatabase.getInstance().getReference().child("Ingredients");
+
+        referenceForIngredientDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+                    if(name.equals(theSnapshot.getKey())) {
+                        isItInIngredientDatabase = true;
+                        break;
+                    }
+                }
+                if (!isItInIngredientDatabase) {
+                    // Can add it
+                    IngredientData theIng = new IngredientData(name, Integer.parseInt(calories), Integer.parseInt(price));
+                    referenceForIngredientDatabase.child(name).setValue(theIng);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Error", "Something went wrong");
             }
         });
     }
