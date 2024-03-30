@@ -203,7 +203,7 @@ public class IngredientViewModel {
         });
     }
 
-    public HashSet<String> getTheHashMap() {
+    public HashSet<String> getTheHashSet() {
         return addedIngredientNames;
     }
 }
