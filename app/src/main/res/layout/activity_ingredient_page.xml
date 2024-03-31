@@ -47,17 +47,17 @@
 
         <TextView
             android:id="@+id/textView8"
-            android:layout_width="320dp"
-            android:layout_height="124dp"
+            android:layout_width="330dp"
+            android:layout_height="97dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="65dp"
-            android:layout_marginTop="70dp"
-            android:layout_marginEnd="74dp"
-            android:layout_marginBottom="585dp"
-            android:text=" Please input the ingredient (expiration date is optional)" />
+            android:layout_marginStart="58dp"
+            android:layout_marginTop="61dp"
+            android:layout_marginEnd="39dp"
+            android:layout_marginBottom="589dp"
+            android:text=" Please input the ingredient (expiration date is optional). The list of the ingredients will then appear" />
 
         <EditText
             android:id="@+id/nameOfIngredientInput"
@@ -122,7 +122,6 @@
             android:ems="10"
             android:hint="Expiration Date: XX-XX-XXXX"
             android:inputType="text" />
-
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navView"
