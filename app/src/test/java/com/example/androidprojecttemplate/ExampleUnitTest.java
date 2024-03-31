@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.example.androidprojecttemplate.models.IngredientData;
 import com.example.androidprojecttemplate.models.MealData;
 import com.example.androidprojecttemplate.models.UserData;
 import com.example.androidprojecttemplate.models.UserLoginData;
@@ -116,4 +117,79 @@ public class ExampleUnitTest {
             ageExc = true;
         }
         assertEquals(ageExc,true);
-}}
+   }
+
+   //Sprint 3 Unit Tests!!
+    //Tracy Guo
+    @Test
+    public void negativeIngredientCalories() {
+        try {
+            IngredientData ingredient = new IngredientData("name", "quantity", -1, "expirationDate");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Ingredient must have positive number of calories.", e.getMessage());
+        }
+    }
+
+    //Tracy Guo
+    @Test
+    public void nullIngredientName() {
+        try {
+            IngredientData ingredient = new IngredientData(null, "quantity", 1, "expirationDate");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Name is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Michael Leonick
+    @Test
+    public void emptyIngredientName() {
+        try {
+            IngredientData ingredient = new IngredientData("", "quantity", 1, "expirationDate");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Name is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Michael Leonick
+    @Test
+    public void nullIngredientQuantity() {
+        try {
+            IngredientData ingredient = new IngredientData("name", null, 1, "expirationDate");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Quantity is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Daniel Deller
+    @Test
+    public void emptyIngredientQuantity() {
+        try {
+            IngredientData ingredient = new IngredientData("name", "", 1, "expirationDate");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Quantity is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Daniel Deller
+    @Test
+    public void nullIngredientExpirationDate() {
+        try {
+            IngredientData ingredient = new IngredientData("name", "quantity", 1, null);
+        } catch (IllegalArgumentException e) {
+            assertEquals("Expiration date is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Michael Vaden
+    @Test
+    public void emptyIngredientExpirationDate() {
+        try {
+            IngredientData ingredient = new IngredientData("name", "quantity", 1, "");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Expiration date is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Michael Vaden
+}
+
