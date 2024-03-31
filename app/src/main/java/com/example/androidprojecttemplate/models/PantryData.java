@@ -3,7 +3,6 @@ package com.example.androidprojecttemplate.models;
 import java.util.ArrayList;
 import java.util.Set;
 
-
 public class PantryData extends AbstractDatabase<String, Integer> {
     public PantryData(ArrayList<Pair<String, Integer>> ingredients) {
         if (ingredients == null) {
@@ -46,8 +45,6 @@ public class PantryData extends AbstractDatabase<String, Integer> {
         for (String requiredIngredient : recipe.keySet()) {
             int requiredQuantity = recipe.get(requiredIngredient);
             int pantryQuantity = this.get(requiredIngredient);
-
-
 
             if (pantryQuantity == 0 || pantryQuantity < requiredQuantity) {
                 missing.add(requiredIngredient);

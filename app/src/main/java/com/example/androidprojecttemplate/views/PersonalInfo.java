@@ -38,7 +38,7 @@ public class PersonalInfo extends AppCompatActivity {
     private ActionBarDrawerToggle abdt;
     private static boolean isLoggedIn = false;
 
-    private NavigationView nav_view;
+    private NavigationView navView;
 
     private EditText theHeightInput;
 
@@ -52,14 +52,14 @@ public class PersonalInfo extends AppCompatActivity {
     private PersonalInfoViewModel viewModel;
 
     // For firebase authentication (to get user's email)
-    FirebaseAuth auth;
-    FirebaseUser user;
+    private FirebaseAuth auth;
+    private FirebaseUser user;
 
 
     // For real-time database
-    FirebaseDatabase rootNode;
-    DatabaseReference reference;
-    DatabaseReference tempReference;
+    private FirebaseDatabase rootNode;
+    private DatabaseReference reference;
+    private DatabaseReference tempReference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,10 +85,10 @@ public class PersonalInfo extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        navView = (NavigationView) findViewById(R.id.navView);
 
-        nav_view.setVisibility(View.GONE);
-        nav_view.setNavigationItemSelectedListener(new NavigationView
+        navView.setVisibility(View.GONE);
+        navView.setNavigationItemSelectedListener(new NavigationView
                 .OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -151,8 +151,8 @@ public class PersonalInfo extends AppCompatActivity {
                         "Please enter an age!",
                         Toast.LENGTH_SHORT).show();
                 return;
-            } else if (height.contains("-") || weight.contains("-") ||
-                    age.contains("-")) {
+            } else if (height.contains("-") || weight.contains("-")
+                    || age.contains("-")) {
                 throw new IllegalArgumentException("Argument contains -");
             }
 
@@ -171,10 +171,10 @@ public class PersonalInfo extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (nav_view.getVisibility() == View.VISIBLE) {
-            nav_view.setVisibility(View.GONE);
+        if (navView.getVisibility() == View.VISIBLE) {
+            navView.setVisibility(View.GONE);
         } else {
-            nav_view.setVisibility(View.VISIBLE);
+            navView.setVisibility(View.VISIBLE);
         }
         return true;
     }
