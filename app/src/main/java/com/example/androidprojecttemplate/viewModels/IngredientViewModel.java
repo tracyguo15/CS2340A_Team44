@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.*;
+import java.util.logging.Handler;
 
 public class IngredientViewModel {
     private static IngredientViewModel instance;
@@ -30,6 +31,12 @@ public class IngredientViewModel {
     private DatabaseReference referenceForIngredientDatabase;
 
     private String theUsersEmailFromAuthenticationDatabase;
+
+    private String temp;
+    private Timer timer;
+
+    private Timer timer2;
+
     private boolean isItInIngredientDatabase = false;
 
     public IngredientViewModel() {
@@ -51,7 +58,7 @@ public class IngredientViewModel {
     }
 
     //used to check for duplicate ingredients
-    private HashSet<String> addedIngredientNames = new HashSet<String> ();
+    private static ArrayList<String> addedIngredientNames = new ArrayList<>();
 
     // Have to go to firebase and retrieve all of the current elements
     // * May not work if it's empty, need to test
@@ -82,10 +89,6 @@ public class IngredientViewModel {
         });
     }
 
-
-
-
-
     private void helperMethod(DatabaseReference theReference) {
         theReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -93,12 +96,13 @@ public class IngredientViewModel {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
 
                     if (theSnapshot.child("name").getValue(String.class) != null) {
-                        //Log.d("TheIngredientName:", theSnapshot.child("name").getValue(String.class));
-                        addedIngredientNames.add(theSnapshot.child("name").getValue(String.class));
+                        temp = theSnapshot.child("name").getValue(String.class).toString();
+                        Log.d("TheIngredientName:", temp);
+                        addedIngredientNames.add(temp);
+                        Log.d("ArrayList", addedIngredientNames.toString());
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.d("Error", "Something went wrong 2");
@@ -116,65 +120,77 @@ public class IngredientViewModel {
 
         addTheElementsFromFirebaseToTheList();
 
-        // Have to add at least 1 element
-        addedIngredientNames.add("hi");
-
-        Log.d("ContentOfTheHashSet:", addedIngredientNames.toString());
-
-        referenceForPantry.addListenerForSingleValueEvent(new ValueEventListener() {
+        // Need a time due to a delay in retrieving the ingredients from firebase
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+            public void run() {
+                referenceForPantry.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot theSnapshot : snapshot.getChildren()) {
 
-                    // Check if the ingredient exists in set
-                    if (addedIngredientNames.contains(name)) {
-                        callback.onCompleted(3); // already exists error message
-                        return;
+                            // Check if the ingredient exists in set
+                            if (addedIngredientNames.contains(name)) {
+                                callback.onCompleted(3); // already exists error message
+                                return;
+                            }
+
+                            //check if quantity is invalid
+                            int quantityInt;
+                            try {
+                                quantityInt = Integer.parseInt(quantity);
+                            } catch (NumberFormatException e) {
+                                callback.onCompleted(2); //error message
+                                return;
+                            }
+
+                            if (quantityInt <= 0) {
+                                //quantity is not positive
+                                callback.onCompleted(4); //quantity not positive error message
+                                return;
+                            }
+
+                            String theEmailFromFirebase = theSnapshot.child("username")
+                                    .getValue().toString();
+
+                            String theUsersName = theSnapshot.child("name").getValue().toString();
+
+                            if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
+                                // Add the ingredient to Firebase
+                                DataForPantry newIngre = new DataForPantry(name, quantity, expirationDate);
+
+                                referenceForPantry.child(theUsersName).child("Ingredients").child(name).setValue(newIngre)
+                                        .addOnSuccessListener(aVoid -> {
+                                            addedIngredientNames.add(name);
+
+                                            // Have to add it to the ingredient database
+                                            addToIngredientFirebase(name, "0",calories);
+                                            callback.onCompleted(1); // Success
+
+                                        })
+                                        .addOnFailureListener(e -> callback.onCompleted(2)); // Error
+                            }
+                        }
                     }
-
-                    //check if quantity is invalid
-                    int quantityInt;
-                    try {
-                        quantityInt = Integer.parseInt(quantity);
-                    } catch (NumberFormatException e) {
-                        callback.onCompleted(2); //error message
-                        return;
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        callback.onCompleted(2); // Error due to Firebase operation being cancelled
                     }
-
-                    if (quantityInt <= 0) {
-                        //quantity is not positive
-                        callback.onCompleted(4); //quantity not positive error message
-                        return;
-                    }
-
-                    String theEmailFromFirebase = theSnapshot.child("username")
-                            .getValue().toString();
-
-                    String theUsersName = theSnapshot.child("name").getValue().toString();
-
-                    if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
-                        // Add the ingredient to Firebase
-                        DataForPantry newIngre = new DataForPantry(name, quantity, expirationDate);
-
-                        referenceForPantry.child(theUsersName).child("Ingredients").child(name).setValue(newIngre)
-                                .addOnSuccessListener(aVoid -> {
-                                    addedIngredientNames.add(name);
-
-                                    // Have to add it to the ingredient database
-                                    addToIngredientFirebase(name, "0",calories);
-
-                                    Log.d("Added:", addedIngredientNames.toString());
-                                    callback.onCompleted(1); // Success
-                                })
-                                .addOnFailureListener(e -> callback.onCompleted(2)); // Error
-                    }
-                }
+                });
             }
+        }, 300);
+
+       /* // Need a time due to a delay in retrieving the ingredients from firebase
+        timer2 = new Timer();
+        timer.schedule(new TimerTask() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                callback.onCompleted(2); // Error due to Firebase operation being cancelled
+            public void run() {
+                Log.d("TheArray2", addedIngredientNames.toString());
             }
-        });
+        }, 400); */
+
+
     }
 
     private void addToIngredientFirebase(String name, String calories, String price) {
@@ -203,7 +219,7 @@ public class IngredientViewModel {
         });
     }
 
-    public HashSet<String> getTheHashSet() {
+    public ArrayList<String> getTheArrayList() {
         return addedIngredientNames;
     }
 }
