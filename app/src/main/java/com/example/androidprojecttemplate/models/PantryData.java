@@ -1,30 +1,17 @@
 package com.example.androidprojecttemplate.models;
 
 import java.util.ArrayList;
+import java.util.Set;
 
-public class PantryData extends AbstractDatabase<String, Pairs<IngredientData, Integer>> {
-    public PantryData(ArrayList<Pairs<IngredientData, Integer>> ingredients) {
+public class PantryData extends AbstractDatabase<String, Integer> {
+    public PantryData(ArrayList<Pair<String, Integer>> ingredients) {
         if (ingredients == null) {
             throw new IllegalArgumentException("ingredients shouldn't be null");
         }
 
-        for (Pairs<IngredientData, Integer> i : ingredients) {
-            String name = i.getFirst().getName();
-
-            this.put(name, i);
+        for (Pair<String, Integer> i : ingredients) {
+            this.put(i.getFirst(), i.getSecond());
         }
-    }
-
-    public void add(IngredientData ingredient, int quantity) {
-        String name = ingredient.getName();
-
-        this.put(name, new Pairs<>(ingredient, quantity));
-    }
-
-    public void delete(IngredientData ingredient, int quantity) {
-        String name = ingredient.getName();
-
-        this.remove(name);
     }
 
     /**
@@ -33,15 +20,11 @@ public class PantryData extends AbstractDatabase<String, Pairs<IngredientData, I
      * @return true if the recipe can be cooked, false otherwise
      */
     public boolean canCook(RecipeData recipe) {
-        for (Object objectRequiredItemName : recipe.keySet()) {
-            String requiredItemName = (String) objectRequiredItemName;
-            Pairs<IngredientData, Integer> requiredItem = recipe.get(requiredItemName);
-            Pairs<IngredientData, Integer> pantryItem = this.get(requiredItemName);
+        for (String requiredIngredient : recipe.keySet()) {
+            int requiredQuantity = recipe.get(requiredIngredient);
+            int pantryQuantity = this.get(requiredIngredient);
 
-            int requiredQuantity = requiredItem.getSecond();
-            int pantryQuantity = pantryItem.getSecond();
-
-            if (pantryItem == null || pantryQuantity < requiredQuantity) {
+            if (pantryQuantity == 0 || pantryQuantity < requiredQuantity) {
                 return false;
             }
         }
@@ -56,19 +39,15 @@ public class PantryData extends AbstractDatabase<String, Pairs<IngredientData, I
      * @return an ArrayList containing the missing ingredients, or an empty list if all
      * the ingredients exist
      */
-    public ArrayList<IngredientData> getMissingIngredients(RecipeData recipe) {
-        ArrayList<IngredientData> missing = new ArrayList<>();
+    public ArrayList<String> getMissingIngredients(RecipeData recipe) {
+        ArrayList<String> missing = new ArrayList<>();
 
-        for (Object objectRequiredItemName : recipe.keySet()) {
-            String requiredItemName = (String) objectRequiredItemName;
-            Pairs<IngredientData, Integer> requiredItem = recipe.get(requiredItemName);
-            Pairs<IngredientData, Integer> pantryItem = this.get(requiredItemName);
+        for (String requiredIngredient : recipe.keySet()) {
+            int requiredQuantity = recipe.get(requiredIngredient);
+            int pantryQuantity = this.get(requiredIngredient);
 
-            int requiredQuantity = requiredItem.getSecond();
-            int pantryQuantity = pantryItem.getSecond();
-
-            if (pantryQuantity < requiredQuantity) {
-                missing.add(pantryItem.getFirst());
+            if (pantryQuantity == 0 || pantryQuantity < requiredQuantity) {
+                missing.add(requiredIngredient);
             }
         }
 
@@ -83,28 +62,19 @@ public class PantryData extends AbstractDatabase<String, Pairs<IngredientData, I
      * @param recipe the recipe to cook
      */
     public void cook(RecipeData recipe) {
-        for (Object objectRequiredItemName : recipe.keySet()) {
-            String requiredItemName = (String) objectRequiredItemName;
-            Pairs<IngredientData, Integer> requiredItem = recipe.get(requiredItemName);
-            Pairs<IngredientData, Integer> pantryItem = this.get(requiredItemName);
-
-            IngredientData pantryIngredient = pantryItem.getFirst();
-
-            int requiredQuantity = requiredItem.getSecond();
-            int pantryQuantity = pantryItem.getSecond();
+        for (String requiredIngredient : recipe.keySet()) {
+            int requiredQuantity = recipe.get(requiredIngredient);
+            int pantryQuantity = this.get(requiredIngredient);
 
             // if checked properly this should never be negative
             int newPantryQuantity = pantryQuantity - requiredQuantity;
 
             if (newPantryQuantity == 0) {
                 // remove ingredient from pantry
-                this.remove(requiredItemName);
+                this.remove(requiredIngredient);
             } else {
                 // update ingredient quantity
-                this.put(requiredItemName,
-                        new Pairs<IngredientData,
-                                Integer>(pantryIngredient,
-                                newPantryQuantity));
+                this.put(requiredIngredient, newPantryQuantity);
             }
         }
     }
