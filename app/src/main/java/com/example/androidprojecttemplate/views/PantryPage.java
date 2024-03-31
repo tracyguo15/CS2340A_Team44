@@ -19,6 +19,8 @@ import com.example.androidprojecttemplate.R;
 import com.example.androidprojecttemplate.viewModel.PantryPageViewModel;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+
 public class PantryPage extends AppCompatActivity {
 
     private ActionBarDrawerToggle abdt;
@@ -28,6 +30,8 @@ public class PantryPage extends AppCompatActivity {
     private NavigationView navView;
 
     private PantryPageViewModel viewmodel = null;
+
+    private ArrayList<Button> pantryButtons;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,11 +91,9 @@ public class PantryPage extends AppCompatActivity {
             }
         });
 
-        viewmodel = new PantryPageViewModel();
+        viewmodel = PantryPageViewModel.getInstance();
 
-        LinearLayout group = findViewById(R.id.pantry_layout_group);
-
-
+        buildPantry(viewmodel);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -101,6 +103,23 @@ public class PantryPage extends AppCompatActivity {
             navView.setVisibility(View.VISIBLE);
         }
         return true;
+    }
+
+    /**
+     * This function takes in the current viewmodel and sets up listeners for the whole Pantry.
+     *
+     * It does this by
+     * 1) Using the ViewModel to return a list of all the ingredient item names to use
+     * 2) Making it such that all the buttons, so that depending on whatever button is clicked, it displays
+     * information in the bottom of the screen
+     * 3) once a button is chosen, it sends a signal to the ViewModel which sets the current ingredient on
+     * focus.
+     * 4) the user can then modify the ingredient count as chosen, and when the count is reduced to zero,
+     * the ingredient is removed from the pantry and removed from the list.
+     * @param vm
+     */
+    public void buildPantry(PantryPageViewModel vm) {
+
     }
 
     /*
