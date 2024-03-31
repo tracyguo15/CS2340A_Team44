@@ -1,8 +1,11 @@
 package com.example.androidprojecttemplate.viewModels;
 
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
+import com.example.androidprojecttemplate.models.DataForPantry;
 import com.example.androidprojecttemplate.models.IngredientData;
 //import com.example.androidprojecttemplate.models.UserData;
 import com.example.androidprojecttemplate.models.FirebaseDB;
@@ -23,8 +26,11 @@ public class IngredientViewModel {
     private FirebaseAuth theAuthenticationVariable;
     private FirebaseUser user;
     private DatabaseReference referenceForPantry;
+    private DatabaseReference referenceForSpecifcUser;
+    private DatabaseReference referenceForIngredientDatabase;
 
     private String theUsersEmailFromAuthenticationDatabase;
+    private boolean isItInIngredientDatabase = false;
 
     public IngredientViewModel() {
         theData = new IngredientPage();
@@ -45,11 +51,75 @@ public class IngredientViewModel {
     }
 
     //used to check for duplicate ingredients
-    private Set<String> addedIngredientNames = new HashSet<String> ();
+    private HashSet<String> addedIngredientNames = new HashSet<String> ();
+
+    // Have to go to firebase and retrieve all of the current elements
+    // * May not work if it's empty, need to test
+    private void addTheElementsFromFirebaseToTheList() {
+        referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry");
+
+        referenceForPantry.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+
+                    String theEmailFromFirebase = theSnapshot.child("username")
+                            .getValue().toString();
+
+                    String theUsersName = theSnapshot.child("name").getValue().toString();
+
+                    if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
+                        referenceForSpecifcUser = referenceForPantry.child(theUsersName).child("Ingredients");
+                        // Will use a helper method to do the rest
+                        helperMethod(referenceForSpecifcUser);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Error", "Something went wrong");
+            }
+        });
+    }
+
+
+
+
+
+    private void helperMethod(DatabaseReference theReference) {
+        theReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+
+                    if (theSnapshot.child("name").getValue(String.class) != null) {
+                        //Log.d("TheIngredientName:", theSnapshot.child("name").getValue(String.class));
+                        addedIngredientNames.add(theSnapshot.child("name").getValue(String.class));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Error", "Something went wrong 2");
+            }
+        });
+    }
+
+
+
+
 
     public void addToFirebase(String name, String quantity, String calories,
                               String expirationDate, IngredientCallback callback) {
         referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry");
+
+        addTheElementsFromFirebaseToTheList();
+
+        // Have to add at least 1 element
+        addedIngredientNames.add("hi");
+
+        Log.d("ContentOfTheHashSet:", addedIngredientNames.toString());
 
         referenceForPantry.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -77,26 +147,63 @@ public class IngredientViewModel {
                         return;
                     }
 
-                    // Add the ingredient to Firebase
-                    IngredientData newIngredient = new IngredientData(name,
-                            quantity, Integer.parseInt(calories), expirationDate);
-                    referenceForPantry.child(theSnapshot.child("name").getValue()
-                                    .toString()).child("Ingredients")
-                            .child(name).setValue(newIngredient)
-                            .addOnSuccessListener(aVoid -> {
-                                addedIngredientNames.add(name);
-                                callback.onCompleted(1); // Success
-                            })
-                            .addOnFailureListener(e -> callback.onCompleted(2)); // Error
+                    String theEmailFromFirebase = theSnapshot.child("username")
+                            .getValue().toString();
 
+                    String theUsersName = theSnapshot.child("name").getValue().toString();
+
+                    if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
+                        // Add the ingredient to Firebase
+                        DataForPantry newIngre = new DataForPantry(name, quantity, expirationDate);
+
+                        referenceForPantry.child(theUsersName).child("Ingredients").child(name).setValue(newIngre)
+                                .addOnSuccessListener(aVoid -> {
+                                    addedIngredientNames.add(name);
+
+                                    // Have to add it to the ingredient database
+                                    addToIngredientFirebase(name, "0",calories);
+
+                                    Log.d("Added:", addedIngredientNames.toString());
+                                    callback.onCompleted(1); // Success
+                                })
+                                .addOnFailureListener(e -> callback.onCompleted(2)); // Error
+                    }
                 }
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 callback.onCompleted(2); // Error due to Firebase operation being cancelled
             }
-
         });
+    }
+
+    private void addToIngredientFirebase(String name, String calories, String price) {
+        referenceForIngredientDatabase = FirebaseDatabase.getInstance().getReference().child("Ingredients");
+
+        referenceForIngredientDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+                    if(name.equals(theSnapshot.getKey())) {
+                        isItInIngredientDatabase = true;
+                        break;
+                    }
+                }
+                if (!isItInIngredientDatabase) {
+                    // Can add it
+                    IngredientData theIng = new IngredientData(name, Integer.parseInt(calories), Integer.parseInt(price));
+                    referenceForIngredientDatabase.child(name).setValue(theIng);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Error", "Something went wrong");
+            }
+        });
+    }
+
+    public HashSet<String> getTheHashSet() {
+        return addedIngredientNames;
     }
 }
