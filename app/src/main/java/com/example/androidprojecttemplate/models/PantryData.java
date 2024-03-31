@@ -3,6 +3,7 @@ package com.example.androidprojecttemplate.models;
 import java.util.ArrayList;
 
 public class PantryData extends AbstractDatabase<String, Pairs<IngredientData, Integer>> {
+    private static volatile PantryData instance;
     public PantryData(ArrayList<Pairs<IngredientData, Integer>> ingredients) {
         if (ingredients == null) {
             throw new IllegalArgumentException("ingredients shouldn't be null");
@@ -13,8 +14,13 @@ public class PantryData extends AbstractDatabase<String, Pairs<IngredientData, I
 
             this.put(name, i);
         }
+
+        instance = this;
     }
 
+    public PantryData getInstance() {
+        return instance;
+    }
     public void add(IngredientData ingredient, int quantity) {
         String name = ingredient.getName();
 

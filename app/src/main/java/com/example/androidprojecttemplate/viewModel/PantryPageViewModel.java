@@ -6,6 +6,9 @@ import android.widget.Button;
 import com.example.androidprojecttemplate.models.IngredientData;
 import com.example.androidprojecttemplate.models.PantryData;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class PantryPageViewModel {
     private PantryData pantry;
@@ -22,7 +25,7 @@ public class PantryPageViewModel {
 
 
     private PantryPageViewModel() {
-        pantry = PantryData.getInstance();
+        pantry = null;
         ingredientInstance = IngredientViewModel.getInstance();
         currentIngredient = null;
     }
@@ -51,7 +54,7 @@ public class PantryPageViewModel {
      * nothing needs to be removed
      */
     public String decrement() {
-
+        return null;
     }
 
     /**
@@ -64,4 +67,8 @@ public class PantryPageViewModel {
     public void focus(String name) {
 
     }
+
+    public Set<String> giveIngredients() {
+        return pantry.keySet();
+    }2
 }

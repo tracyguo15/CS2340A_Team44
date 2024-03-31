@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -16,10 +17,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.androidprojecttemplate.R;
+import com.example.androidprojecttemplate.viewModel.IngredientViewModel;
 import com.example.androidprojecttemplate.viewModel.PantryPageViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PantryPage extends AppCompatActivity {
 
@@ -116,10 +120,19 @@ public class PantryPage extends AppCompatActivity {
      * focus.
      * 4) the user can then modify the ingredient count as chosen, and when the count is reduced to zero,
      * the ingredient is removed from the pantry and removed from the list.
-     * @param vm
+     * @param vm the PantryPageViewModel
      */
     public void buildPantry(PantryPageViewModel vm) {
-
+        //fill functionality later
+        Set<String> set = vm.giveIngredients();
+        String labelString = "testing: ";
+        for (String s : set) {
+            labelString += s + " ";
+        }
+        TextView t = new TextView(getApplicationContext());
+        t.setText(labelString);
+        LinearLayout l = findViewById(R.id.pantry_layout_group);
+        l.addView(t);
     }
 
     /*

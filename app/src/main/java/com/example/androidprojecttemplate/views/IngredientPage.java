@@ -100,7 +100,14 @@ public class IngredientPage extends AppCompatActivity {
             }
         });
 
-
+        Button toPantry = findViewById(R.id.toPantryButton);
+        toPantry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(IngredientPage.this, PantryPage.class);
+                startActivity(intent);
+            }
+        });
         addIngredientToFirebase.setOnClickListener(v -> {
             viewModel.getCurrentUser();
             String theName = ingredientName.getText().toString();

@@ -140,6 +140,12 @@
             android:hint="Expiration Date: XX-XX-XXXX"
             android:inputType="text" />
 
+        <Button
+            android:id="@+id/toPantryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="to pantry" />
+
 
     </RelativeLayout>
 
