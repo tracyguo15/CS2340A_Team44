@@ -11,16 +11,8 @@ public class PantryData extends AbstractDatabase<String, Integer> {
         }
 
         for (Pair<String, Integer> i : ingredients) {
-            this.add(i.getFirst(), i.getSecond());
+            this.put(i.getFirst(), i.getSecond());
         }
-    }
-
-    public void add(String ingredientName, int quantity) {
-        this.put(ingredientName, quantity);
-    }
-
-    public void delete(String ingredientName) {
-        this.remove(ingredientName);
     }
 
     /**
