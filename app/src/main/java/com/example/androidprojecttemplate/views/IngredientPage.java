@@ -3,10 +3,13 @@ package com.example.androidprojecttemplate.views;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +21,10 @@ import com.example.androidprojecttemplate.R;
 
 import com.example.androidprojecttemplate.viewModels.IngredientViewModel;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class IngredientPage extends AppCompatActivity {
@@ -36,6 +43,11 @@ public class IngredientPage extends AppCompatActivity {
     private Button addIngredientToFirebase;
 
     private IngredientViewModel viewModel;
+
+    private ArrayList<String> theIngredientsList = new ArrayList<>();
+
+    private Timer timer;
+
 
 
     @Override
@@ -100,7 +112,6 @@ public class IngredientPage extends AppCompatActivity {
             }
         });
 
-
         addIngredientToFirebase.setOnClickListener(v -> {
             viewModel.getCurrentUser();
             String theName = ingredientName.getText().toString();
@@ -135,6 +146,7 @@ public class IngredientPage extends AppCompatActivity {
                             Toast.makeText(IngredientPage.this,
                                     "Success",
                                     Toast.LENGTH_SHORT).show();
+                            switchScreen();
                         } else if (result == 2) {
                             Toast.makeText(IngredientPage.this,
                                     "Something went wrong",
@@ -150,6 +162,23 @@ public class IngredientPage extends AppCompatActivity {
                         }
                     }));
         });
+
+    }
+
+    public void switchScreen() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                theIngredientsList = viewModel.getTheArrayList();
+                Log.d("Shit", theIngredientsList.toString());
+
+                //Switch to other screen
+                Intent theIntent = new Intent(IngredientPage.this, IngredientListPage.class);
+                theIntent.putExtra("TheList", theIngredientsList);
+                startActivity(theIntent);
+            }
+        }, 2000);
     }
 
     @Override
