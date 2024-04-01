@@ -231,8 +231,9 @@ public class RecipePage extends AppCompatActivity {
                         for (DataSnapshot ingredient : snapshot.getChildren()) {
                             IngredientData data = new IngredientData(
                                     ingredient.getKey().toString(),
-                                    (double) ingredient.child("price").getValue(),
-                                    Math.toIntExact((long) ingredient.child("calories").getValue())
+                                    "1",
+                                    0,
+                                    "20240101"
                             );
 
                             ingredientsDB.put(ingredient.getKey().toString(), data);
