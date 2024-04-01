@@ -3,11 +3,11 @@ package com.example.androidprojecttemplate.views;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
+//import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.Layout;
+//import android.text.Layout;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,8 +27,8 @@ import com.example.androidprojecttemplate.R;
 
 import com.example.androidprojecttemplate.models.AbstractDatabase;
 import com.example.androidprojecttemplate.models.IngredientData;
-import com.example.androidprojecttemplate.models.MealData;
-import com.example.androidprojecttemplate.models.Pair;
+//import com.example.androidprojecttemplate.models.MealData;
+//import com.example.androidprojecttemplate.models.Pair;
 import com.example.androidprojecttemplate.models.RecipeData;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -48,7 +48,7 @@ public class RecipePage extends AppCompatActivity {
     private LinearLayout ingredientContainer;
     private Button addIngredient;
     private Button submit;
-    private final int MAX_INGREDIENTS = 5;
+    private final int maxIngredients = 5;
     private int ingredientCount;
     private ArrayList<EditText> ingredients;
     private ArrayList<EditText> quantities;
@@ -70,12 +70,13 @@ public class RecipePage extends AppCompatActivity {
         EditText quantityInput = new EditText(this);
         Button removeButton = new Button(this);
 
-        row.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                int width = row.getWidth();
-            }
-        });
+        row.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        int width = row.getWidth();
+                    }
+                });
 
         removeButton.setLayoutParams(new ViewGroup.LayoutParams(
                 205,
@@ -89,24 +90,25 @@ public class RecipePage extends AppCompatActivity {
                 959,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        removeButton.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                removeButton.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+        removeButton.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        removeButton.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
-                int cornerRadius = removeButton.getHeight() / 2;
+                        int cornerRadius = removeButton.getHeight() / 2;
 
-                GradientDrawable drawable = new GradientDrawable();
+                        GradientDrawable drawable = new GradientDrawable();
 
-                drawable.setShape(GradientDrawable.RECTANGLE);
-                drawable.setCornerRadius(cornerRadius);
+                        drawable.setShape(GradientDrawable.RECTANGLE);
+                        drawable.setCornerRadius(cornerRadius);
 
-                drawable.setColor(Color.rgb(102, 80, 164)); // purple
+                        drawable.setColor(Color.rgb(102, 80, 164)); // purple
 
-                removeButton.setPadding(40, 4, 40, 4);
-                removeButton.setBackground(drawable);
-            }
-        });
+                        removeButton.setPadding(40, 4, 40, 4);
+                        removeButton.setBackground(drawable);
+                    }
+                });
 
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -207,11 +209,13 @@ public class RecipePage extends AppCompatActivity {
         addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ingredientCount < MAX_INGREDIENTS) {
+                if (ingredientCount < maxIngredients) {
                     createIngredientRow();
                     ingredientCount++;
                 } else {
-                    Toast.makeText(RecipePage.this, "Max 10 ingredients", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RecipePage.this,
+                            "Max 10 ingredients",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -219,14 +223,17 @@ public class RecipePage extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference cookbookReference = FirebaseDatabase.getInstance().getReference().child("Cookbook");
-                DatabaseReference ingredientReference = FirebaseDatabase.getInstance().getReference().child("Ingredients");
+                DatabaseReference cookbookReference = FirebaseDatabase.getInstance()
+                        .getReference().child("Cookbook");
+                DatabaseReference ingredientReference = FirebaseDatabase.getInstance()
+                        .getReference().child("Ingredients");
 
                 // get copy of ingredients from Ingredients database
                 ingredientReference.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
-                        AbstractDatabase<String, IngredientData> ingredientsDB = new AbstractDatabase<>();
+                        AbstractDatabase<String, IngredientData> ingredientsDB
+                                = new AbstractDatabase<>();
 
                         for (DataSnapshot ingredient : snapshot.getChildren()) {
                             IngredientData data = new IngredientData(
@@ -246,7 +253,8 @@ public class RecipePage extends AppCompatActivity {
                                 String recipeDescription = descriptionInput.getText().toString();
                                 int recipeTime = Integer.parseInt(timeInput.getText().toString());
 
-                                RecipeData data = new RecipeData(recipeDescription, recipeTime);
+                                RecipeData data = new RecipeData(recipeName, recipeDescription,
+                                        recipeTime);
 
                                 boolean allIngredientsFound = true;
 
@@ -254,13 +262,15 @@ public class RecipePage extends AppCompatActivity {
                                 for (int i = 0; i < ingredients.size(); i++) {
                                     String ingredientName = ingredients.get(i).getText().toString();
                                     Log.d("name", ingredientName);
-                                    int ingredientQuantity = Integer.parseInt(quantities.get(i).getText().toString());
+                                    int ingredientQuantity = Integer.parseInt(quantities.get(i)
+                                            .getText().toString());
 
                                     if (ingredientsDB.containsKey(ingredientName)) {
                                         data.add(ingredientName, ingredientQuantity);
                                     } else {
                                         Toast.makeText(RecipePage.this,
-                                                String.format("%s is not a valid ingredient.", ingredientName),
+                                                String.format("%s is not a valid ingredient.",
+                                                        ingredientName),
                                                 Toast.LENGTH_SHORT).show();
                                         allIngredientsFound = false;
                                         break;
