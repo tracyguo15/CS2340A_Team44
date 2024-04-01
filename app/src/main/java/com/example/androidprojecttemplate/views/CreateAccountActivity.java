@@ -6,20 +6,9 @@ import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.Toast;
-
-//import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-//import com.example.androidprojecttemplate.models.UserLoginData;
 import com.example.androidprojecttemplate.viewModels.CreateAccountViewModel;
-//import com.example.androidprojecttemplate.views.HomePage;
 import com.example.androidprojecttemplate.R;
-//import com.google.android.gms.tasks.OnCompleteListener;
-//import com.google.android.gms.tasks.Task;
-//import com.google.firebase.auth.AuthResult;
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.database.DatabaseReference;
-//import com.google.firebase.database.FirebaseDatabase;
 
 public class CreateAccountActivity extends AppCompatActivity {
     private EditText usernameInput;
@@ -33,9 +22,6 @@ public class CreateAccountActivity extends AppCompatActivity {
 
     private CreateAccountViewModel viewModel;
     private String userId;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

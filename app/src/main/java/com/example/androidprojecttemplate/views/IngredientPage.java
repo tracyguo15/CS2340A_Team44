@@ -1,39 +1,69 @@
 package com.example.androidprojecttemplate.views;
 
-// Do not import android support because we are using androidx
-//import android.support.v4.widget.DrawerLayout;
-//import android.support.v7.app.ActionBarDrawerToggle;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
-//import android.widget.Toast;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-//import androidx.core.view.GravityCompat;
 import com.example.androidprojecttemplate.R;
 
+import com.example.androidprojecttemplate.viewModels.IngredientViewModel;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
-//implements NavigationView.OnNavigationItemSelectedListener
+
 public class IngredientPage extends AppCompatActivity {
     private DrawerLayout dl;
     private ActionBarDrawerToggle abdt;
     private static boolean isLoggedIn = false;
 
-    private NavigationView nav_view;
+    private NavigationView navView;
+
+    private EditText ingredientName;
+    private EditText quantity;
+    private EditText calorieForIngredient;
+
+    private EditText expirationDate;
+
+    private Button addIngredientToFirebase;
+
+    private IngredientViewModel viewModel;
+
+    private ArrayList<String> theIngredientsList = new ArrayList<>();
+
+    private Timer timer;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_ingredient_page);
+
+        viewModel = IngredientViewModel.getInstance();
+
+        ingredientName = findViewById(R.id.nameOfIngredientInput);
+        quantity = findViewById(R.id.quantityInput);
+        calorieForIngredient = findViewById(R.id.ingredientCalorieInput);
+        addIngredientToFirebase = findViewById(R.id.buttonToInputIngredient);
+        expirationDate = findViewById(R.id.theExpirationDateInput);
+
 
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
         setSupportActionBar(homeToolBar);
@@ -46,10 +76,10 @@ public class IngredientPage extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        navView = (NavigationView) findViewById(R.id.navView);
 
-        nav_view.setVisibility(View.GONE);
-        nav_view.setNavigationItemSelectedListener(new NavigationView
+        navView.setVisibility(View.GONE);
+        navView.setNavigationItemSelectedListener(new NavigationView
                 .OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -81,13 +111,82 @@ public class IngredientPage extends AppCompatActivity {
                 return false;
             }
         });
+
+        addIngredientToFirebase.setOnClickListener(v -> {
+            viewModel.getCurrentUser();
+            String theName = ingredientName.getText().toString();
+            String theQuantity = quantity.getText().toString();
+            String theCalories = calorieForIngredient.getText().toString();
+            String theExpirationDate = expirationDate.getText().toString();
+
+            // Validation checks
+            if (TextUtils.isEmpty(theName)) {
+                Toast.makeText(IngredientPage.this,
+                        "Please enter an ingredient name",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(theQuantity)) {
+                Toast.makeText(IngredientPage.this,
+                        "Please enter the quantity",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(theCalories)) {
+                Toast.makeText(IngredientPage.this,
+                        "Please enter the calories",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            } else if (TextUtils.isEmpty(theExpirationDate)) {
+                theExpirationDate = "Not Available";
+            }
+
+            viewModel.addToFirebase(theName, theQuantity,
+                    theCalories, theExpirationDate,
+                    result -> runOnUiThread(() -> {
+                        if (result == 1) {
+                            Toast.makeText(IngredientPage.this,
+                                    "Success",
+                                    Toast.LENGTH_SHORT).show();
+                            switchScreen();
+                        } else if (result == 2) {
+                            Toast.makeText(IngredientPage.this,
+                                    "Something went wrong",
+                                    Toast.LENGTH_SHORT).show();
+                        } else if (result == 3) {
+                            Toast.makeText(IngredientPage.this,
+                                    "The ingredient already exists, can't add",
+                                    Toast.LENGTH_SHORT).show();
+                        } else if (result == 4) {
+                            Toast.makeText(IngredientPage.this,
+                                    "Quantity is not positive, can't add",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }));
+        });
+
     }
+
+    public void switchScreen() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                theIngredientsList = viewModel.getTheArrayList();
+                Log.d("Shit", theIngredientsList.toString());
+
+                //Switch to other screen
+                Intent theIntent = new Intent(IngredientPage.this, IngredientListPage.class);
+                theIntent.putExtra("TheList", theIngredientsList);
+                startActivity(theIntent);
+            }
+        }, 2000);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (nav_view.getVisibility() == View.VISIBLE) {
-            nav_view.setVisibility(View.GONE);
+        if (navView.getVisibility() == View.VISIBLE) {
+            navView.setVisibility(View.GONE);
         } else {
-            nav_view.setVisibility(View.VISIBLE);
+            navView.setVisibility(View.VISIBLE);
         }
         return true;
     }

@@ -2,7 +2,6 @@ package com.example.androidprojecttemplate.views;
 
 import com.example.androidprojecttemplate.models.MealData;
 import com.example.androidprojecttemplate.viewModels.UserDataViewModel;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,14 +12,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Button;
 import android.view.View;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.androidprojecttemplate.R;
-
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
@@ -36,7 +33,6 @@ import com.anychart.graphics.vector.Stroke;
 import com.anychart.charts.Pie;
 import com.anychart.enums.Align;
 import com.anychart.enums.LegendLayout;
-
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -65,17 +61,17 @@ public class InputMealPage extends AppCompatActivity {
     private Button visual1;
     private Button visual2;
     private AnyChartView chart;
-    private NavigationView nav_view;
+    private NavigationView navView;
 
     // state
     private static boolean isLoggedIn = false;
-    List<MealData> meals = new ArrayList<>();
-    int totalCalories;
+    private List<MealData> meals = new ArrayList<>();
+    private int totalCalories;
     private UserDataViewModel viewModel;
-    FirebaseAuth firebaseAuth;
-    FirebaseUser user;
-    DatabaseReference userReference;
-    DatabaseReference mealReference;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
+    private DatabaseReference userReference;
+    private DatabaseReference mealReference;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,10 +104,10 @@ public class InputMealPage extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        navView = (NavigationView) findViewById(R.id.navView);
 
-        nav_view.setVisibility(View.GONE);
-        nav_view.setNavigationItemSelectedListener(new NavigationView
+        navView.setVisibility(View.GONE);
+        navView.setNavigationItemSelectedListener(new NavigationView
                 .OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -432,10 +428,10 @@ public class InputMealPage extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (nav_view.getVisibility() == View.VISIBLE) {
-            nav_view.setVisibility(View.GONE);
+        if (navView.getVisibility() == View.VISIBLE) {
+            navView.setVisibility(View.GONE);
         } else {
-            nav_view.setVisibility(View.VISIBLE);
+            navView.setVisibility(View.VISIBLE);
         }
         return true;
     }

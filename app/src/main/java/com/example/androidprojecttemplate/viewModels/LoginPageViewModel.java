@@ -1,7 +1,7 @@
 package com.example.androidprojecttemplate.viewModels;
 
 //import android.text.TextUtils;
-import com.example.androidprojecttemplate.models.firebaseAuthSingleton;
+import com.example.androidprojecttemplate.models.FirebaseDB;
 
 import androidx.annotation.NonNull;
 
@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginPageViewModel {
     private static LoginPageViewModel instance;
-    private final LoginPageActivity theData;
+    private final LoginPageActivity data;
 
     private static int temp = 0;
 
@@ -21,12 +21,11 @@ public class LoginPageViewModel {
     // since only one call to get the reference from the actual database is made.
     // The variable is just used as a placeholder for that actual reference,
     // but the reference is made only once
-    FirebaseAuth theAuthenticationVariable;
+    private FirebaseAuth firebaseAuth;
 
     public LoginPageViewModel() {
-        theData = new LoginPageActivity();
-        theAuthenticationVariable = firebaseAuthSingleton.getInstance()
-                .getTheInstanceFromFirebase();
+        data = new LoginPageActivity();
+        firebaseAuth = FirebaseDB.getInstance().getFirebaseAuth();
     }
 
     public static synchronized LoginPageViewModel getInstance() {
@@ -39,7 +38,7 @@ public class LoginPageViewModel {
 
     public int toHomeScreenMethodFromLogin(String username, String password) {
         // Can now login the user through firebase
-        theAuthenticationVariable.signInWithEmailAndPassword(username, password)
+        firebaseAuth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
