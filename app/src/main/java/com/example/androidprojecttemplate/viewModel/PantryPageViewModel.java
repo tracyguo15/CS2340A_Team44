@@ -73,5 +73,5 @@ public class PantryPageViewModel {
         //so when an item is added on the phone, it will be added on local machine and
         //  in remote database associated with user
         return pantry.keySet();
-    }2
+    }
 }
