@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.example.androidprojecttemplate.models.AbstractDatabase;
 import com.example.androidprojecttemplate.models.IngredientData;
 import com.example.androidprojecttemplate.models.MealData;
 import com.example.androidprojecttemplate.models.UserData;
@@ -180,7 +181,7 @@ public class ExampleUnitTest {
         }
     }
 
-    //Michael Vaden
+    // Michael Vaden
     @Test
     public void emptyIngredientExpirationDate() {
         try {
@@ -190,6 +191,13 @@ public class ExampleUnitTest {
         }
     }
 
-    //Michael Vaden
+    // Michael Vaden
+    @Test
+    public void abstractDatabaseContainsKey() {
+        AbstractDatabase<String, Integer> db = new AbstractDatabase();
+        db.put("test", 0);
+
+        assertTrue(db.containsKey("test"));
+    }
 }
 
