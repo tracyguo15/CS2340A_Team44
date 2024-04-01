@@ -6,9 +6,12 @@ import static org.junit.Assert.*;
 
 import com.example.androidprojecttemplate.models.IngredientData;
 import com.example.androidprojecttemplate.models.MealData;
+import com.example.androidprojecttemplate.models.RecipeData;
 import com.example.androidprojecttemplate.models.UserData;
 import com.example.androidprojecttemplate.models.UserLoginData;
 import com.example.androidprojecttemplate.views.InputMealPage;
+
+import java.util.ArrayList;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -191,5 +194,58 @@ public class ExampleUnitTest {
     }
 
     //Michael Vaden
+    @Test
+    public void negativeTime() {
+        try {
+            RecipeData recipe = new RecipeData("Dish1", "It's pasta", -6);
+        } catch (IllegalArgumentException e) {
+            assertEquals("Please enter a valid time", e.getMessage());
+        }
+    }
+
+    //Rohan Bhole
+    @Test
+    public void testRecipeConstructors() {
+        RecipeData recipe = new RecipeData("Dish1", "It's pasta", 40);
+        assertEquals("Dish1", recipe.getName());
+        assertEquals(40, recipe.getTime());
+        assertEquals("It's pasta", recipe.getDescription());
+
+        RecipeData recipe2 = new RecipeData("Dish1", 40);
+        assertEquals("Dish1", recipe.getName());
+        assertEquals(40, recipe.getTime());
+    }
+
+    //Rohan Bhole
+    @Test
+    public void changeRecipeTime() {
+        RecipeData recipe = new RecipeData("Dish1", "It's pasta", 40);
+        recipe.setTime(60);
+        assertEquals(60, recipe.getTime());
+    }
+
+    //Adam Vaughn
+    @Test
+    public void nullIngredientList() {
+        try {
+            RecipeData recipe = new RecipeData("Dish1", "It's pasta", 40);
+        } catch (IllegalArgumentException e) {
+            assertEquals("ingredients shouldn't be null", e.getMessage());
+        }
+    }
+
+    //Adam Vaughn
+    @Test
+    public void changeRecipeNameNull() {
+        try {
+            RecipeData recipe = new RecipeData("Dish1", "It's pasta", 40);
+            recipe.setName("Super Smelly Recipe");
+            assertEquals("Super Smelly Recipe", recipe.getName());
+            recipe.setName(null);
+        } catch (IllegalArgumentException e) {
+            assertEquals("You cannot change to that name,"
+                    + " please try another one",  e.getMessage());
+        }
+    }
 }
 
