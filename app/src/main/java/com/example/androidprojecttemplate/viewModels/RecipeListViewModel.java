@@ -62,7 +62,7 @@ public class RecipeListViewModel {
 
     // Have to go to firebase and retrieve all of the current elements
     // * May not work if it's empty, need to test
-    /*
+
     public String getTheQuantity(String theNameOfIngredient, int number) {
         referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry");
 
@@ -70,19 +70,22 @@ public class RecipeListViewModel {
         referenceForPantry.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+                for (DataSnapshot snapshots : snapshot.getChildren()) {
 
-                    String theEmailFromFirebase = theSnapshot.child("username")
+                    String theEmailFromFirebase = snapshots.child("username")
                             .getValue().toString();
-                    String theUsersName = theSnapshot.child("name").getValue().toString();
+                    String theUsersName = snapshots.child("name").getValue().toString();
 
                     if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
-                        referenceForSpecifcUser = referenceForPantry.child(theUsersName)
+                        //This reference for specific user becomes a reference to their respective
+                        // pantry
+                        referenceForSpecificUser = referenceForPantry.child(theUsersName)
                                 .child("Ingredients");
 
                         // Will use a helper method to do the rest
-                        theReturnQuantity = helperMethod(referenceForSpecifcUser,
-                                theNameOfIngredient, number);
+                        /*
+                        theReturnQuantity = helperMethod(referenceForSpecificUser,
+                                theNameOfIngredient, number); */
                     }
                 }
             }
@@ -93,7 +96,7 @@ public class RecipeListViewModel {
         });
 
         return theReturnQuantity;
-    } */
+    }
 
     /*
     public String getTheQuantity(String theNameOfRecipe, int number) {

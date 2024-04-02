@@ -1,5 +1,6 @@
 package com.example.androidprojecttemplate.views;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 //import android.util.Log;
 import android.provider.ContactsContract;
@@ -61,7 +62,6 @@ public class RecipeListPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list_page);
 
-        viewModel = RecipeListViewModel.getInstance();
         listViewRecipes = findViewById(R.id.listViewRecipes);
 
         //Identify and define the button that takes you back to the recipe page
@@ -114,15 +114,15 @@ public class RecipeListPage extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snapshots : snapshot.getChildren()) {
                     //Test to check whether the data is correct
-                    Log.d("SNAPSHOT DATA", snapshots.toString());
+                    /*Log.d("SNAPSHOT DATA", snapshots.toString()); */
 
                     //Store the necessary data into their own variables
                     String name = snapshots.getKey();
                     String time = Integer.toString(snapshots.getValue(RecipeData.class).getTime());
 
                     //Tests to makes sure whether the variables have the correct data
-                    Log.d("NAME", name);
-                    Log.d("TIME", time);
+                    /*Log.d("NAME", name);
+                    Log.d("TIME", time); */
 
                     //Add the data to the String[] recipes
                     recipes.add(new String[]{name, time});
@@ -151,12 +151,8 @@ public class RecipeListPage extends AppCompatActivity {
         this.listViewRecipes.setAdapter(adapter);
 
         //Code to changed the text color based on whether the recipe can be cooked
-        /*
-        if () {
-            //Logic to make the text green
-        } else {
-            //Logic to make text red
-        } */
+        //this.theListView.setBackgroundColor(canCook() ? Color.GREEN : Color.RED);
+        //this.theListView.textColor
     }
 
     public void sortByAlphabet() {
@@ -178,24 +174,26 @@ public class RecipeListPage extends AppCompatActivity {
     }
 
     //canCook method from PantryData adapted for this class
-    /*
+
     public boolean canCook() {
+        //Grab an instance of the ViewModel
+        viewModel = RecipeListViewModel.getInstance();
+        viewModel.getCurrentUser();
 
-        for (DataSnapshot snapshot : cookbookDatabase.getChildren()) {
-
-        }
-        //Iterate through each item in the cookbookDatabase
-        for (String requiredIngredient : cookbookDatabase.getParent() {
-
-
-            int requiredQuantity = recipe.get(requiredIngredient);
-            int pantryQuantity = pantryRef.get(requiredIngredient);
-
-            if (pantryQuantity == 0 || pantryQuantity < requiredQuantity) {
-                return false;
+        pantryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshots : snapshot.getChildren()) {
+                    Log.d("PANTRY SNAPSHOT TESTING", snapshots.toString());
+                }
             }
-        }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         return true;
-    } */
+    }
 }
