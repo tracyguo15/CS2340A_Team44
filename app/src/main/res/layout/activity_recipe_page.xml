@@ -23,7 +23,8 @@
             android:layout_gravity="start"
             android:visibility="visible"
             app:headerLayout="@layout/navigation_header"
-            app:menu="@menu/navigation_menu"></com.google.android.material.navigation.NavigationView>
+            app:menu="@menu/navigation_menu"
+            tools:visibility="gone"></com.google.android.material.navigation.NavigationView>
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/nav_toolbar"
@@ -119,6 +120,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Submit"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.641" />
+
+            <Button
+                android:id="@+id/toRecipeList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recipe List"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"

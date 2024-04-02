@@ -3,6 +3,7 @@ package com.example.androidprojecttemplate.viewModels;
 
 //import android.content.Intent;
 import android.util.Log;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 
@@ -10,8 +11,9 @@ import androidx.annotation.NonNull;
 //import com.example.androidprojecttemplate.models.IngredientData;
 //import com.example.androidprojecttemplate.models.UserData;
 import com.example.androidprojecttemplate.models.FirebaseDB;
+import com.example.androidprojecttemplate.models.RecipeData;
 import com.example.androidprojecttemplate.views.IngredientListPage;
-//import com.example.androidprojecttemplate.views.IngredientPage;
+import com.example.androidprojecttemplate.views.RecipeListPage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,15 +24,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.*;
 //import java.util.logging.Handler;
 
-public class IngredientListViewModel {
-    private static IngredientListViewModel instance;
-    private final IngredientListPage theData;
+public class RecipeListViewModel {
+    private static RecipeListViewModel instance;
+    private final RecipeListPage theData;
 
     private FirebaseAuth theAuthenticationVariable;
     private FirebaseUser user;
     private DatabaseReference referenceForPantry;
     private DatabaseReference referenceForSpecificUser;
-    private DatabaseReference referenceForIngredient;
+    private DatabaseReference referenceForRecipe;
 
     private String theUsersEmailFromAuthenticationDatabase;
     private String theReturnQuantity = null;
@@ -41,15 +43,14 @@ public class IngredientListViewModel {
 
     private Timer timer;
 
-    public IngredientListViewModel() {
-        theData = new IngredientListPage();
+    public RecipeListViewModel() {
+        theData = new RecipeListPage();
     }
 
-    public static synchronized IngredientListViewModel getInstance() {
+    public static synchronized RecipeListViewModel getInstance() {
         if (instance == null) {
-            instance = new IngredientListViewModel();
+            instance = new RecipeListViewModel();
         }
-
         return instance;
     }
 
@@ -61,6 +62,7 @@ public class IngredientListViewModel {
 
     // Have to go to firebase and retrieve all of the current elements
     // * May not work if it's empty, need to test
+    /*
     public String getTheQuantity(String theNameOfIngredient, int number) {
         referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry");
 
@@ -75,11 +77,11 @@ public class IngredientListViewModel {
                     String theUsersName = theSnapshot.child("name").getValue().toString();
 
                     if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
-                        referenceForSpecificUser = referenceForPantry.child(theUsersName)
+                        referenceForSpecifcUser = referenceForPantry.child(theUsersName)
                                 .child("Ingredients");
 
                         // Will use a helper method to do the rest
-                        theReturnQuantity = helperMethod(referenceForSpecificUser,
+                        theReturnQuantity = helperMethod(referenceForSpecifcUser,
                                 theNameOfIngredient, number);
                     }
                 }
@@ -91,64 +93,27 @@ public class IngredientListViewModel {
         });
 
         return theReturnQuantity;
-    }
+    } */
 
-    private String helperMethod(DatabaseReference theReference,
-                                String theNameOfIngredient, int number) {
-        Log.d("testReference", theReference.toString());
-        theReference.addListenerForSingleValueEvent(new ValueEventListener() {
+    /*
+    public String getTheQuantity(String theNameOfRecipe, int number) {
+        referenceForRecipe = FirebaseDatabase.getInstance().getReference().child("Recipe");
+
+
+        referenceForRecipe.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
-                    Log.d("test1", theSnapshot.toString());
-                    if (theSnapshot.child("name").getValue(String.class)
-                            .equals(theNameOfIngredient)) {
-                        // Now, depending on what button was pressed,
-                        // will have to increase or decrease
-                        if (number == 1) {
-                            //increase
-                            changer = Integer.parseInt(theSnapshot.child("quantity")
-                                    .getValue(String.class));
-                            changer++;
-                            temp = theSnapshot.child("name").getValue(String.class);
-                            referenceForIngredient = theReference.child(temp);
-                            referenceForIngredient.child("quantity")
-                                    .setValue(String.valueOf(changer));
-                        } else if (number == 2) {
-                            //decrease
-                            changer = Integer.parseInt(theSnapshot.child("quantity")
-                                    .getValue(String.class));
-                            changer--;
-                            temp = theSnapshot.child("name").getValue(String.class);
-                            referenceForIngredient = theReference.child(temp);
-                            if (changer == 0) {
-                                referenceForIngredient.removeValue();
-                            } else {
-                                referenceForIngredient.child("quantity")
-                                        .setValue(String.valueOf(changer));
-                            }
-                        }
 
-                        timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                temp = theSnapshot.child("quantity")
-                                            .getValue(String.class);
-                                Log.d("test2", temp);
-                            }
-                            }, 300);
-                        break;
-                    }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("Error", "Something went wrong 2");
+
             }
         });
 
-        return temp;
-    }
-
+        return theReturnQuantity;
+    } */
 }
