@@ -17,6 +17,10 @@ public class RecipeData extends AbstractDatabase<String, Integer> {
         this(name, "", time);
     }
 
+    public RecipeData() {
+        this("", "", 0);
+    }
+
     public void add(String ingredientName, int quantity) {
         this.put(ingredientName, quantity);
     }
@@ -60,12 +64,11 @@ public class RecipeData extends AbstractDatabase<String, Integer> {
      * Given a recipe, determine whether the recipe can be cooked or not
      * Yes this is a copy of the canCook method in PantryData. I just ported
      * it over here as a temporary solution. I can deal with it after Sprint 3 demo.
-     * @param recipe the recipe to be cooked
      * @return true if the recipe can be cooked, false otherwise
      */
-    public boolean canCook(RecipeData recipe) {
-        for (String requiredIngredient : recipe.keySet()) {
-            int requiredQuantity = recipe.get(requiredIngredient);
+    public boolean canCook() {
+        for (String requiredIngredient : this.keySet()) {
+            int requiredQuantity = this.get(requiredIngredient);
             int pantryQuantity = this.get(requiredIngredient);
 
             if (pantryQuantity == 0 || pantryQuantity < requiredQuantity) {
