@@ -1,15 +1,15 @@
 package com.example.androidprojecttemplate.views;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+//import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
+//import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidprojecttemplate.R;
@@ -38,7 +38,7 @@ public class IngredientListPage extends AppCompatActivity {
     private String temp = "hello";
 
     private Handler timerHandler = new Handler();
-    private static String[] IngredientHolder = new String[1];
+    private static String[] ingredientHolder = new String[1];
 
 
     @Override
@@ -50,13 +50,14 @@ public class IngredientListPage extends AppCompatActivity {
         theListView = findViewById(R.id.theListViewForIngredients);
         theQuantity = findViewById(R.id.QuantityTextView);
         increase = findViewById(R.id.IncreaseQuantity);
-        decrease= findViewById(R.id.DecreaseQuantity);
+        decrease = findViewById(R.id.DecreaseQuantity);
 
         viewModel = IngredientListViewModel.getInstance();
 
         theListOfIngredients = getIntent().getExtras().getStringArrayList("TheList");
 
-        adapter = new ArrayAdapter(IngredientListPage.this, android.R.layout.simple_list_item_1, theListOfIngredients);
+        adapter = new ArrayAdapter(IngredientListPage.this,
+                android.R.layout.simple_list_item_1, theListOfIngredients);
         theListView.setAdapter(adapter);
 
         // When someone clicks on an item
@@ -64,7 +65,7 @@ public class IngredientListPage extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 viewModel.getCurrentUser();
-                IngredientHolder[0] =  adapter.getItem(position).toString();
+                ingredientHolder[0] =  adapter.getItem(position).toString();
                 timer = new Timer();
                 timer.schedule(new TimerTask() {
                     @Override
@@ -89,7 +90,7 @@ public class IngredientListPage extends AppCompatActivity {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    temp = viewModel.getTheQuantity(IngredientHolder[0], 1);
+                    temp = viewModel.getTheQuantity(ingredientHolder[0], 1);
                 }
             }, 1000);
             theQuantity.setText(temp);
@@ -101,7 +102,7 @@ public class IngredientListPage extends AppCompatActivity {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    temp = viewModel.getTheQuantity(IngredientHolder[0], 2);
+                    temp = viewModel.getTheQuantity(ingredientHolder[0], 2);
                 }
             }, 1000);
             theQuantity.setText(temp);

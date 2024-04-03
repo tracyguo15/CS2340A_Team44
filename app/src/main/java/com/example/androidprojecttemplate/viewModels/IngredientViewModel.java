@@ -76,7 +76,8 @@ public class IngredientViewModel {
                     String theUsersName = theSnapshot.child("name").getValue().toString();
 
                     if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
-                        referenceForSpecifcUser = referenceForPantry.child(theUsersName).child("Ingredients");
+                        referenceForSpecifcUser = referenceForPantry.child(theUsersName)
+                                .child("Ingredients");
                         // Will use a helper method to do the rest
                         helperMethod(referenceForSpecifcUser);
                     }
