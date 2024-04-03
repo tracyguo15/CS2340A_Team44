@@ -56,6 +56,7 @@ public class RecipePage extends AppCompatActivity {
     private EditText timeInput;
     private EditText descriptionInput;
     private EditText nameInput;
+    private Button toRecipeList;
 
     public void createIngredientRow() {
         // create row
@@ -198,6 +199,7 @@ public class RecipePage extends AppCompatActivity {
         ingredientContainer = findViewById(R.id.container);
         addIngredient = findViewById(R.id.addIngredientRow);
         submit = findViewById(R.id.submitRecipeData);
+        toRecipeList = findViewById(R.id.toRecipeList);
 
         ingredients = new ArrayList<>();
         quantities = new ArrayList<>();
@@ -320,6 +322,11 @@ public class RecipePage extends AppCompatActivity {
                     }
                 });
             }
+        });
+
+        toRecipeList.setOnClickListener(v -> {
+            Intent intent = new Intent(RecipePage.this, RecipeListPage.class);
+            startActivity(intent);
         });
     }
 

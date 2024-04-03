@@ -29,7 +29,7 @@ public class IngredientListViewModel {
     private FirebaseAuth theAuthenticationVariable;
     private FirebaseUser user;
     private DatabaseReference referenceForPantry;
-    private DatabaseReference referenceForSpecifcUser;
+    private DatabaseReference referenceForSpecificUser;
     private DatabaseReference referenceForIngredient;
 
     private String theUsersEmailFromAuthenticationDatabase;
@@ -40,8 +40,6 @@ public class IngredientListViewModel {
     private int changer = 0;
 
     private Timer timer;
-
-
 
     public IngredientListViewModel() {
         theData = new IngredientListPage();
@@ -77,11 +75,11 @@ public class IngredientListViewModel {
                     String theUsersName = theSnapshot.child("name").getValue().toString();
 
                     if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
-                        referenceForSpecifcUser = referenceForPantry.child(theUsersName)
+                        referenceForSpecificUser = referenceForPantry.child(theUsersName)
                                 .child("Ingredients");
 
                         // Will use a helper method to do the rest
-                        theReturnQuantity = helperMethod(referenceForSpecifcUser,
+                        theReturnQuantity = helperMethod(referenceForSpecificUser,
                                 theNameOfIngredient, number);
                     }
                 }
