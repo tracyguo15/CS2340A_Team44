@@ -106,7 +106,7 @@ public class PersonalInfo extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.list) {
-                    Intent intent = new Intent(PersonalInfo.this, ListPage.class);
+                    Intent intent = new Intent(PersonalInfo.this, ShoppingList.class);
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.personalinfo) {
