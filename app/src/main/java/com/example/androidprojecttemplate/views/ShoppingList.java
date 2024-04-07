@@ -155,7 +155,19 @@ public class ShoppingList extends AppCompatActivity {
             }
 
             if (!isThereInvalidEntry) {
-                viewModel.addToFirebase(ingredients, quantities);
+                viewModel.addToFirebase(ingredients, quantities, result -> runOnUiThread(() -> {
+                    if (result == 1) {
+                        Toast.makeText(ShoppingList.this,
+                                "Success",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (result == 2) {
+                        Toast.makeText(ShoppingList.this,
+                                "Something went wrong with the firebase connection",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }));
+
+
             }
 
             // Will change the value of the boolean variable for the next time

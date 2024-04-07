@@ -18,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.*;
-import java.util.logging.Handler;
 
 public class IngredientViewModel {
     private static IngredientViewModel instance;
@@ -116,7 +115,7 @@ public class IngredientViewModel {
 
 
     public void addToFirebase(String name, String quantity, String calories,
-                              String expirationDate, IngredientCallback callback) {
+                              String expirationDate, TheCallback callback) {
         referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry");
 
         addTheElementsFromFirebaseToTheList();

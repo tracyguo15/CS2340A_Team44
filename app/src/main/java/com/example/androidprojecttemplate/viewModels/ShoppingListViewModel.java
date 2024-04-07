@@ -56,10 +56,7 @@ public class ShoppingListViewModel {
         theUsersEmailFromAuthenticationDatabase = FirebaseDB.getInstance().getEmail();
     }
 
-    public void addToFirebase(ArrayList<EditText> names, ArrayList<EditText> quantities) {
-        for (int i = 0; i < names.size(); i++) {
-            Log.d("FuckYou", names.get(i).getText().toString());
-        }
+    public void addToFirebase(ArrayList<EditText> names, ArrayList<EditText> quantities, TheCallback callback) {
         referenceForShoppingList = FirebaseDatabase.getInstance().getReference().child("Shopping_List");
 
         referenceForShoppingList.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -77,24 +74,23 @@ public class ShoppingListViewModel {
                         referenceTemp = referenceForShoppingList.child(theUsersName);
                         // Will use a helper method to do the rest
                         helperMethod(referenceTemp, names, quantities);
+                        callback.onCompleted(1);
                     }
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.d("Error", "Something went wrong");
+                callback.onCompleted(2);
             }
         });
     }
 
     private void helperMethod(DatabaseReference theReference, ArrayList<EditText> names, ArrayList<EditText> quantities) {
-
         for(int i = 0; i < names.size(); i++) {
             ShoppingListData theItem = new ShoppingListData(names.get(i).getText().toString(), quantities.get(i).getText().toString());
             Log.d("theName", names.get(i).getText().toString());
             theReference.child(names.get(i).getText().toString()).setValue(theItem);
         }
-
-
     }
 }

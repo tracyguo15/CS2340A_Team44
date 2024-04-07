@@ -138,8 +138,7 @@ public class IngredientPage extends AppCompatActivity {
             }
 
             viewModel.addToFirebase(theName, theQuantity,
-                    theCalories, theExpirationDate,
-                    result -> runOnUiThread(() -> {
+                    theCalories, theExpirationDate, result -> runOnUiThread(() -> {
                         if (result == 1) {
                             Toast.makeText(IngredientPage.this,
                                     "Success",
