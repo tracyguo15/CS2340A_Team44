@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.androidprojecttemplate.R;
 
+import com.example.androidprojecttemplate.viewModels.ShoppingListViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -40,10 +42,13 @@ public class ShoppingList extends AppCompatActivity {
     private LinearLayout ingredientContainer;
     private Button addShoppingIngredient;
     private Button submit;
+    private ShoppingListViewModel viewModel;
     private final int maxIngredients = 5;
     private int ingredientCount;
+    private boolean isThereInvalidEntry = false;
     private ArrayList<EditText> ingredients;
     private ArrayList<EditText> quantities;
+
 
 
 
@@ -59,6 +64,7 @@ public class ShoppingList extends AppCompatActivity {
         ingredients = new ArrayList<>();
         quantities = new ArrayList<>();
 
+        viewModel = ShoppingListViewModel.getInstance();
 
 
 
@@ -121,6 +127,39 @@ public class ShoppingList extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
             }
+        });
+
+        submit.setOnClickListener(v -> {
+            viewModel.getCurrentUser();
+            // Need to traverse through the ingredients and quantities to determine if null
+            for (int i = 0; i < ingredients.size(); i++) {
+                Log.d("size", String.valueOf(ingredients.size()));
+                Log.d("Name:", ingredients.get(i).getText().toString());
+                Log.d("Quantity:", quantities.get(i).getText().toString());
+                if(ingredients.get(i).getText().toString().isEmpty()) {
+                    // Should display a toast message
+                    Toast.makeText(ShoppingList.this,
+                            "Please input an ingredient!",
+                            Toast.LENGTH_SHORT).show();
+                    isThereInvalidEntry = true;
+                    break;
+                }
+
+                if (quantities.get(i).getText().toString().isEmpty()) {
+                    Toast.makeText(ShoppingList.this,
+                            "Please input a quantity!",
+                            Toast.LENGTH_SHORT).show();
+                    isThereInvalidEntry = true;
+                    break;
+                }
+            }
+
+            if (!isThereInvalidEntry) {
+                viewModel.addToFirebase(ingredients, quantities);
+            }
+
+            // Will change the value of the boolean variable for the next time
+            isThereInvalidEntry = false;
         });
 
     }
@@ -213,7 +252,11 @@ public class ShoppingList extends AppCompatActivity {
 
         ingredientContainer.addView(row);
 
+        //ingredients.add(String.valueOf(input.getText()));
+        //quantities.add(String.valueOf(quantityInput.getText()));
         ingredients.add(input);
         quantities.add(quantityInput);
+
+        Log.d("Shit", ingredients.get(0).getText().toString());
     }
 }

@@ -26,6 +26,7 @@ public class CreateAccountViewModel {
     private DatabaseReference reference;
     DatabaseReference referenceForPantry;
     DatabaseReference childForReferenceForPantry;
+    DatabaseReference referenceForShoppingList;
 
     private static int temp = 0;
 
@@ -94,6 +95,13 @@ public class CreateAccountViewModel {
                             childForReferenceForPantry = referenceForPantry.child(name);
                             UserLoginData tempValue = new UserLoginData(name);
                             childForReferenceForPantry.child("Ingredients").setValue(tempValue);
+
+                            // Lastly, will add the user's name to the shopping list database
+                            referenceForShoppingList = FirebaseDatabase.getInstance()
+                                    .getReference()
+                                    .child("Shopping_List");
+
+                            referenceForShoppingList.child(name).setValue(theName);
 
                             temp = 5;
                         } else {
