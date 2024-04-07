@@ -33,10 +33,12 @@ public class ShoppingListViewModel {
     private FirebaseUser user;
     private DatabaseReference referenceForShoppingList;
     private DatabaseReference referenceTemp;
+    private DatabaseReference referenceForPantry;
+    private boolean doesItExist = false;
 
     private String theUsersEmailFromAuthenticationDatabase;
 
-    private boolean isItInIngredientDatabase = false;
+    private boolean isItInIngredientDatabase;
 
     public ShoppingListViewModel() {
         theData = new ShoppingList();
@@ -73,7 +75,7 @@ public class ShoppingListViewModel {
                     if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
                         referenceTemp = referenceForShoppingList.child(theUsersName);
                         // Will use a helper method to do the rest
-                        helperMethod(referenceTemp, names, quantities);
+                        helperMethod(referenceTemp, names, quantities, theUsersName);
                         callback.onCompleted(1);
                     }
                 }
@@ -86,11 +88,42 @@ public class ShoppingListViewModel {
         });
     }
 
-    private void helperMethod(DatabaseReference theReference, ArrayList<EditText> names, ArrayList<EditText> quantities) {
+    private void helperMethod(DatabaseReference theReference, ArrayList<EditText> names, ArrayList<EditText> quantities, String theUsersName) {
         for(int i = 0; i < names.size(); i++) {
-            ShoppingListData theItem = new ShoppingListData(names.get(i).getText().toString(), quantities.get(i).getText().toString());
-            Log.d("theName", names.get(i).getText().toString());
-            theReference.child(names.get(i).getText().toString()).setValue(theItem);
+            // Will have to check the pantry database
+            if(!isInPantryDatabase(theUsersName, names.get(i).getText().toString(), quantities.get(i).getText().toString())) {
+                ShoppingListData theItem = new ShoppingListData(names.get(i).getText().toString(), quantities.get(i).getText().toString());
+                theReference.child(names.get(i).getText().toString()).setValue(theItem);
+            }
         }
+    }
+
+    private boolean isInPantryDatabase(String theUsersName, String nameOfIngredient, String theQuantity) {
+        doesItExist = false;
+        referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry").child(theUsersName).child("Ingredients");
+        Log.d("Reference1:", referenceForPantry.toString());
+
+        referenceForPantry.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+                    if(nameOfIngredient.equals(theSnapshot.getKey())) {
+                        // The ingredient already exists in the Pantry database
+                        // Simply update the quantity
+                        referenceForPantry.child(nameOfIngredient).child("quantity").setValue(theQuantity);
+                        doesItExist = true;
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Error", "Something went wrong");
+            }
+        });
+
+        Log.d("TheBool", String.valueOf(doesItExist));
+        return doesItExist;
     }
 }

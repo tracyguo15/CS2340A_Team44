@@ -180,17 +180,6 @@ public class IngredientViewModel {
                 });
             }
         }, 300);
-
-       /* // Need a time due to a delay in retrieving the ingredients from firebase
-        timer2 = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Log.d("TheArray2", addedIngredientNames.toString());
-            }
-        }, 400); */
-
-
     }
 
     private void addToIngredientFirebase(String name, String calories, String price) {
