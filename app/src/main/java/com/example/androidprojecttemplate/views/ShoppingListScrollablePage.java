@@ -36,6 +36,7 @@ public class ShoppingListScrollablePage extends AppCompatActivity {
     private TextView theQuantity;
     private Button increase;
     private Button decrease;
+    private Button goToCheckBoxScreen;
     private Timer timer;
 
     private String temp = "hello";
@@ -54,6 +55,7 @@ public class ShoppingListScrollablePage extends AppCompatActivity {
         theQuantity = findViewById(R.id.quantityTextViewShopping);
         increase = findViewById(R.id.increaseShopping);
         decrease = findViewById(R.id.decreaseShopping);
+        goToCheckBoxScreen = findViewById(R.id.buttonToCheckBox);
 
         viewModel = ShoppingListScrollableViewModel.getInstance();
         Thread theThread = new Thread() {
@@ -66,6 +68,7 @@ public class ShoppingListScrollablePage extends AppCompatActivity {
                 theListView.setAdapter(adapter);
 
                 // When someone clicks on an item
+
                 theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -115,6 +118,14 @@ public class ShoppingListScrollablePage extends AppCompatActivity {
             }
         };
         theThread.start();
+
+        goToCheckBoxScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent theIntent = new Intent(ShoppingListScrollablePage.this, ShoppingListTheCheckBoxPage.class);
+                startActivity(theIntent);
+            }
+        });
 
     }
 
