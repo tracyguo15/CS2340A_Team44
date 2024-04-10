@@ -183,7 +183,7 @@ public class RecipePage extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.list) {
-                    Intent intent = new Intent(RecipePage.this, ListPage.class);
+                    Intent intent = new Intent(RecipePage.this, ShoppingList.class);
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.personalinfo) {

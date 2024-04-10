@@ -6,10 +6,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -99,7 +97,7 @@ public class IngredientPage extends AppCompatActivity {
                     }
                     return true;
                 } else if (id == R.id.list) {
-                    Intent intent = new Intent(IngredientPage.this, ListPage.class);
+                    Intent intent = new Intent(IngredientPage.this, ShoppingList.class);
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.personalinfo) {
@@ -140,8 +138,7 @@ public class IngredientPage extends AppCompatActivity {
             }
 
             viewModel.addToFirebase(theName, theQuantity,
-                    theCalories, theExpirationDate,
-                    result -> runOnUiThread(() -> {
+                    theCalories, theExpirationDate, result -> runOnUiThread(() -> {
                         if (result == 1) {
                             Toast.makeText(IngredientPage.this,
                                     "Success",
@@ -171,8 +168,6 @@ public class IngredientPage extends AppCompatActivity {
             @Override
             public void run() {
                 theIngredientsList = viewModel.getTheArrayList();
-                Log.d("Shit", theIngredientsList.toString());
-
                 //Switch to other screen
                 Intent theIntent = new Intent(IngredientPage.this, IngredientListPage.class);
                 theIntent.putExtra("TheList", theIngredientsList);

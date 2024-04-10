@@ -8,7 +8,7 @@ package com.example.androidprojecttemplate.viewModels;
  * By using this interface, we can update our app's interface accordingly, based on the
  * result of our background task.
  */
-public interface IngredientCallback {
+public interface TheCallback {
     //this is used for
     void onCompleted(int result);
 }

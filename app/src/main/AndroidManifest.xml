@@ -51,7 +51,12 @@
         </activity>
 
         <activity
-            android:name=".views.ListPage"
+            android:name=".views.ShoppingList"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".views.ShoppingListScrollablePage"
             android:exported="true">
         </activity>
 
