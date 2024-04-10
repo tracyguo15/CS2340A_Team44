@@ -34,11 +34,15 @@ public class ShoppingListViewModel {
     private DatabaseReference referenceForShoppingList;
     private DatabaseReference referenceTemp;
     private DatabaseReference referenceForPantry;
+    private DatabaseReference referenceForSpecifcUser;
     private boolean doesItExist = false;
 
     private String theUsersEmailFromAuthenticationDatabase;
 
     private boolean isItInIngredientDatabase;
+
+    private Timer timer;
+    private String temp;
 
     public ShoppingListViewModel() {
         theData = new ShoppingList();
@@ -58,7 +62,11 @@ public class ShoppingListViewModel {
         theUsersEmailFromAuthenticationDatabase = FirebaseDB.getInstance().getEmail();
     }
 
-    public void addToFirebase(ArrayList<EditText> names, ArrayList<EditText> quantities, TheCallback callback) {
+    private static ArrayList<String> addedShoppingListItems = new ArrayList<>();
+
+    // Have to go to firebase and retrieve all of the current elements
+    // * May not work if it's empty, need to test
+    private void addTheElementsFromFirebaseToTheList() {
         referenceForShoppingList = FirebaseDatabase.getInstance().getReference().child("Shopping_List");
 
         referenceForShoppingList.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -71,11 +79,64 @@ public class ShoppingListViewModel {
 
                     String theUsersName = theSnapshot.child("name").getValue().toString();
 
+                    if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
+                        referenceForSpecifcUser = referenceForShoppingList.child(theUsersName);
+                        // Will use a helper method to do the rest
+                        helperMethod(referenceForSpecifcUser);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Error", "Something went wrong");
+            }
+        });
+    }
+
+    private void helperMethod(DatabaseReference theReference) {
+        theReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+
+                    if (theSnapshot.child("name").getValue(String.class) != null) {
+                        temp = theSnapshot.child("name").getValue(String.class).toString();
+                        addedShoppingListItems.add(temp);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Error", "Something went wrong 2");
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+    public void addToFirebase(ArrayList<EditText> names, ArrayList<EditText> quantities, TheCallback callback) {
+        referenceForShoppingList = FirebaseDatabase.getInstance().getReference().child("Shopping_List");
+
+        addTheElementsFromFirebaseToTheList();
+        referenceForShoppingList.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+
+                    String theEmailFromFirebase = theSnapshot.child("username")
+                            .getValue().toString();
+
+                    String theUsersName = theSnapshot.child("name").getValue().toString();
 
                     if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
                         referenceTemp = referenceForShoppingList.child(theUsersName);
                         // Will use a helper method to do the rest
-                        helperMethod(referenceTemp, names, quantities, theUsersName);
+                        helperMethod2(referenceTemp, names, quantities, theUsersName);
                         callback.onCompleted(1);
                     }
                 }
@@ -88,13 +149,15 @@ public class ShoppingListViewModel {
         });
     }
 
-    private void helperMethod(DatabaseReference theReference, ArrayList<EditText> names, ArrayList<EditText> quantities, String theUsersName) {
+    private void helperMethod2(DatabaseReference theReference, ArrayList<EditText> names, ArrayList<EditText> quantities, String theUsersName) {
+
         for(int i = 0; i < names.size(); i++) {
             // Will have to check the pantry database
-            if(!isInPantryDatabase(theUsersName, names.get(i).getText().toString(), quantities.get(i).getText().toString())) {
-                ShoppingListData theItem = new ShoppingListData(names.get(i).getText().toString(), quantities.get(i).getText().toString());
-                theReference.child(names.get(i).getText().toString()).setValue(theItem);
-            }
+                if(!isInPantryDatabase(theUsersName, names.get(i).getText().toString(), quantities.get(i).getText().toString())) {
+                    ShoppingListData theItem = new ShoppingListData(names.get(i).getText().toString(), quantities.get(i).getText().toString());
+                    theReference.child(names.get(i).getText().toString()).setValue(theItem);
+                    addedShoppingListItems.add(names.get(i).getText().toString());
+                }
         }
     }
 
@@ -125,5 +188,10 @@ public class ShoppingListViewModel {
 
         Log.d("TheBool", String.valueOf(doesItExist));
         return doesItExist;
+    }
+
+
+    public ArrayList<String> getTheArrayList() {
+        return addedShoppingListItems;
     }
 }

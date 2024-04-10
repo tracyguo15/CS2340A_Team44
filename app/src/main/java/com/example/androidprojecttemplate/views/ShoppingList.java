@@ -30,6 +30,8 @@ import com.example.androidprojecttemplate.viewModels.ShoppingListViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 //implements NavigationView.OnNavigationItemSelectedListener
@@ -48,6 +50,8 @@ public class ShoppingList extends AppCompatActivity {
     private boolean isThereInvalidEntry = false;
     private ArrayList<EditText> ingredients;
     private ArrayList<EditText> quantities;
+    private ArrayList<String> theList = new ArrayList<>();
+    private Timer timer;
 
 
 
@@ -131,28 +135,36 @@ public class ShoppingList extends AppCompatActivity {
 
         submit.setOnClickListener(v -> {
             viewModel.getCurrentUser();
-            // Need to traverse through the ingredients and quantities to determine if null
-            for (int i = 0; i < ingredients.size(); i++) {
-                Log.d("size", String.valueOf(ingredients.size()));
-                Log.d("Name:", ingredients.get(i).getText().toString());
-                Log.d("Quantity:", quantities.get(i).getText().toString());
-                if(ingredients.get(i).getText().toString().isEmpty()) {
-                    // Should display a toast message
-                    Toast.makeText(ShoppingList.this,
-                            "Please input an ingredient!",
-                            Toast.LENGTH_SHORT).show();
-                    isThereInvalidEntry = true;
-                    break;
-                }
 
-                if (quantities.get(i).getText().toString().isEmpty()) {
-                    Toast.makeText(ShoppingList.this,
-                            "Please input a quantity!",
-                            Toast.LENGTH_SHORT).show();
-                    isThereInvalidEntry = true;
-                    break;
+            // First check if anything was inputed in the first place
+            if (ingredients.size() == 0 || quantities.size() == 0) {
+                Toast.makeText(ShoppingList.this,
+                        "Please input something!",
+                        Toast.LENGTH_SHORT).show();
+                isThereInvalidEntry = true;
+            } else {
+                // Checks for null
+                // Need to traverse through the ingredients and quantities to determine if null
+                for (int i = 0; i < ingredients.size(); i++) {
+                    if(ingredients.get(i).getText().toString().isEmpty()) {
+                        // Should display a toast message
+                        Toast.makeText(ShoppingList.this,
+                                "Please input an ingredient!",
+                                Toast.LENGTH_SHORT).show();
+                        isThereInvalidEntry = true;
+                        break;
+                    }
+
+                    if (quantities.get(i).getText().toString().isEmpty()) {
+                        Toast.makeText(ShoppingList.this,
+                                "Please input a quantity!",
+                                Toast.LENGTH_SHORT).show();
+                        isThereInvalidEntry = true;
+                        break;
+                    }
                 }
             }
+
 
             if (!isThereInvalidEntry) {
                 viewModel.addToFirebase(ingredients, quantities, result -> runOnUiThread(() -> {
@@ -160,6 +172,7 @@ public class ShoppingList extends AppCompatActivity {
                         Toast.makeText(ShoppingList.this,
                                 "Success",
                                 Toast.LENGTH_SHORT).show();
+                        switchScreen();
                     } else if (result == 2) {
                         Toast.makeText(ShoppingList.this,
                                 "Something went wrong with the firebase connection",
@@ -183,6 +196,20 @@ public class ShoppingList extends AppCompatActivity {
             navView.setVisibility(View.VISIBLE);
         }
         return true;
+    }
+
+    public void switchScreen() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                theList = viewModel.getTheArrayList();
+                //Switch to other screen
+                Intent theIntent = new Intent(ShoppingList.this, ShoppingListScrollablePage.class);
+                theIntent.putExtra("TheList", theList);
+                startActivity(theIntent);
+            }
+        }, 2000);
     }
 
     public void createIngredientRow() {

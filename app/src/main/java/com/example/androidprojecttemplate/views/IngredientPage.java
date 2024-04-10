@@ -168,8 +168,6 @@ public class IngredientPage extends AppCompatActivity {
             @Override
             public void run() {
                 theIngredientsList = viewModel.getTheArrayList();
-                Log.d("Shit", theIngredientsList.toString());
-
                 //Switch to other screen
                 Intent theIntent = new Intent(IngredientPage.this, IngredientListPage.class);
                 theIntent.putExtra("TheList", theIngredientsList);
