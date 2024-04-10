@@ -61,7 +61,6 @@ public class ShoppingListScrollablePage extends AppCompatActivity {
         Thread theThread = new Thread() {
             public void run() {
                 theListOfShoppingIngredients = getIntent().getExtras().getStringArrayList("TheList");
-                Log.d("TheArrayShit", theListOfShoppingIngredients.toString());
 
                 adapter = new ArrayAdapter(ShoppingListScrollablePage.this,
                         android.R.layout.simple_list_item_1, theListOfShoppingIngredients);
@@ -123,6 +122,7 @@ public class ShoppingListScrollablePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent theIntent = new Intent(ShoppingListScrollablePage.this, ShoppingListTheCheckBoxPage.class);
+                theIntent.putExtra("ListForShopping", theListOfShoppingIngredients);
                 startActivity(theIntent);
             }
         });

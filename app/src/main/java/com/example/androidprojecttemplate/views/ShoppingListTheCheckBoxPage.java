@@ -31,8 +31,9 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
     private Button buttonToGoBackToScrollablePage;
     private Button buttonToSubmit;
     private ListView theListView;
+    private ArrayList<String> theShoppingList = new ArrayList<>();
     ArrayAdapter<String> adapter;
-    String[] theArrayTemp = {"1", "2", "3", "4", "5", "6"};
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,9 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
         buttonToSubmit = findViewById(R.id.submitFromCheckBox);
         theListView = findViewById(R.id.TheListViewCheckBox);
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, theArrayTemp);
+        theShoppingList = getIntent().getExtras().getStringArrayList("ListForShopping");
+
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, theShoppingList);
         theListView.setAdapter(adapter);
 
         theListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
