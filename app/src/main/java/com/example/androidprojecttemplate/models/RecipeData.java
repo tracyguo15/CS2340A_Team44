@@ -1,52 +1,81 @@
 package com.example.androidprojecttemplate.models;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
-public class RecipeData extends AbstractDatabase<String, Pairs<IngredientData, Integer>> {
+public class RecipeData extends AbstractDatabase<String, Integer> {
     private String name;
-    private int time;
     private String description;
+    private int time;
 
-    public RecipeData(ArrayList<Pairs<IngredientData, Integer>> ingredients,
-                      String name, int time, String description) {
-        if (ingredients == null) {
-            throw new IllegalArgumentException("ingredients shouldn't be null");
-        }
-
-        for (Pairs<IngredientData, Integer> i : ingredients) {
-            String ingredientName = i.getFirst().getName();
-
-            this.put(ingredientName, i);
-        }
-
+    public RecipeData(String name, String description, int time) {
         this.name = name;
-        this.time = time;
         this.description = description;
+        this.time = time;
     }
 
-    public void add(IngredientData ingredient, int quantity) {
-        String name = ingredient.getName();
-
-        this.put(name, new Pairs<>(ingredient, quantity));
+    public RecipeData(String name, int time) {
+        this(name, "", time);
     }
 
-    public void delete(IngredientData ingredient, int quantity) {
-        String name = ingredient.getName();
+    public RecipeData() {
+        this("", "", 0);
+    }
 
-        this.remove(name);
+    public void add(String ingredientName, int quantity) {
+        this.put(ingredientName, quantity);
+    }
+
+    public void delete(String ingredientName) {
+        this.remove(ingredientName);
     }
 
     public void setName(String name) {
-        this.name = name; }
+        try {
+            this.name = name;
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid name. "
+                    + "Please try another one.");
+        }
+    }
     public void setTime(int time) {
-        this.time = time; }
+        try {
+            this.time = time;
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid time. "
+             + "Please try a positive value.");
+        }
+    }
     public void setDescription(String description) {
-        this.description = description; }
+        this.description = description;
+    }
 
+    //Getters
     public String getName() {
-        return this.name; }
+        return this.name;
+    }
     public int getTime() {
-        return this.time; }
+        return this.time;
+    }
     public String getDescription() {
-        return this.description; }
+        return this.description;
+    }
+
+    /**
+     * Given a recipe, determine whether the recipe can be cooked or not
+     * Yes this is a copy of the canCook method in PantryData. I just ported
+     * it over here as a temporary solution. I can deal with it after Sprint 3 demo.
+     * @return true if the recipe can be cooked, false otherwise
+     */
+    public boolean canCook() {
+        for (String requiredIngredient : this.keySet()) {
+            int requiredQuantity = this.get(requiredIngredient);
+            int pantryQuantity = this.get(requiredIngredient);
+
+            if (pantryQuantity == 0 || pantryQuantity < requiredQuantity) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

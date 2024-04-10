@@ -10,11 +10,20 @@ public class IngredientData {
     private String expirationDate;
 
     public IngredientData(String name, String quantity, int calories, String expirationDate) {
-        if (name == null) {
-            throw new IllegalArgumentException("Name is null, please enter a proper value");
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Name is null or empty, please enter a proper value");
         }
+
         if (calories < 0) {
             throw new IllegalArgumentException("Ingredient must have positive number of calories.");
+        }
+
+        if (quantity == null || quantity.isEmpty()){
+            throw new IllegalArgumentException("Quantity is null or empty, please enter a proper value");
+        }
+
+        if (expirationDate == null || expirationDate.isEmpty()){
+            throw new IllegalArgumentException("Expiration date is null or empty, please enter a proper value");
         }
 
         this.name = name;
@@ -24,9 +33,6 @@ public class IngredientData {
     }
     
     public IngredientData(String name, double price, int calories) {
-        if (name == null) {
-            throw new IllegalArgumentException("Name is null, please enter a proper value");
-        }
         if (price < 0) {
             throw new IllegalArgumentException("The price is negative, "
                     + "please enter a positive number.");
@@ -40,22 +46,23 @@ public class IngredientData {
         this.calories = calories;
     }
 
-
-    //Setters
     public void setName(String name) {
-        this.name = name; }
+        this.name = name;
+    }
     public void setCalories(int calories) {
-        this.calories = calories; }
-    public void setQuantity(String quantity) {
-        this.quantity = quantity; }
+        this.calories = calories;
+    }
     public void setPrice(double price) {
-        this.price = price; }
+        this.price = price;
+    }
 
-    //Getters
-    public String getName() {
-        return name; }
+    public String getName(String name) {
+        return name;
+    }
     public int getCalories() {
-        return calories; }
+        return calories;
+    }
     public double getPrice() {
-        return price; }
+        return price;
+    }
 }

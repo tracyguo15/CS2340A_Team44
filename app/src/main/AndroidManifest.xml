@@ -71,6 +71,17 @@
             android:exported="true">
         </activity>
 
+        <activity
+            android:name=".views.IngredientListPage"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".views.RecipeListPage"
+            android:exported="true">
+        </activity>
+
+
     </application>
 
 </manifest>

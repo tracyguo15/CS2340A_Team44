@@ -4,10 +4,14 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.example.androidprojecttemplate.models.IngredientData;
 import com.example.androidprojecttemplate.models.MealData;
+import com.example.androidprojecttemplate.models.RecipeData;
 import com.example.androidprojecttemplate.models.UserData;
 import com.example.androidprojecttemplate.models.UserLoginData;
 import com.example.androidprojecttemplate.views.InputMealPage;
+
+import java.util.ArrayList;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -116,4 +120,132 @@ public class ExampleUnitTest {
             ageExc = true;
         }
         assertEquals(ageExc,true);
-}}
+   }
+
+   //Sprint 3 Unit Tests!!
+    //Tracy Guo
+    @Test
+    public void negativeIngredientCalories() {
+        try {
+            IngredientData ingredient = new IngredientData("name", "quantity", -1, "expirationDate");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Ingredient must have positive number of calories.", e.getMessage());
+        }
+    }
+
+    //Tracy Guo
+    @Test
+    public void nullIngredientName() {
+        try {
+            IngredientData ingredient = new IngredientData(null, "quantity", 1, "expirationDate");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Name is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Michael Leonick
+    @Test
+    public void emptyIngredientName() {
+        try {
+            IngredientData ingredient = new IngredientData("", "quantity", 1, "expirationDate");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Name is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Michael Leonick
+    @Test
+    public void nullIngredientQuantity() {
+        try {
+            IngredientData ingredient = new IngredientData("name", null, 1, "expirationDate");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Quantity is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Daniel Deller
+    @Test
+    public void emptyIngredientQuantity() {
+        try {
+            IngredientData ingredient = new IngredientData("name", "", 1, "expirationDate");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Quantity is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Daniel Deller
+    @Test
+    public void nullIngredientExpirationDate() {
+        try {
+            IngredientData ingredient = new IngredientData("name", "quantity", 1, null);
+        } catch (IllegalArgumentException e) {
+            assertEquals("Expiration date is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Michael Vaden
+    @Test
+    public void emptyIngredientExpirationDate() {
+        try {
+            IngredientData ingredient = new IngredientData("name", "quantity", 1, "");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Expiration date is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Michael Vaden
+    @Test
+    public void negativeTime() {
+        try {
+            RecipeData recipe = new RecipeData("Dish1", "It's pasta", -6);
+        } catch (IllegalArgumentException e) {
+            assertEquals("Please enter a valid time", e.getMessage());
+        }
+    }
+
+    //Rohan Bhole
+    @Test
+    public void testRecipeConstructors() {
+        RecipeData recipe = new RecipeData("Dish1", "It's pasta", 40);
+        assertEquals("Dish1", recipe.getName());
+        assertEquals(40, recipe.getTime());
+        assertEquals("It's pasta", recipe.getDescription());
+
+        RecipeData recipe2 = new RecipeData("Dish1", 40);
+        assertEquals("Dish1", recipe.getName());
+        assertEquals(40, recipe.getTime());
+    }
+
+    //Rohan Bhole
+    @Test
+    public void changeRecipeTime() {
+        RecipeData recipe = new RecipeData("Dish1", "It's pasta", 40);
+        recipe.setTime(60);
+        assertEquals(60, recipe.getTime());
+    }
+
+    //Adam Vaughn
+    @Test
+    public void nullIngredientList() {
+        try {
+            RecipeData recipe = new RecipeData("Dish1", "It's pasta", 40);
+        } catch (IllegalArgumentException e) {
+            assertEquals("ingredients shouldn't be null", e.getMessage());
+        }
+    }
+
+    //Adam Vaughn
+    @Test
+    public void changeRecipeNameNull() {
+        try {
+            RecipeData recipe = new RecipeData("Dish1", "It's pasta", 40);
+            recipe.setName("Super Smelly Recipe");
+            assertEquals("Super Smelly Recipe", recipe.getName());
+            recipe.setName(null);
+        } catch (IllegalArgumentException e) {
+            assertEquals("You cannot change to that name,"
+                    + " please try another one",  e.getMessage());
+        }
+    }
+}
+

@@ -13,6 +13,15 @@ public class UserLoginData {
         this.name = name;
     }
 
+    public UserLoginData(String name, String username) {
+        this.name = name;
+        this.username = username;
+    }
+
+    public UserLoginData(String username) {
+        this.username = username;
+    }
+
     // Setter and Getter methods
     public void setUsername(String newUsername) {
         username = newUsername;
