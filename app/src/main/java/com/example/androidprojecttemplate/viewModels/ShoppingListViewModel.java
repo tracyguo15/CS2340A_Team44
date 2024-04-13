@@ -43,6 +43,7 @@ public class ShoppingListViewModel {
 
     private Timer timer;
     private String temp;
+    private String temp2;
 
     public ShoppingListViewModel() {
         theData = new ShoppingList();
@@ -63,6 +64,7 @@ public class ShoppingListViewModel {
     }
 
     private static ArrayList<String> addedShoppingListItems = new ArrayList<>();
+    private static ArrayList<String> addedQuantities = new ArrayList<>();
 
     // Have to go to firebase and retrieve all of the current elements
     // * May not work if it's empty, need to test
@@ -102,6 +104,8 @@ public class ShoppingListViewModel {
                     if (theSnapshot.child("name").getValue(String.class) != null) {
                         temp = theSnapshot.child("name").getValue(String.class).toString();
                         addedShoppingListItems.add(temp);
+                        temp2 = theSnapshot.child("quantity").getValue(String.class).toString();
+                        addedQuantities.add(temp2);
                     }
                 }
             }
@@ -149,14 +153,15 @@ public class ShoppingListViewModel {
         });
     }
 
-    private void helperMethod2(DatabaseReference theReference, ArrayList<EditText> names, ArrayList<EditText> quantities, String theUsersName) {
+    private void helperMethod2(DatabaseReference theReference, ArrayList<EditText> names, ArrayList<EditText> quantities1, String theUsersName) {
 
         for(int i = 0; i < names.size(); i++) {
             // Will have to check the pantry database
-                if(!isInPantryDatabase(theUsersName, names.get(i).getText().toString(), quantities.get(i).getText().toString())) {
-                    ShoppingListData theItem = new ShoppingListData(names.get(i).getText().toString(), quantities.get(i).getText().toString());
+                if(!isInPantryDatabase(theUsersName, names.get(i).getText().toString(), quantities1.get(i).getText().toString())) {
+                    ShoppingListData theItem = new ShoppingListData(names.get(i).getText().toString(), quantities1.get(i).getText().toString());
                     theReference.child(names.get(i).getText().toString()).setValue(theItem);
                     addedShoppingListItems.add(names.get(i).getText().toString());
+                    addedQuantities.add(quantities1.get(i).getText().toString());
                 }
         }
     }
@@ -194,4 +199,6 @@ public class ShoppingListViewModel {
     public ArrayList<String> getTheArrayList() {
         return addedShoppingListItems;
     }
+
+    public ArrayList<String> getTheQuantities() { return addedQuantities;}
 }

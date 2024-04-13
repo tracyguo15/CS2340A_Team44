@@ -14,9 +14,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidprojecttemplate.R;
-import com.example.androidprojecttemplate.viewModels.IngredientListViewModel;
 import com.example.androidprojecttemplate.viewModels.ShoppingListScrollableViewModel;
-import com.example.androidprojecttemplate.viewModels.ShoppingListViewModel;
 
 
 import java.util.ArrayList;
@@ -29,6 +27,7 @@ public class ShoppingListScrollablePage extends AppCompatActivity {
     private ListView theListView;
 
     private ArrayList<String> theListOfShoppingIngredients = new ArrayList<>();
+    private ArrayList<String> theQuantities = new ArrayList<>();
     private ArrayAdapter adapter;
     private Button goBacktoShoppingScreen ;
 
@@ -37,13 +36,7 @@ public class ShoppingListScrollablePage extends AppCompatActivity {
     private Button increase;
     private Button decrease;
     private Button goToCheckBoxScreen;
-    private Timer timer;
-
-    private String temp = "hello";
-
-    private Handler timerHandler = new Handler();
-    private static String[] ShoppingHolder = new String[1];
-
+    private int theMostRecentPosition = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +54,7 @@ public class ShoppingListScrollablePage extends AppCompatActivity {
         Thread theThread = new Thread() {
             public void run() {
                 theListOfShoppingIngredients = getIntent().getExtras().getStringArrayList("TheList");
+                theQuantities = getIntent().getExtras().getStringArrayList("TheQuantities");
 
                 adapter = new ArrayAdapter(ShoppingListScrollablePage.this,
                         android.R.layout.simple_list_item_1, theListOfShoppingIngredients);
@@ -71,16 +65,12 @@ public class ShoppingListScrollablePage extends AppCompatActivity {
                 theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        viewModel.getCurrentUser();
-                        ShoppingHolder[0] =  adapter.getItem(position).toString();
-                        timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                temp = viewModel.getTheQuantity(adapter.getItem(position).toString(), 0);
-                            }
-                        }, 1000);
-                        theQuantity.setText(temp);
+                        // Since the quantities were added in the same order as the ingredient names,
+                        // it'll return the correct quantity
+
+                        theMostRecentPosition = position;
+                        Log.d("thePosition", String.valueOf(theMostRecentPosition));
+                        setText(position);
                     }
                 });
 
@@ -92,27 +82,41 @@ public class ShoppingListScrollablePage extends AppCompatActivity {
 
 
                 increase.setOnClickListener(v -> {
+                    // Changes quantity
+                    int temp = Integer.parseInt(theQuantities.get(theMostRecentPosition));
+                    temp += 1;
+                    theQuantities.set(theMostRecentPosition, String.valueOf(temp));
+                    setText(theMostRecentPosition);
+
+                    // Method to update firebase
                     viewModel.getCurrentUser();
-                    timer = new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            temp = viewModel.getTheQuantity(ShoppingHolder[0], 1);
-                        }
-                    }, 1000);
-                    theQuantity.setText(temp);
+                    viewModel.setTheQuantity(adapter.getItem(theMostRecentPosition).toString(), temp);
                 });
 
                 decrease.setOnClickListener(v -> {
-                    viewModel.getCurrentUser();
-                    timer = new Timer();
-                    timer.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
-                            temp = viewModel.getTheQuantity(ShoppingHolder[0], 2);
-                        }
-                    }, 1000);
-                    theQuantity.setText(temp);
+                    // Needed to update firebase
+                   String theName = adapter.getItem(theMostRecentPosition).toString();
+
+                   // Changes quantity
+                    int temp = Integer.parseInt(theQuantities.get(theMostRecentPosition));
+                    temp -= 1;
+                    theQuantities.set(theMostRecentPosition, String.valueOf(temp));
+                    setText(theMostRecentPosition);
+
+                    // If the quantity is zero, then delete
+                    if (temp == 0) {
+                        // Calls method to remove from firebase
+                        viewModel.getCurrentUser();
+                        viewModel.setTheQuantity(adapter.getItem(theMostRecentPosition).toString(), temp);
+
+                        // Remove from listview
+                        theQuantities.remove(theMostRecentPosition);
+                        theListOfShoppingIngredients.remove(theMostRecentPosition);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        viewModel.getCurrentUser();
+                        viewModel.setTheQuantity(adapter.getItem(theMostRecentPosition).toString(), temp);
+                    }
                 });
             }
         };
@@ -123,10 +127,17 @@ public class ShoppingListScrollablePage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent theIntent = new Intent(ShoppingListScrollablePage.this, ShoppingListTheCheckBoxPage.class);
                 theIntent.putExtra("ListForShopping", theListOfShoppingIngredients);
+                theIntent.putExtra("Quantities", theQuantities);
                 startActivity(theIntent);
             }
         });
 
+
+
+    }
+
+    public void setText(int position) {
+        theQuantity.setText(theQuantities.get(position));
     }
 
 }

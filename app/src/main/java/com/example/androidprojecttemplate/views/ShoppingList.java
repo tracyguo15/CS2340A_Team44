@@ -207,6 +207,7 @@ public class ShoppingList extends AppCompatActivity {
                 //Switch to other screen
                 Intent theIntent = new Intent(ShoppingList.this, ShoppingListScrollablePage.class);
                 theIntent.putExtra("TheList", theList);
+                theIntent.putExtra("TheQuantities", viewModel.getTheQuantities());
                 startActivity(theIntent);
             }
         }, 2000);

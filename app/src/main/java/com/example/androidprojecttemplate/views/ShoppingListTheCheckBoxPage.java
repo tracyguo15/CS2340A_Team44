@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidprojecttemplate.R;
 import com.example.androidprojecttemplate.viewModels.ShoppingListScrollableViewModel;
+import com.example.androidprojecttemplate.viewModels.ShoppingListTheCheckBoxViewModel;
 
 
 import java.util.ArrayList;
@@ -30,8 +31,11 @@ import android.widget.Toast;
 public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
     private Button buttonToGoBackToScrollablePage;
     private Button buttonToSubmit;
+    private ShoppingListTheCheckBoxViewModel viewModel;
     private ListView theListView;
     private ArrayList<String> theShoppingList = new ArrayList<>();
+    private ArrayList<String> theQuantities = new ArrayList<>();
+    private ArrayList<String> theSelectedItems = new ArrayList<>();
     ArrayAdapter<String> adapter;
 
 
@@ -44,11 +48,13 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
         buttonToSubmit = findViewById(R.id.submitFromCheckBox);
         theListView = findViewById(R.id.TheListViewCheckBox);
 
-        theShoppingList = getIntent().getExtras().getStringArrayList("ListForShopping");
+        viewModel = ShoppingListTheCheckBoxViewModel.getInstance();
 
+        // Deals with setting up list view
+        theShoppingList = getIntent().getExtras().getStringArrayList("ListForShopping");
+        theQuantities = getIntent().getExtras().getStringArrayList("Quantities");
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, theShoppingList);
         theListView.setAdapter(adapter);
-
         theListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
 
@@ -65,14 +71,25 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Will analyze the listview with the different check boxes
-                String itemSelected = "Selected items:";
                 for(int i = 0; i < theListView.getCount(); i++) {
                     if(theListView.isItemChecked(i)) {
-                        itemSelected += theListView.getItemAtPosition(i);
+                        // Items are selected should be removed from the shopping database
+                        // And added to the pantry database
+                        theSelectedItems.add((String) theListView.getItemAtPosition(i));
                     }
+
                 }
-                Toast.makeText(ShoppingListTheCheckBoxPage.this, itemSelected, Toast.LENGTH_SHORT).show();
+
+                if (theSelectedItems.size() == 0) {
+                    Toast.makeText(ShoppingListTheCheckBoxPage.this, "Nothing was selected", Toast.LENGTH_SHORT).show();
+                } else {
+                    //Send data to viewModel method
+                    viewModel.getCurrentUser();
+                    viewModel.deleteFromShoppingList(theSelectedItems);
+
+                }
             }
+
         });
 
 

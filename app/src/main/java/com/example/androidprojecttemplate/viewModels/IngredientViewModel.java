@@ -32,6 +32,7 @@ public class IngredientViewModel {
     private String theUsersEmailFromAuthenticationDatabase;
 
     private String temp;
+    private String temp2;
     private Timer timer;
 
     private Timer timer2;
@@ -58,6 +59,7 @@ public class IngredientViewModel {
 
     //used to check for duplicate ingredients
     private static ArrayList<String> addedIngredientNames = new ArrayList<>();
+    private static ArrayList<String> addedQuantities = new ArrayList<>();
 
     // Have to go to firebase and retrieve all of the current elements
     // * May not work if it's empty, need to test
@@ -97,9 +99,10 @@ public class IngredientViewModel {
 
                     if (theSnapshot.child("name").getValue(String.class) != null) {
                         temp = theSnapshot.child("name").getValue(String.class).toString();
-                        Log.d("TheIngredientName:", temp);
                         addedIngredientNames.add(temp);
-                        Log.d("ArrayList", addedIngredientNames.toString());
+                        temp2 = theSnapshot.child("quantity").getValue(String.class).toString();
+
+                        addedQuantities.add(temp2);
                     }
                 }
             }
@@ -163,6 +166,7 @@ public class IngredientViewModel {
                                 referenceForPantry.child(theUsersName).child("Ingredients").child(name).setValue(newIngre)
                                         .addOnSuccessListener(aVoid -> {
                                             addedIngredientNames.add(name);
+                                            addedQuantities.add(quantity);
 
                                             // Have to add it to the ingredient database
                                             addToIngredientFirebase(name, "0",calories);
@@ -211,4 +215,5 @@ public class IngredientViewModel {
     public ArrayList<String> getTheArrayList() {
         return addedIngredientNames;
     }
+    public ArrayList<String> getTheQuantities() { return addedQuantities;}
 }
