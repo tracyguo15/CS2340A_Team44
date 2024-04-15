@@ -66,38 +66,40 @@ public class CreateAccountActivity extends AppCompatActivity {
                 return;
             }
 
-            int theResult = viewModel.toLoginScreenFromCreate(username, password,
-                    confirmPassword, name);
+            viewModel.toLoginScreenFromCreate(username, password,
+                    confirmPassword, name, theResult -> runOnUiThread(() -> {
+                        if (theResult == 1) {
+                            Toast.makeText(CreateAccountActivity.this,
+                                    "Passwords do not match!",
+                                    Toast.LENGTH_SHORT).show();
+                        } else if (theResult == 2) {
+                            Toast.makeText(CreateAccountActivity.this,
+                                    "Not a valid email",
+                                    Toast.LENGTH_SHORT).show();
+                        } else if (theResult == 3) {
+                            Toast.makeText(CreateAccountActivity.this,
+                                    "Passwords isn't long enough",
+                                    Toast.LENGTH_SHORT).show();
+                        } else if (theResult == 4) {
+                            Toast.makeText(CreateAccountActivity.this,
+                                    "No spaces allowed",
+                                    Toast.LENGTH_SHORT).show();
+                        } else if (theResult == 5) {
+                            Toast.makeText(CreateAccountActivity.this,
+                                    "Your account has been created, please login",
+                                    Toast.LENGTH_SHORT).show();
+                            // switch to home page
+                            Intent theIntent = new Intent(CreateAccountActivity.this, LoginPageActivity.class);
+                            startActivity(theIntent);
+                            //finish();
+                        } else if (theResult == 6) {
+                            Toast.makeText(CreateAccountActivity.this,
+                                    "An email has already been registered, please login",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }));
 
-            if (theResult == 1) {
-                Toast.makeText(CreateAccountActivity.this,
-                        "Passwords do not match!",
-                        Toast.LENGTH_SHORT).show();
-            } else if (theResult == 2) {
-                Toast.makeText(CreateAccountActivity.this,
-                        "Not a valid email",
-                        Toast.LENGTH_SHORT).show();
-            } else if (theResult == 3) {
-                Toast.makeText(CreateAccountActivity.this,
-                        "Passwords isn't long enough",
-                        Toast.LENGTH_SHORT).show();
-            } else if (theResult == 4) {
-                Toast.makeText(CreateAccountActivity.this,
-                        "No spaces allowed",
-                        Toast.LENGTH_SHORT).show();
-            } else if (theResult == 5) {
-                Toast.makeText(CreateAccountActivity.this,
-                        "Your account has been created, please login",
-                        Toast.LENGTH_SHORT).show();
-                // switch to home page
-                Intent theIntent = new Intent(CreateAccountActivity.this, LoginPageActivity.class);
-                startActivity(theIntent);
-                //finish();
-            } else if (theResult == 6) {
-                Toast.makeText(CreateAccountActivity.this,
-                        "An email has already been registered, please login",
-                        Toast.LENGTH_SHORT).show();
-            }
+
         });
 
         toWelcomePage.setOnClickListener(f -> {
