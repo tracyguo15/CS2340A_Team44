@@ -36,20 +36,18 @@ public class LoginPageViewModel {
         return instance;
     }
 
-    public int toHomeScreenMethodFromLogin(String username, String password) {
+    public void toHomeScreenMethodFromLogin(String username, String password, TheCallback callback) {
         // Can now login the user through firebase
         firebaseAuth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            temp = 1;
+                            callback.onCompleted(1);
                         } else {
-                            temp = 2;
+                            callback.onCompleted(2);
                         }
                     }
                 });
-
-        return temp;
     }
 }
