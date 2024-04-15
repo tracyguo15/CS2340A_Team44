@@ -128,7 +128,7 @@ public class InputMealPage extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.list) {
-                    Intent intent = new Intent(InputMealPage.this, ListPage.class);
+                    Intent intent = new Intent(InputMealPage.this, ShoppingList.class);
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.personalinfo) {

@@ -56,21 +56,21 @@ public class LoginPageActivity extends AppCompatActivity {
                 return;
             }
 
-            int theResult = viewModel.toHomeScreenMethodFromLogin(username, password);
-
-            if  (theResult == 1) {
-                Toast.makeText(LoginPageActivity.this,
-                        "Successfull",
-                        Toast.LENGTH_SHORT).show();
-                // switch to home page
-                Intent theIntent = new Intent(LoginPageActivity.this, HomePage.class);
-                startActivity(theIntent);
-                finish();
-            } else if (theResult == 2) {
-                Toast.makeText(LoginPageActivity.this,
-                        "The username or password is wrong",
-                        Toast.LENGTH_SHORT).show();
-            }
+            viewModel.toHomeScreenMethodFromLogin(username, password, theResult -> runOnUiThread(() -> {
+                if  (theResult == 1) {
+                    Toast.makeText(LoginPageActivity.this,
+                            "Successfull",
+                            Toast.LENGTH_SHORT).show();
+                    // switch to home page
+                    Intent theIntent = new Intent(LoginPageActivity.this, HomePage.class);
+                    startActivity(theIntent);
+                    finish();
+                } else if (theResult == 2) {
+                    Toast.makeText(LoginPageActivity.this,
+                            "The username or password is wrong",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }));
         });
 
         toWelcomePage.setOnClickListener(f -> {

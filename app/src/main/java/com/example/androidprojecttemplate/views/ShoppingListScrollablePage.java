@@ -2,6 +2,7 @@ package com.example.androidprojecttemplate.views;
 import android.content.Intent;
 import android.os.Bundle;
 //import android.util.Log;
+import android.util.Log;
 import android.view.View;
 //import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidprojecttemplate.R;
 import com.example.androidprojecttemplate.viewModels.IngredientListViewModel;
+import com.example.androidprojecttemplate.viewModels.ShoppingListScrollableViewModel;
+import com.example.androidprojecttemplate.viewModels.ShoppingListViewModel;
 
 
 import java.util.ArrayList;
@@ -22,43 +25,44 @@ import java.util.TimerTask;
 import android.os.Handler;
 
 
-public class IngredientListPage extends AppCompatActivity {
+public class ShoppingListScrollablePage extends AppCompatActivity {
     private ListView theListView;
 
-    private ArrayList<String> theListOfIngredients = new ArrayList<>();
+    private ArrayList<String> theListOfShoppingIngredients = new ArrayList<>();
     private ArrayAdapter adapter;
-    private Button goBackToIngredientScreen;
+    private Button goBacktoShoppingScreen ;
 
-    private IngredientListViewModel viewModel;
+    private ShoppingListScrollableViewModel viewModel;
     private TextView theQuantity;
     private Button increase;
     private Button decrease;
     private Timer timer;
-    private Timer timer2;
+
     private String temp = "hello";
 
     private Handler timerHandler = new Handler();
-    private static String[] ingredientHolder = new String[1];
+    private static String[] ShoppingHolder = new String[1];
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_ingredient_list_page);
-        goBackToIngredientScreen = findViewById(R.id.goBack);
-        theListView = findViewById(R.id.theListViewForIngredients);
-        theQuantity = findViewById(R.id.QuantityTextView);
-        increase = findViewById(R.id.IncreaseQuantity);
-        decrease = findViewById(R.id.DecreaseQuantity);
+        setContentView(R.layout.activity_shopping_list_scrollable_page);
+        goBacktoShoppingScreen = findViewById(R.id.buttonToGoBack);
+        theListView = findViewById(R.id.scrollableListForShopping);
+        theQuantity = findViewById(R.id.quantityTextViewShopping);
+        increase = findViewById(R.id.increaseShopping);
+        decrease = findViewById(R.id.decreaseShopping);
 
-        viewModel = IngredientListViewModel.getInstance();
+        viewModel = ShoppingListScrollableViewModel.getInstance();
         Thread theThread = new Thread() {
             public void run() {
-                theListOfIngredients = getIntent().getExtras().getStringArrayList("TheList");
+                theListOfShoppingIngredients = getIntent().getExtras().getStringArrayList("TheList");
+                Log.d("TheArrayShit", theListOfShoppingIngredients.toString());
 
-                adapter = new ArrayAdapter(IngredientListPage.this,
-                        android.R.layout.simple_list_item_1, theListOfIngredients);
+                adapter = new ArrayAdapter(ShoppingListScrollablePage.this,
+                        android.R.layout.simple_list_item_1, theListOfShoppingIngredients);
                 theListView.setAdapter(adapter);
 
                 // When someone clicks on an item
@@ -66,7 +70,7 @@ public class IngredientListPage extends AppCompatActivity {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         viewModel.getCurrentUser();
-                        ingredientHolder[0] =  adapter.getItem(position).toString();
+                        ShoppingHolder[0] =  adapter.getItem(position).toString();
                         timer = new Timer();
                         timer.schedule(new TimerTask() {
                             @Override
@@ -79,8 +83,8 @@ public class IngredientListPage extends AppCompatActivity {
                 });
 
                 // Button to go back to the ingredient screen
-                goBackToIngredientScreen.setOnClickListener(v -> {
-                    Intent theIntent = new Intent(IngredientListPage.this, IngredientPage.class);
+                goBacktoShoppingScreen.setOnClickListener(v -> {
+                    Intent theIntent = new Intent(ShoppingListScrollablePage.this, ShoppingList.class);
                     startActivity(theIntent);
                 });
 
@@ -91,7 +95,7 @@ public class IngredientListPage extends AppCompatActivity {
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            temp = viewModel.getTheQuantity(ingredientHolder[0], 1);
+                            temp = viewModel.getTheQuantity(ShoppingHolder[0], 1);
                         }
                     }, 1000);
                     theQuantity.setText(temp);
@@ -103,7 +107,7 @@ public class IngredientListPage extends AppCompatActivity {
                     timer.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            temp = viewModel.getTheQuantity(ingredientHolder[0], 2);
+                            temp = viewModel.getTheQuantity(ShoppingHolder[0], 2);
                         }
                     }, 1000);
                     theQuantity.setText(temp);
