@@ -66,10 +66,10 @@ public class RecipeData extends AbstractDatabase<String, Integer> {
      * it over here as a temporary solution. I can deal with it after Sprint 3 demo.
      * @return true if the recipe can be cooked, false otherwise
      */
-    public boolean canCook() {
+    public boolean canCook(PantryData pantry) {
         for (String requiredIngredient : this.keySet()) {
             int requiredQuantity = this.get(requiredIngredient);
-            int pantryQuantity = this.get(requiredIngredient);
+            int pantryQuantity = pantry.get(requiredIngredient);
 
             if (pantryQuantity == 0 || pantryQuantity < requiredQuantity) {
                 return false;
