@@ -53,17 +53,18 @@ public class RecipeListPage extends AppCompatActivity {
     private DatabaseReference cookbookRef;
     private DatabaseReference pantryRef;
     private List<String[]> recipes = new ArrayList<>();
-    private List<String> display = new ArrayList<>();
-    private List<RecipeData> recipeDataList = new ArrayList<>();
+    //private List<String> display = new ArrayList<>();
+    //private List<RecipeData> recipeDataList = new ArrayList<>();
+
+    private ArrayList<String> recipeNames = new ArrayList<>();
+    private ArrayList<Integer> recipeTimes = new ArrayList<>();
+    private ArrayList<Boolean> recipeCanCooks = new ArrayList<>();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list_page);
-
-        listViewRecipes = findViewById(R.id.listViewRecipes);
-        viewModel = RecipeListViewModel.getInstance();
-        viewModel.getCurrentUser();
 
         // back button
         backToRecipePage = findViewById(R.id.backToRecipePage);
@@ -88,52 +89,42 @@ public class RecipeListPage extends AppCompatActivity {
         cookbookRef = FirebaseDatabase.getInstance().getReference().child("Cookbook");
         pantryRef = FirebaseDatabase.getInstance().getReference().child("Pantry");
 
+        // THIS SHOULD BE REFACTORED
+        listViewRecipes = findViewById(R.id.listViewRecipes);
+        viewModel = RecipeListViewModel.getInstance();
+        viewModel.getCurrentUser();
+
+        // THIS SHOULD BE REFACTORED
         // attach listeners
-        Log.d("Break before database listener", "Yuh");
         attachDatabaseReadListener();
 
-        //Log.d("CAN COOK METHOD TESTING", canCook());
-
-        //Make it so that each item in the list is clickable
-        /*
-        theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Implement logic to display recipe details here
-                String recipeName = theListView.get(position); //This should get the value at the position in which it was clicked
-                Intent intent = new Intent(RecipeListPage.this, RecipeDetailPage.class);
-                intent.putExtra("recipe", recipeName);
-                startActivity(intent);
-            }
-        }); */
-
-        //Log.d("TESTING", cookbookDatabase.getKey());
     }
 
+    /**
+     * Should be handled with viewModel.
+     */
     private void attachDatabaseReadListener() {
         cookbookRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snapshots : snapshot.getChildren()) {
-                    //Test to check whether the data is correct
-                    /*Log.d("SNAPSHOT DATA", snapshots.toString()); */
-
-                    //Store the necessary data into their own variables
+                    // store the necessary data into their own variables
                     String name = snapshots.getKey();
                     String time = Integer.toString(snapshots.getValue(RecipeData.class).getTime());
-                    RecipeData recipe = snapshots.getValue(RecipeData.class);
 
-                    //Tests to makes sure whether the variables have the correct data
+                    // RecipeData recipe = snapshots.getValue(RecipeData.class);
+
+                    // tests to makes sure whether the variables have the correct data
                     Log.d("NAME", name);
                     Log.d("TIME", time);
-                    Log.d("RECIPEDATA", recipe.toString());
+                    //Log.d("RECIPEDATA", recipe.toString());
 
                     //Add the data to the String[] recipes
-                    recipes.add(new String[]{name, time});
-                    recipeDataList.add(recipe);
+                    // recipes.add(new String[]{name, time});
+                    // recipeDataList.add(recipe);
 
                     //Update the views
-                    update(recipeDataList);
+                    // update(recipeDataList);
                     displayRecipes();
                 }
             }
@@ -146,6 +137,8 @@ public class RecipeListPage extends AppCompatActivity {
     }
 
     private void displayRecipes() {
+        // should take global recipes from
+        /*
         display.clear();
 
         Log.d("perhaps error?", Integer.toString(recipes.size()));
@@ -177,6 +170,7 @@ public class RecipeListPage extends AppCompatActivity {
         //Code to changed the text color based on whether the recipe can be cooked
         //this.theListView.setBackgroundColor(canCook() ? Color.GREEN : Color.RED);
         //this.theListView.textColor
+        */
     }
 
     public void sortByAlphabet() {

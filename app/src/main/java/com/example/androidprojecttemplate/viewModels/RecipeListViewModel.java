@@ -2,6 +2,7 @@ package com.example.androidprojecttemplate.viewModels;
 
 
 //import android.content.Intent;
+import android.util.AtomicFile;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -25,13 +26,15 @@ import java.util.*;
 
 public class RecipeListViewModel {
     private static RecipeListViewModel instance;
-    private final RecipeListPage theData;
 
+    // later
     private FirebaseAuth theAuthenticationVariable;
     private FirebaseUser user;
+
+    // maybe need
     private DatabaseReference pantryRef;
     private DatabaseReference referenceForSpecificUser;
-    private DatabaseReference referenceForRecipe;
+    private DatabaseReference recipeReference;
     private DatabaseReference referenceForPantry;
 
     private String theUsersEmailFromAuthenticationDatabase;
@@ -45,6 +48,7 @@ public class RecipeListViewModel {
 
     public RecipeListViewModel() {
         theData = new RecipeListPage();
+        recipeReference = FirebaseDatabase.getInstance().getReference().child("Cookbook");
     }
 
     public static synchronized RecipeListViewModel getInstance() {
@@ -58,16 +62,59 @@ public class RecipeListViewModel {
         theAuthenticationVariable = FirebaseDB.getInstance().getFirebaseAuth();
         user = FirebaseDB.getInstance().getUser();
         theUsersEmailFromAuthenticationDatabase = FirebaseDB.getInstance().getEmail();
+
+        recipeReference = FirebaseDatabase.getInstance().getReference().child("Cookbook");
+    }
+
+    /**
+     * Compiles all recipes in the database.
+     * @return the recipes
+     */
+    public ArrayList<RecipeData> getRecipes() {
+        ArrayList<RecipeData> recipes = new ArrayList<>();
+
+        recipeReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshots : snapshot.getChildren()) {
+                    String name = snapshots.getKey();
+                    int time = snapshots.child("time").getValue(Integer.class);
+
+                    RecipeData data = new RecipeData();
+                    data.setName(name);
+                    data.setTime(time);
+
+                    recipes.add(data);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("RECIPE INGREDIENTS ERROR", error.toString());
+            }
+        });
+
+        return recipes;
+    }
+
+    /**
+     * Determines if a recipe can be cooked.
+     * @return true if a recipe can be cooked, false otherwise
+     */
+    public boolean canCook() {
+        return true;
     }
 
     //
     public ArrayList<String[]> getRecipeIngredients(RecipeData recipe) {
         //Arraylist of String arrays to hold each ingredient and its quantities
-        ArrayList<String[]> recipeQuantities = new ArrayList<>();
+        // ArrayList<String[]> recipeQuantities = new ArrayList<>();
 
         //Should have a reference pointing directly at a recipe's ingredient list
-        referenceForRecipe = FirebaseDatabase.getInstance().getReference()
+        /*
+        recipeReference = FirebaseDatabase.getInstance().getReference()
                 .child("Cookbook").child(recipe.getName()).child("ingredients");
+        */
 
         referenceForRecipe.addValueEventListener(new ValueEventListener() {
             //snapshot should be pointing the value inside of a recipe

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 public class CustomAdapter {
     private RecipeListPage recipeListPage;
     private LinearLayout container;
+
+    // change to viewmodel and get data from there.
     private ArrayList<String> names;
     private ArrayList<Integer> cookTimes;
     private ArrayList<Boolean> canCooks;
