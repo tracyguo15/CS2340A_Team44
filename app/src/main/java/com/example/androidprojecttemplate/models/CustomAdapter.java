@@ -1,49 +1,216 @@
 package com.example.androidprojecttemplate.models;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.example.androidprojecttemplate.views.RecipeListPage;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import java.util.ArrayList;
 
-import java.util.List;
+public class CustomAdapter {
+    private RecipeListPage recipeListPage;
+    private LinearLayout container;
 
-public class CustomAdapter extends ArrayAdapter<String> {
-    private Context context;
-    private List<String> items;
-    private int[] textColors; // Array to hold individual text colors for each item
+    // change to viewmodel and get data from there.
+    private ArrayList<String> names;
+    private ArrayList<Integer> cookTimes;
+    private ArrayList<Boolean> canCooks;
 
-    public CustomAdapter(Context context, int resource, List<String> items, int[] textColors) {
-        super(context, resource, items);
-        this.context = context;
-        this.items = items;
-        this.textColors = textColors;
+    public CustomAdapter(
+            RecipeListPage recipeListPage,
+            LinearLayout container,
+            ArrayList<String> names,
+            ArrayList<Integer> cookTimes,
+            ArrayList<Boolean> canCooks) {
+        this.recipeListPage = recipeListPage;
+        this.container = container;
+        this.names = names;
+        this.cookTimes = cookTimes;
+        this.canCooks = canCooks;
     }
 
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-        }
+    /**
+     * Creates a view to be used in the recipes container.
+     *
+     * @return the formatted view
+     */
+    public TextView createView(String text, boolean canCook) {
+        TextView view = new TextView(this.recipeListPage);
+        view.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        TextView textView = view.findViewById(android.R.id.text1);
-        textView.setText(items.get(position));
+        view.setAllCaps(false);
+        view.setTextSize(14);
 
-        // Set text color for the current item
-        if (position < textColors.length) {
-            textView.setTextColor(textColors[position]);
+        // set color and listener if can cook.
+        if (canCook) {
+            view.setTextColor(Color.GREEN);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(
+                            recipeListPage,
+                            "Can cook this recipe!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
-            textView.setTextColor(Color.BLACK); // Default color if no color provided
+            view.setTextColor(Color.RED);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(
+                            recipeListPage,
+                            "Cannot cook this recipe!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
         }
+
+        view.setText(text);
 
         return view;
     }
+
+    /**
+     * Displays the views in the container.
+     */
+    public void display() {
+        // clear view before
+        container.removeAllViews();
+
+        // update with new views
+        for (int i = 0; i < this.names.size(); i++) {
+            TextView newView = this.createView(this.names.get(i), this.canCooks.get(i));
+            container.addView(newView);
+        }
+    }
 }
+
+/*
+package com.example.greenplate.viewmodels.adapters;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.text.Html;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.greenplate.R;
+import com.example.greenplate.models.Recipe;
+
+import java.util.List;
+
+public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHolder> {
+    private List<Recipe> recipeList;
+    private List<String> availabilityList;
+    private int selectedPosition = RecyclerView.NO_POSITION;
+
+    public RecipesAdapter(List<Recipe> recipes, List<String> availability) {
+        recipeList = recipes;
+        availabilityList = availability;
+    }
+
+    @Override
+    public RecipesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+
+        // Inflate the custom layout
+        View recipeView = inflater.inflate(R.layout.item_recipe, parent, false);
+
+        // Return a new holder instance
+        ViewHolder viewHolder = new ViewHolder(recipeView);
+        return viewHolder;
+    }
+
+    // Involves populating data into the item through holder
+    @Override
+    public void onBindViewHolder(RecipesAdapter.ViewHolder holder, int position) {        // Get the data model based on position
+        Recipe recipe = recipeList.get(position);
+        String availability = availabilityList.get(position);
+
+        // Set item views based on your views and data model
+        TextView nameTextView = holder.nameTextView;
+        TextView availabilityTextView = holder.availabilityTextView;
+        TextView numIngredientsTextView = holder.numIngredientsTextView;
+        TextView numInstructionsTextView = holder.numInstructionsTextView;
+
+        nameTextView.setText(recipe.getName());
+        numIngredientsTextView.setText("Ingredients: " + recipe.getIngredients().size());
+        numInstructionsTextView.setText("Instructions: " + recipe.getInstructions().size());
+        String availabilityText;
+        if (availability.equals("Yes")) {
+            availabilityText = "<font color=\"#32CD32\">Yes</font>";
+        } else {
+            availabilityText = "<font color=\"#DC143C\">No</font>";
+        }
+        availabilityTextView.setText(Html.fromHtml(availabilityText));
+
+        // Check if recipe item is clicked
+        holder.itemView.setOnClickListener(v -> {
+            int clickedPosition = holder.getAdapterPosition();
+            if (clickedPosition != RecyclerView.NO_POSITION) {
+                if (selectedPosition != clickedPosition) {
+                    if (selectedPosition != RecyclerView.NO_POSITION) {
+                        notifyItemChanged(selectedPosition);
+                    }
+                    selectedPosition = clickedPosition;
+                    notifyItemChanged(selectedPosition);
+                }
+            }
+        });
+
+        // Set the text color and toast message based on the selection status
+        if (holder.getAdapterPosition() == selectedPosition) {
+            if ((availabilityTextView.getText()).toString().equals("Yes")) {
+                holder.nameTextView.setTextColor(Color.rgb(50, 205, 50));
+                Toast.makeText(holder.itemView.getContext(),
+                                "View recipe " + recipe.getName(),
+                                Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                holder.nameTextView.setTextColor(Color.rgb(220, 20, 60));
+                Toast.makeText(holder.itemView.getContext(),
+                                "Not Enough Ingredients",
+                                Toast.LENGTH_SHORT)
+                        .show();
+            }
+        } else {
+            holder.nameTextView.setTextColor(Color.BLACK);
+        }
+    }
+
+    // Returns the total count of items in the list
+    @Override
+    public int getItemCount() {
+        return recipeList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView nameTextView;
+        private TextView availabilityTextView;
+        private TextView numIngredientsTextView;
+        private TextView numInstructionsTextView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+
+            nameTextView = (TextView) itemView.findViewById(R.id.recipe_name);
+            availabilityTextView = (TextView) itemView.findViewById(R.id.recipe_availability);
+            numIngredientsTextView = (TextView) itemView.findViewById(R.id.num_ingredients);
+            numInstructionsTextView = (TextView) itemView.findViewById(R.id.num_instructions);
+        }
+    }
+}
+
+ */
