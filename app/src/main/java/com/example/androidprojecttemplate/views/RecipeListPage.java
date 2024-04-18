@@ -1,60 +1,46 @@
 package com.example.androidprojecttemplate.views;
+
+
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-//import android.util.Log;
 import android.util.Log;
-import android.view.View;
-//import android.widget.Adapter;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 //import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidprojecttemplate.R;
+import com.example.androidprojecttemplate.models.CustomAdapter;
 import com.example.androidprojecttemplate.models.RecipeData;
-//import com.example.androidprojecttemplate.viewModels.DataObserver;
 import com.example.androidprojecttemplate.viewModels.RecipeListCallback;
 import com.example.androidprojecttemplate.viewModels.RecipeListViewModel;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Timer;
-import android.os.Handler;
+
+
 public class RecipeListPage extends AppCompatActivity {
-    // might need
-    private ListView theListView;
+    private RecipeListViewModel viewModel;
+    private LinearLayout recipesContainer;
 
     private ArrayAdapter adapter;
     private Button alphabetFilter;
     private Button timeFilter;
 
-    private RecipeListViewModel viewModel;
+
     private Button backToRecipePage;
 
-    // may need
-    private static String[] ingredientHolder = new String[1];
-    private ListView listViewRecipes;
     private FirebaseUser user;
     private DatabaseReference userRef;
     private DatabaseReference cookbookRef;
     private DatabaseReference pantryRef;
     private List<String[]> recipes = new ArrayList<>();
-    //private List<String> display = new ArrayList<>();
-    //private List<RecipeData> recipeDataList = new ArrayList<>();
 
     private ArrayList<String> recipeNames = new ArrayList<>();
     private ArrayList<Integer> recipeTimes = new ArrayList<>();
@@ -66,6 +52,8 @@ public class RecipeListPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list_page);
 
+        viewModel = RecipeListViewModel.getInstance();
+
         // back button
         backToRecipePage = findViewById(R.id.backToRecipePage);
         backToRecipePage.setOnClickListener(v -> {
@@ -76,123 +64,69 @@ public class RecipeListPage extends AppCompatActivity {
         // filter alphabetically button
         alphabetFilter = findViewById(R.id.btnFilterAlpha);
         alphabetFilter.setOnClickListener(v -> {
-            sortByAlphabet();
+            displayRecipesAlpha();
         });
 
         // filter by time button
         timeFilter = findViewById(R.id.btnFilterTime);
         timeFilter.setOnClickListener(v -> {
-            sortByTime();
+            displayRecipesTime();
         });
 
-        // define database references for use later
+        // database references
         cookbookRef = FirebaseDatabase.getInstance().getReference().child("Cookbook");
         pantryRef = FirebaseDatabase.getInstance().getReference().child("Pantry");
 
-        // THIS SHOULD BE REFACTORED
-        listViewRecipes = findViewById(R.id.listViewRecipes);
+        // container view
+        recipesContainer = findViewById(R.id.listViewRecipes);
+
+        // RecipeListViewModel instantiation
         viewModel = RecipeListViewModel.getInstance();
-        viewModel.getCurrentUser();
 
-        // THIS SHOULD BE REFACTORED
-        // attach listeners
-        attachDatabaseReadListener();
-
+        // initially display recipes
+        this.displayRecipes();
     }
 
     /**
-     * Should be handled with viewModel.
+     * Displays each of the recipes in the database.
      */
-    private void attachDatabaseReadListener() {
-        cookbookRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshots : snapshot.getChildren()) {
-                    // store the necessary data into their own variables
-                    String name = snapshots.getKey();
-                    String time = Integer.toString(snapshots.getValue(RecipeData.class).getTime());
-
-                    // RecipeData recipe = snapshots.getValue(RecipeData.class);
-
-                    // tests to makes sure whether the variables have the correct data
-                    Log.d("NAME", name);
-                    Log.d("TIME", time);
-                    //Log.d("RECIPEDATA", recipe.toString());
-
-                    //Add the data to the String[] recipes
-                    // recipes.add(new String[]{name, time});
-                    // recipeDataList.add(recipe);
-
-                    //Update the views
-                    // update(recipeDataList);
-                    displayRecipes();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("Error", "Something went wrong");
-            }
-        });
-    }
-
     private void displayRecipes() {
-        // should take global recipes from
-        /*
-        display.clear();
+        CustomAdapter adapter = new CustomAdapter(
+                this,
+                this.recipesContainer,
+                this.viewModel);
 
-        Log.d("perhaps error?", Integer.toString(recipes.size()));
-        //Adds each String[] to a separate Arraylist with better naming conventions
-        for (String[] arr : recipes) {
-            display.add(arr[0] + " cook time: " + arr[1]);
-        }
-
-        //Adapter to convert the list into the ListView
-        adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, display) {
-            @NonNull
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView text = (TextView) view.findViewById(android.R.id.text1);
-                text.setTextColor(Color.RED);
-                return view;
-            }
-
-            @Override
-            public void notifyDataSetChanged() {
-                TextView text = (TextView) theListView.findViewById(android.R.id.text1);
-                text.setTextColor(Color.GREEN);
-            }
-        };
-        this.listViewRecipes.setAdapter(adapter);
-
-        //Code to changed the text color based on whether the recipe can be cooked
-        //this.theListView.setBackgroundColor(canCook() ? Color.GREEN : Color.RED);
-        //this.theListView.textColor
-        */
+        adapter.display();
     }
 
-    public void sortByAlphabet() {
-        Collections.sort(recipes, (recipe1, recipe2) ->
-                recipe1[0].compareToIgnoreCase(recipe2[0]));
-        displayRecipes();
+    /**
+     * Displays each of the recipes in the database sorted alphabetically.
+     */
+    private void displayRecipesAlpha() {
+        CustomAdapter adapter = new CustomAdapter(
+                this,
+                this.recipesContainer,
+                this.viewModel);
+
+        adapter.displayAlpha();
     }
 
-    public void sortByTime() {
-        Collections.sort(recipes, new Comparator<String[]>() {
-            @Override
-            public int compare(String[] time1, String[] time2) {
-                int quantity1 = Integer.parseInt(time1[1]);
-                int quantity2 = Integer.parseInt(time2[1]);
-                return Integer.compare(quantity1, quantity2);
-            }
-        });
-        displayRecipes();
+    /**
+     * Displays each of the recipes in the database sorted by time.
+     */
+    private void displayRecipesTime() {
+        CustomAdapter adapter = new CustomAdapter(
+                this,
+                this.recipesContainer,
+                this.viewModel);
+
+        adapter.displayTime();
     }
+
 
     //canCook method from PantryData not yet adapted for this class
 
+    /*
     public boolean canCook(RecipeData recipe, RecipeListCallback callback) {
         //Boolean variable to be returned
         boolean cooked = false;
@@ -228,8 +162,9 @@ public class RecipeListPage extends AppCompatActivity {
         }
 
         return cooked;
-    }
+    }*/
 
+    /*
     private void update(List<RecipeData> recipes) {
 
         for (RecipeData recipe : recipes) {
@@ -252,5 +187,5 @@ public class RecipeListPage extends AppCompatActivity {
                 }
             })));
         }
-    }
+    }*/
 }
