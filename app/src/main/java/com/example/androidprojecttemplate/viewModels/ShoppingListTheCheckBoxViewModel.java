@@ -31,6 +31,7 @@ public class ShoppingListTheCheckBoxViewModel {
 
     private FirebaseAuth theAuthenticationVariable;
     private FirebaseUser user;
+    private DatabaseReference theReference;
     private DatabaseReference referenceForShoppingList;
     private DatabaseReference referenceForPantry;
 
@@ -59,8 +60,8 @@ public class ShoppingListTheCheckBoxViewModel {
         theUsersEmailFromAuthenticationDatabase = FirebaseDB.getInstance().getEmail();
     }
 
-    private String getTheNameOfTheUser(DatabaseReference theReference) {
-        theReturned = "temp";
+    public void sendToFirebase(ArrayList<String> itemsToBeRemovedFromShoppingDatabase, ArrayList<String> theQuantities) {
+        theReference = FirebaseDatabase.getInstance().getReference().child("Users");
         theReference.addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -74,6 +75,7 @@ public class ShoppingListTheCheckBoxViewModel {
                     if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
                         theReturned = theUsersName;
                         Log.d("TheName2", theReturned);
+                        deleteFromShoppingList(itemsToBeRemovedFromShoppingDatabase, theQuantities, theReturned);
                     }
                 }
             }
@@ -83,14 +85,10 @@ public class ShoppingListTheCheckBoxViewModel {
                 Log.d("Error", "Something went wrong");
             }
         });
-        Log.d("TheName", theReturned);
-        return theReturned;
     }
 
-    public void deleteFromShoppingList(ArrayList<String> itemsToBeRemovedFromShoppingDatabase) {
-        referenceForShoppingList = FirebaseDatabase.getInstance().getReference().child("Shopping_List");
-        theNameOfTheUser = getTheNameOfTheUser(referenceForShoppingList);
-        referenceForShoppingList = referenceForShoppingList.child(theNameOfTheUser);
+    private void deleteFromShoppingList(ArrayList<String> itemsToBeRemovedFromShoppingDatabase, ArrayList<String> theQuantities, String theNameOfTheUser) {
+        referenceForShoppingList = FirebaseDatabase.getInstance().getReference().child("Shopping_List").child(theNameOfTheUser);
         Log.d("TheReference", referenceForShoppingList.toString());
 
         //loop to remove, have to do linear search
@@ -99,6 +97,7 @@ public class ShoppingListTheCheckBoxViewModel {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+                        Log.d("fuck", theSnapshot.toString());
                         if(theNameOfIngredient.equals(theSnapshot.getKey())) {
                             referenceForShoppingList.child(theNameOfIngredient).removeValue();
                         }
@@ -113,20 +112,24 @@ public class ShoppingListTheCheckBoxViewModel {
         }
 
         // Now, add those ingredients to the pantry (watch out for duplicates)
-        addToPantry(itemsToBeRemovedFromShoppingDatabase, theNameOfTheUser);
+        addToPantry(itemsToBeRemovedFromShoppingDatabase, theQuantities, theNameOfTheUser);
     }
 
-    private void addToPantry(ArrayList<String> ItemsToAddToPantry, String name) {
+    private void addToPantry(ArrayList<String> ItemsToAddToPantry, ArrayList<String> theQuantities, String name) {
         referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry").child(name).child("Ingredients");
 
         // Need to check for duplicates
-        for(String theNameOfIngredient: ItemsToAddToPantry) {
+        //for(String theNameOfIngredient: ItemsToAddToPantry) {
+        for(int i = 0; i < ItemsToAddToPantry.size(); i++) {
+            String theNewName = ItemsToAddToPantry.get(i);
+            String theNewQuantity = theQuantities.get(i);
+
             isInPantryDatabase = false;
             referenceForPantry.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot theSnapshot : snapshot.getChildren()) {
-                        if (theNameOfIngredient.equals(theSnapshot.getKey())) {
+                        if (theNewName.equals(theSnapshot.getKey())) {
                             // The ingredient is already in the pantry database, break
                             isInPantryDatabase = false;
                             break;
@@ -142,8 +145,8 @@ public class ShoppingListTheCheckBoxViewModel {
 
             if (!isInPantryDatabase) {
                 // Can now add it
-                DataForPantry theItem = new DataForPantry(theNameOfIngredient, "0", "0");
-                referenceForPantry.child(theNameOfIngredient).setValue(theItem);
+                DataForPantry theItem = new DataForPantry(theNewName, theNewQuantity, "0");
+                referenceForPantry.child(theNewName).setValue(theItem);
             }
         }
     }

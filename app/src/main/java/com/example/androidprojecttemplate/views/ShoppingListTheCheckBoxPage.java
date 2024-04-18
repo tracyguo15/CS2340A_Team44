@@ -36,6 +36,7 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
     private ArrayList<String> theShoppingList = new ArrayList<>();
     private ArrayList<String> theQuantities = new ArrayList<>();
     private ArrayList<String> theSelectedItems = new ArrayList<>();
+    private ArrayList<String> theSelectedQuantities = new ArrayList<>();
     ArrayAdapter<String> adapter;
 
 
@@ -76,6 +77,8 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
                         // Items are selected should be removed from the shopping database
                         // And added to the pantry database
                         theSelectedItems.add((String) theListView.getItemAtPosition(i));
+                        theSelectedQuantities.add(theQuantities.get(i));
+
                     }
 
                 }
@@ -85,7 +88,7 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
                 } else {
                     //Send data to viewModel method
                     viewModel.getCurrentUser();
-                    viewModel.deleteFromShoppingList(theSelectedItems);
+                    viewModel.sendToFirebase(theSelectedItems, theSelectedQuantities);
 
                 }
             }
