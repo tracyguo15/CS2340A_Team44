@@ -183,7 +183,7 @@ public class RecipePage extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.list) {
-                    Intent intent = new Intent(RecipePage.this, ListPage.class);
+                    Intent intent = new Intent(RecipePage.this, ShoppingList.class);
                     startActivity(intent);
                     return true;
                 } else if (id == R.id.personalinfo) {
@@ -240,9 +240,9 @@ public class RecipePage extends AppCompatActivity {
                         for (DataSnapshot ingredient : snapshot.getChildren()) {
                             IngredientData data = new IngredientData(
                                     ingredient.getKey().toString(),
-                                    (double) ingredient.child("price").getValue(),
-                                    Math.toIntExact((long) ingredient.child("calories")
-                                            .getValue())
+                                    "1",
+                                    0,
+                                    "20240101"
                             );
 
                             ingredientsDB.put(ingredient.getKey().toString(), data);
