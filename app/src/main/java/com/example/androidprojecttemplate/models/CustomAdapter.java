@@ -1,43 +1,91 @@
 package com.example.androidprojecttemplate.models;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import com.example.androidprojecttemplate.views.RecipeListPage;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import java.util.ArrayList;
 
-import java.util.List;
+public class CustomAdapter {
+    private RecipeListPage recipeListPage;
+    private LinearLayout container;
+    private ArrayList<String> names;
+    private ArrayList<Integer> cookTimes;
+    private ArrayList<Boolean> canCooks;
 
-public class CustomAdapter extends ArrayAdapter<String> {
-    private Context context;
-    private List<String> items;
-
-    public CustomAdapter(Context context, int resource, List<String> items, int[] textColors) {
-        super(context, resource, items);
-        this.context = context;
-        this.items = items;
+    public CustomAdapter(
+            RecipeListPage recipeListPage,
+            LinearLayout container,
+            ArrayList<String> names,
+            ArrayList<Integer> cookTimes,
+            ArrayList<Boolean> canCooks) {
+        this.recipeListPage = recipeListPage;
+        this.container = container;
+        this.names = names;
+        this.cookTimes = cookTimes;
+        this.canCooks = canCooks;
     }
 
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View view = convertView;
-        if (view == null) {
-            LayoutInflater inflater = LayoutInflater.from(context);
-            view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+    /**
+     * Creates a view to be used in the recipes container.
+     *
+     * @return the formatted view
+     */
+    public TextView createView(String text, boolean canCook) {
+        TextView view = new TextView(this.recipeListPage);
+        view.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        view.setAllCaps(false);
+        view.setTextSize(14);
+
+        // set color and listener if can cook.
+        if (canCook) {
+            view.setTextColor(Color.GREEN);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(
+                            recipeListPage,
+                            "Can cook this recipe!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            view.setTextColor(Color.RED);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(
+                            recipeListPage,
+                            "Cannot cook this recipe!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
-        TextView textView = view.findViewById(android.R.id.text1);
-        textView.setText(items.get(position));
-
-        // Set text color for the current item
+        view.setText(text);
 
         return view;
+    }
+
+    /**
+     * Displays the views in the container.
+     */
+    public void display() {
+        // clear view before
+        container.removeAllViews();
+
+        // update with new views
+        for (int i = 0; i < this.names.size(); i++) {
+            TextView newView = this.createView(this.names.get(i), this.canCooks.get(i));
+            container.addView(newView);
+        }
     }
 }
 

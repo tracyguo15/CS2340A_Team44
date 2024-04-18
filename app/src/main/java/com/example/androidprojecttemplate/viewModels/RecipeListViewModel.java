@@ -3,18 +3,14 @@ package com.example.androidprojecttemplate.viewModels;
 
 //import android.content.Intent;
 import android.util.Log;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 
 //import com.example.androidprojecttemplate.models.DataForPantry;
 //import com.example.androidprojecttemplate.models.IngredientData;
 //import com.example.androidprojecttemplate.models.UserData;
-import com.example.androidprojecttemplate.models.CookbookData;
 import com.example.androidprojecttemplate.models.FirebaseDB;
-import com.example.androidprojecttemplate.models.Pair;
 import com.example.androidprojecttemplate.models.RecipeData;
-import com.example.androidprojecttemplate.views.IngredientListPage;
 import com.example.androidprojecttemplate.views.RecipeListPage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,7 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.Array;
 import java.util.*;
 //import java.util.logging.Handler;
 
@@ -37,6 +32,7 @@ public class RecipeListViewModel {
     private DatabaseReference pantryRef;
     private DatabaseReference referenceForSpecificUser;
     private DatabaseReference referenceForRecipe;
+    private DatabaseReference referenceForPantry;
 
     private String theUsersEmailFromAuthenticationDatabase;
     private String theReturnQuantity = null;
@@ -96,12 +92,12 @@ public class RecipeListViewModel {
 
         return recipeQuantities;
     }
-  
-  public ArrayList<String[]> getPantryIngredients() {
+
+    public ArrayList<String[]> getPantryIngredients() {
         //Arraylist of String arrays to hold each ingredient and its quantities
         ArrayList<String[]> pantryQuantities = new ArrayList<>();
-    
-    //Sets up the variables needed to authenticate user's data
+
+        //Sets up the variables needed to authenticate user's data
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         String email = user.getEmail();
@@ -134,7 +130,7 @@ public class RecipeListViewModel {
                                 .child("Pantry").child(snapshots.child("name")
                                         .getValue().toString()).child("Ingredients");
 
-                        //I don't like the idea of a nested event listener, but idk what else to do rn
+                        //I don't like the idea of a nested event listener, but idk what else to do
                         pantryRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -168,15 +164,16 @@ public class RecipeListViewModel {
 
         return pantryQuantities;
     }
-}
 
 
-// get hashmap of all ingredient:quantity from certain recipe
+    // get hashmap of all ingredient:quantity from certain recipe
+
     /**
      * This method will return a hashmap of all the ingredients and their quantities
      * that are required for a certain recipe
-     * @param recipeName
-     * @return HashMap<String, String> ingredients
+     *
+     * @param recipeName - the name of the recipe to use
+     * @return HashMap ingredients
      */
     public HashMap<String, String> getRecipeIngredients(String recipeName) {
         referenceForRecipe = FirebaseDatabase.getInstance().getReference().child("Recipe");
@@ -206,10 +203,12 @@ public class RecipeListViewModel {
     }
 
 
-//get hashmap of all ingredient:quantity from ingredients list of current user
+    //get hashmap of all ingredient:quantity from ingredients list of current user
+
     /**
      * This method will return a hashmap of all the ingredients and their quantities
      * that the user has in their pantry
+     *
      * @return HashMap<String, String> ingredients
      */
     public HashMap<String, String> getIngredients() {
@@ -257,6 +256,7 @@ public class RecipeListViewModel {
     /**
      * This method will return a hashmap of all the ingredients and their quantities
      * that are required for a certain recipe but are missing from the user's pantry
+     *
      * @param recipeName
      * @return HashMap<String, String> missingIngredients
      */
@@ -280,4 +280,5 @@ public class RecipeListViewModel {
 
         return missingIngredients;
     }
+}
         
