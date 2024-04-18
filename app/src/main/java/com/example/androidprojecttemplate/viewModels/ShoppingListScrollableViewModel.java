@@ -92,9 +92,6 @@ public class ShoppingListScrollableViewModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
-
-                    Log.d("name", theNameOfIngredient);
-                    Log.d("theSnapshot", String.valueOf(theSnapshot.child("name")));
                     if (theSnapshot.child("name").getValue(String.class)
                             .equals(theNameOfIngredient)) {
 

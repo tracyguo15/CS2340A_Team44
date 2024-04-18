@@ -51,6 +51,7 @@ public class ShoppingList extends AppCompatActivity {
     private ArrayList<EditText> ingredients;
     private ArrayList<EditText> quantities;
     private ArrayList<String> theList = new ArrayList<>();
+
     private Timer timer;
 
 
@@ -158,6 +159,15 @@ public class ShoppingList extends AppCompatActivity {
                     if (quantities.get(i).getText().toString().isEmpty()) {
                         Toast.makeText(ShoppingList.this,
                                 "Please input a quantity!",
+                                Toast.LENGTH_SHORT).show();
+                        isThereInvalidEntry = true;
+                        break;
+                    }
+
+                    // Also needs to check for negative quantities
+                    if (Integer.parseInt(quantities.get(i).getText().toString()) < 0) {
+                        Toast.makeText(ShoppingList.this,
+                                "Please input a positive quantity!",
                                 Toast.LENGTH_SHORT).show();
                         isThereInvalidEntry = true;
                         break;
@@ -292,11 +302,8 @@ public class ShoppingList extends AppCompatActivity {
 
         ingredientContainer.addView(row);
 
-        //ingredients.add(String.valueOf(input.getText()));
-        //quantities.add(String.valueOf(quantityInput.getText()));
         ingredients.add(input);
         quantities.add(quantityInput);
 
-        Log.d("Shit", ingredients.get(0).getText().toString());
     }
 }

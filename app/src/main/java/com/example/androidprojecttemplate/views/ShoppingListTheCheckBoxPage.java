@@ -63,6 +63,8 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent theIntent = new Intent(ShoppingListTheCheckBoxPage.this, ShoppingListScrollablePage.class);
+                theIntent.putExtra("TheList", theShoppingList);
+                theIntent.putExtra("TheQuantities", theQuantities);
                 startActivity(theIntent);
             }
         });
@@ -78,10 +80,10 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
                         // And added to the pantry database
                         theSelectedItems.add((String) theListView.getItemAtPosition(i));
                         theSelectedQuantities.add(theQuantities.get(i));
-
                     }
 
                 }
+                adapter.notifyDataSetChanged();
 
                 if (theSelectedItems.size() == 0) {
                     Toast.makeText(ShoppingListTheCheckBoxPage.this, "Nothing was selected", Toast.LENGTH_SHORT).show();
@@ -90,6 +92,33 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
                     viewModel.getCurrentUser();
                     viewModel.sendToFirebase(theSelectedItems, theSelectedQuantities);
 
+                    // Remove from listView
+                    for (int i = 0; i < theSelectedItems.size(); i++) {
+                        for (int j = 0; j < theShoppingList.size(); j++) {
+                            if (theShoppingList.get(j).equals(theSelectedItems.get(i))) {
+                                theShoppingList.remove(j);
+                                theQuantities.remove(j);
+                                break;
+                            }
+                        }
+                    }
+
+                    adapter.notifyDataSetChanged();
+
+                    /*
+                    // Remove from listView
+                    for (int i = 0; i < theListView.getCount(); i++) {
+                        if(theListView.isItemChecked(i)) {
+                            theShoppingList.remove(i);
+                            theQuantities.remove(i);
+                            adapter.notifyDataSetChanged();
+                            i--;
+                            if (i < 0) {
+                                i = 0;
+                            }
+                        }
+                    }
+                    */
                 }
             }
 

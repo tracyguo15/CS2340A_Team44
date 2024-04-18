@@ -35,7 +35,7 @@ public class IngredientViewModel {
     private String temp2;
     private Timer timer;
 
-    private Timer timer2;
+    private static int howManyTimesCalled = 0;
 
     private boolean isItInIngredientDatabase = false;
 
@@ -121,7 +121,10 @@ public class IngredientViewModel {
                               String expirationDate, TheCallback callback) {
         referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry");
 
-        addTheElementsFromFirebaseToTheList();
+        if (howManyTimesCalled == 0) {
+            addTheElementsFromFirebaseToTheList();
+        }
+        howManyTimesCalled++;
 
         // Need a time due to a delay in retrieving the ingredients from firebase
         timer = new Timer();
