@@ -9,6 +9,5 @@ package com.example.androidprojecttemplate.viewModels;
  * result of our background task.
  */
 public interface TheCallback {
-    //this is used for
     void onCompleted(int result);
 }
