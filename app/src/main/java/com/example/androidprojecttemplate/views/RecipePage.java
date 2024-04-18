@@ -242,7 +242,7 @@ public class RecipePage extends AppCompatActivity {
                                     ingredient.getKey().toString(),
                                     "1",
                                     0,
-                                    "20240101"
+                                    "20240312"
                             );
 
                             ingredientsDB.put(ingredient.getKey().toString(), data);
