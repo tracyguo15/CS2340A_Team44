@@ -1,11 +1,13 @@
 package com.example.androidprojecttemplate.views;
 
-import com.example.androidprojecttemplate.R;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -13,21 +15,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.androidprojecttemplate.R;
+import com.example.androidprojecttemplate.viewModels.PantryPageViewModel;
 import com.google.android.material.navigation.NavigationView;
 
-//implements NavigationView.OnNavigationItemSelectedListener
-public class HomePage extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.Set;
+
+public class PantryPage extends AppCompatActivity {
+
     private ActionBarDrawerToggle abdt;
     private DrawerLayout dl;
     private static boolean isLoggedIn = false;
 
     private NavigationView navView;
 
+    private PantryPageViewModel viewmodel = null;
+
+    private ArrayList<Button> pantryButtons;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_ingredient_pantry_page);
 
         // Check if user is logged in before going on home page
         if (isLoggedIn) {
@@ -59,28 +70,31 @@ public class HomePage extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == R.id.inputmeal) {
                     //Toast.makeText(HomePage.this, "InputMeal", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, InputMealPage.class);
+                    Intent intent = new Intent(PantryPage.this, InputMealPage.class);
                     startActivity(intent);
                 } else if (id == R.id.recipe) {
                     //Toast.makeText(HomePage.this, "Recipe", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, RecipePage.class);
+                    Intent intent = new Intent(PantryPage.this, RecipePage.class);
                     startActivity(intent);
                 } else if (id == R.id.ingredient) {
                     //Toast.makeText(HomePage.this, "Ingredient", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, IngredientPage.class);
+                    Intent intent = new Intent(PantryPage.this, IngredientPage.class);
                     startActivity(intent);
                 } else if (id == R.id.list) {
                     //Toast.makeText(HomePage.this, "ShoppingList", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(HomePage.this, ShoppingList.class);
+                    Intent intent = new Intent(PantryPage.this, ListPage.class);
                     startActivity(intent);
                 } else if (id == R.id.personalinfo) {
-                    Intent intent = new Intent(HomePage.this, PersonalInfo.class);
+                    Intent intent = new Intent(PantryPage.this, PersonalInfo.class);
                     startActivity(intent);
                 }
                 return true;
             }
         });
 
+        viewmodel = PantryPageViewModel.getInstance();
+
+        buildPantry(viewmodel);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -90,6 +104,32 @@ public class HomePage extends AppCompatActivity {
             navView.setVisibility(View.VISIBLE);
         }
         return true;
+    }
+
+    /**
+     * This function takes in the current viewmodel and sets up listeners for the whole Pantry.
+     *
+     * It does this by
+     * 1) Using the ViewModel to return a list of all the ingredient item names to use
+     * 2) Making it such that all the buttons, so that depending on whatever button is clicked, it displays
+     * information in the bottom of the screen
+     * 3) once a button is chosen, it sends a signal to the ViewModel which sets the current ingredient on
+     * focus.
+     * 4) the user can then modify the ingredient count as chosen, and when the count is reduced to zero,
+     * the ingredient is removed from the pantry and removed from the list.
+     * @param vm the PantryPageViewModel
+     */
+    public void buildPantry(PantryPageViewModel vm) {
+        //fill functionality later
+        Set<String> set = vm.giveIngredients();
+        String labelString = "testing: ";
+        for (String s : set) {
+            labelString += s + " ";
+        }
+        TextView t = new TextView(getApplicationContext());
+        t.setText(labelString);
+        LinearLayout l = findViewById(R.id.pantry_layout_group);
+        l.addView(t);
     }
 
     /*

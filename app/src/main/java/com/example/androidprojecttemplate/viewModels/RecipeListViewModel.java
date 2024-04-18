@@ -46,6 +46,8 @@ public class RecipeListViewModel {
 
     private Timer timer;
 
+    private RecipeListPage theData;
+
     public RecipeListViewModel() {
         theData = new RecipeListPage();
         recipeReference = FirebaseDatabase.getInstance().getReference().child("Cookbook");
@@ -68,6 +70,7 @@ public class RecipeListViewModel {
 
     /**
      * Compiles all recipes in the database.
+     *
      * @return the recipes
      */
     public ArrayList<RecipeData> getRecipes() {
@@ -97,10 +100,20 @@ public class RecipeListViewModel {
         return recipes;
     }
 
+    public ArrayList<String[]> getRecipeIngredients(RecipeData recipe) {
+        return null;
+    }
+
+    public ArrayList<String[]> getPantryIngredients() {
+        return null;
+    }
+
     /**
      * Determines if a recipe can be cooked.
+     *
      * @return true if a recipe can be cooked, false otherwise
      */
     public boolean canCook() {
         return true;
     }
+}
