@@ -168,7 +168,7 @@ public class RecipeListViewModel {
 
         return pantryQuantities;
     }
-}
+
 
 
 // get hashmap of all ingredient:quantity from certain recipe
@@ -179,7 +179,7 @@ public class RecipeListViewModel {
      * @return HashMap<String, String> ingredients
      */
     public HashMap<String, String> getRecipeIngredients(String recipeName) {
-        referenceForRecipe = FirebaseDatabase.getInstance().getReference().child("Recipe");
+        referenceForRecipe = FirebaseDatabase.getInstance().getReference().child("Cookbook");
 
         HashMap<String, String> ingredients = new HashMap<>();
 
@@ -206,32 +206,33 @@ public class RecipeListViewModel {
     }
 
 
-//get hashmap of all ingredient:quantity from ingredients list of current user
+//get hashmap of all ingredient:quantity from ingredients list of current user from pantry (pantry->user->Ingredients)
     /**
      * This method will return a hashmap of all the ingredients and their quantities
-     * that the user has in their pantry
+     * that are in the user's pantry
      * @return HashMap<String, String> ingredients
      */
     public HashMap<String, String> getIngredients() {
-        referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry");
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        String email = user.getEmail();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
         HashMap<String, String> ingredients = new HashMap<>();
 
-        referenceForPantry.addListenerForSingleValueEvent(new ValueEventListener() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
-                    String theEmailFromFirebase = theSnapshot.child("username").getValue().toString();
-                    String theUsersName = theSnapshot.child("name").getValue().toString();
+                    if (theSnapshot.child("username").getValue().toString().equals(email)) {
+                        pantryRef = FirebaseDatabase.getInstance().getReference().child("Pantry")
+                                .child(theSnapshot.child("name").getValue().toString()).child("Ingredients");
 
-                    if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
-                        referenceForSpecificUser = referenceForPantry.child(theUsersName).child("Ingredients");
-
-                        referenceForSpecificUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                        pantryRef.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot ingredient : snapshot.getChildren()) {
-                                    ingredients.put(ingredient.getKey(), ingredient.getValue().toString());
+                                    ingredients.put(ingredient.getKey(), ingredient.child("quantity").getValue().toString());
                                 }
                             }
 
@@ -280,4 +281,5 @@ public class RecipeListViewModel {
 
         return missingIngredients;
     }
+}
         
