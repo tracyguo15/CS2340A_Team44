@@ -1,17 +1,12 @@
-package com.example.androidprojecttemplate.viewModels;
+package com.example.androidprojecttemplate.cats;
 
 import android.util.Log;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 
-import com.example.androidprojecttemplate.models.DataForPantry;
 import com.example.androidprojecttemplate.models.FirebaseDB;
-import com.example.androidprojecttemplate.models.IngredientData;
 import com.example.androidprojecttemplate.models.ShoppingListData;
-import com.example.androidprojecttemplate.models.UserData;
-import com.example.androidprojecttemplate.views.IngredientPage;
-import com.example.androidprojecttemplate.views.PersonalInfo;
 import com.example.androidprojecttemplate.views.ShoppingList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,7 +18,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class ShoppingListViewModel {
     private static ShoppingListViewModel instance;

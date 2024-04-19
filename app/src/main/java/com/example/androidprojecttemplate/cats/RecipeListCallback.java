@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate.viewModels;
+package com.example.androidprojecttemplate.cats;
 
 import com.google.firebase.database.DatabaseError;
 

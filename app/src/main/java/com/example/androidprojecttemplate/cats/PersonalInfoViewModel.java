@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate.viewModels;
+package com.example.androidprojecttemplate.cats;
 
 // android.text.TextUtils;
 //import android.widget.Toast;
