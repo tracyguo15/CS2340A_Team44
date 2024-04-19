@@ -283,7 +283,7 @@ public class RecipeListViewModel {
         HashMap<String, Integer> needed = new HashMap<>();
         while (i < recipes.size()) {
             RecipeData recipe = recipes.get(i);
-            HashMap<String, String> ingredients = getMissingIngredients();
+            HashMap<String, String> ingredients = getMissingIngredients(recipe.getName());
             for (String key : ingredients.keySet()) {
                 int quantity = Integer.parseInt(ingredients.get(key));
                 if (!needed.containsKey(key)) {
