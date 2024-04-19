@@ -230,7 +230,7 @@ public class RecipeListViewModel {
      * @return HashMap<String, String> ingredients
      */
     public HashMap<String, String> getRecipeIngredients2(String recipeName) {
-        referenceForRecipe = FirebaseDatabase.getInstance().getReference().child("Recipe");
+        referenceForRecipe = FirebaseDatabase.getInstance().getReference().child("Cookbook");
 
         HashMap<String, String> ingredients = new HashMap<>();
 
@@ -238,7 +238,7 @@ public class RecipeListViewModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
-                    if (theSnapshot.child("name").getValue().toString().equals(recipeName)) {
+                    if (theSnapshot.getKey().equals(recipeName)) {
                         for (DataSnapshot ingredient : theSnapshot.child("ingredients").getChildren()) {
                             Log.d("HASHMAP PANTRY", ingredient.getKey() + " "
                                     + ingredient.getValue().toString());
