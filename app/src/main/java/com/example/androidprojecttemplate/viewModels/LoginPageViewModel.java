@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate.cats;
+package com.example.androidprojecttemplate.viewModels;
 
 //import android.text.TextUtils;
 import com.example.androidprojecttemplate.models.FirebaseDB;

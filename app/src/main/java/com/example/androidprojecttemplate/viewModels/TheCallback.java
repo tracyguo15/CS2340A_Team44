@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate.cats;
+package com.example.androidprojecttemplate.viewModels;
 
 /**
  * This interface is used as a callback for when we're doing something with ingredients,

@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidprojecttemplate.R;
-import com.example.androidprojecttemplate.cats.IngredientListViewModel;
+import com.example.androidprojecttemplate.viewModels.IngredientListViewModel;
 
 
 import java.util.ArrayList;

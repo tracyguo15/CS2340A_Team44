@@ -16,7 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.example.androidprojecttemplate.R;
 
-import com.example.androidprojecttemplate.cats.IngredientViewModel;
+import com.example.androidprojecttemplate.viewModels.IngredientViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;

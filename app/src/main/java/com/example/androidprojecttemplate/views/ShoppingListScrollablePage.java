@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidprojecttemplate.R;
-import com.example.androidprojecttemplate.cats.ShoppingListScrollableViewModel;
+import com.example.androidprojecttemplate.viewModels.ShoppingListScrollableViewModel;
 
 
 import java.util.ArrayList;

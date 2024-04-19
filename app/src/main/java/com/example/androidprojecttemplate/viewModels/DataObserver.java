@@ -1,4 +1,4 @@
-package com.example.androidprojecttemplate.cats;
+package com.example.androidprojecttemplate.viewModels;
 
 /*
 public interface DataObserver {
