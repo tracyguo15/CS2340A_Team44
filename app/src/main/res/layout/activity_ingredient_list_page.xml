@@ -9,8 +9,12 @@
         android:id="@+id/theListViewForIngredients"
         android:layout_width="298dp"
         android:layout_height="378dp"
-        tools:layout_editor_absoluteX="51dp"
-        tools:layout_editor_absoluteY="35dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.11" />
 
     <Button
         android:id="@+id/goBack"
