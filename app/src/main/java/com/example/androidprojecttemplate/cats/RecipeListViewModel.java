@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import com.example.androidprojecttemplate.models.FirebaseDB;
 import com.example.androidprojecttemplate.models.RecipeData;
 import com.example.androidprojecttemplate.views.RecipeListPage;
+import com.google.android.gms.common.data.DataBufferObserverSet;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -275,6 +276,25 @@ public class RecipeListViewModel {
         }
 
         return missingIngredients;
+    }
+
+    public HashMap<String, Integer> getAllMissingIngredients(List<RecipeData> recipes) {
+        int i = 0;
+        HashMap<String, Integer> needed = new HashMap<>();
+        while (i < recipes.size()) {
+            RecipeData recipe = recipes.get(i);
+            HashMap<String, String> ingredients = getMissingIngredients();
+            for (String key : ingredients.keySet()) {
+                int quantity = Integer.parseInt(ingredients.get(key));
+                if (!needed.containsKey(key)) {
+                    needed.put(key, quantity);
+                } else {
+                    int previousQuantity = needed.get(key);
+                    needed.put(key, quantity + previousQuantity);
+                }
+            }
+        }
+        return needed;
     }
 }
         

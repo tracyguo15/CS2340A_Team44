@@ -96,6 +96,10 @@ public class RecipeListPage extends AppCompatActivity {
         Log.d("Break before database listener", "Yuh");
         attachDatabaseReadListener();
 
+        Log.d("BREAK", "another break for buttons");
+
+
+
         //Log.d("CAN COOK METHOD TESTING", canCook());
 
         //Make it so that each item in the list is clickable
@@ -135,10 +139,12 @@ public class RecipeListPage extends AppCompatActivity {
                     //Add the data to the String[] recipes
                     recipes.add(new String[]{name, time});
                     recipeDataList.add(recipe);
-
+                    Log.d("RLIST SIZE", recipes.size() + "");
+                    Log.d("RDLIST SIZE", recipeDataList.size() + "");
                     //Update the views
                     update(recipeDataList);
                     displayRecipes();
+
                 }
             }
 
