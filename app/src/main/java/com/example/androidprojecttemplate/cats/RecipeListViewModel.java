@@ -183,7 +183,7 @@ public class RecipeListViewModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
-                    if (theSnapshot.child("name").getValue().toString().equals(recipeName)) {
+                    if (theSnapshot.getKey().equals(recipeName)) {
                         for (DataSnapshot ingredient : theSnapshot.child("ingredients").getChildren()) {
                             ingredients.put(ingredient.getKey(), ingredient.getValue().toString());
                         }
@@ -228,7 +228,11 @@ public class RecipeListViewModel {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 for (DataSnapshot ingredient : snapshot.getChildren()) {
-                                    ingredients.put(ingredient.getKey(), ingredient.child("quantity").getValue().toString());
+                                    String name = ingredient.getKey();
+                                    String quantity = (ingredient.child("quantity").getValue() == null
+                                            ? "0" :
+                                            ingredient.child("quantity").getValue().toString());
+                                    ingredients.put(name, quantity);
                                 }
                             }
 
@@ -278,12 +282,12 @@ public class RecipeListViewModel {
         return missingIngredients;
     }
 
-    public HashMap<String, Integer> getAllMissingIngredients(List<RecipeData> recipes) {
+    public HashMap<String, Integer> getAllMissingIngredients(List<String[]> recipes) {
         int i = 0;
         HashMap<String, Integer> needed = new HashMap<>();
         while (i < recipes.size()) {
-            RecipeData recipe = recipes.get(i);
-            HashMap<String, String> ingredients = getMissingIngredients(recipe.getName());
+            String[] recipe = recipes.get(i);
+            HashMap<String, String> ingredients = getMissingIngredients(recipe[0]);
             for (String key : ingredients.keySet()) {
                 int quantity = Integer.parseInt(ingredients.get(key));
                 if (!needed.containsKey(key)) {
@@ -293,6 +297,7 @@ public class RecipeListViewModel {
                     needed.put(key, quantity + previousQuantity);
                 }
             }
+            i++;
         }
         return needed;
     }

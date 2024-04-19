@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 //import android.widget.Toast;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidprojecttemplate.R;
+import com.example.androidprojecttemplate.cats.ShoppingListViewModel;
 import com.example.androidprojecttemplate.models.RecipeData;
 //import com.example.androidprojecttemplate.viewModels.DataObserver;
 import com.example.androidprojecttemplate.cats.RecipeListCallback;
@@ -33,8 +35,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Timer;
+import java.util.HashMap;
 
 import android.os.Handler;
+import android.widget.Toast;
+
 public class RecipeListPage extends AppCompatActivity {
     private ListView theListView;
 
@@ -45,6 +50,8 @@ public class RecipeListPage extends AppCompatActivity {
 
     private RecipeListViewModel viewModel;
     private Button backToRecipePage;
+
+    private Button missingIngredientsButton;
     private Timer timer;
     private Timer timer2;
     private String temp = "hello";
@@ -98,7 +105,41 @@ public class RecipeListPage extends AppCompatActivity {
 
         Log.d("BREAK", "another break for buttons");
 
-
+        missingIngredientsButton = findViewById(R.id.missingIngredientsButton);
+        missingIngredientsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, Integer> missing = viewModel.getAllMissingIngredients(recipes);
+                Log.d("SIZE OF SHOPLIST", missing.size() + "");
+                ShoppingListViewModel shop = ShoppingListViewModel.getInstance();
+                Log.d("EVENT", "switching classes");
+                ArrayList<EditText> ingredientEditTexts = new ArrayList<>();
+                ArrayList<EditText> quantitiesEditTexts = new ArrayList<>();
+                for (String ingredient : missing.keySet()) {
+                    EditText i = new EditText(RecipeListPage.this);
+                    EditText q = new EditText(RecipeListPage.this);
+                    i.setText(ingredient);
+                    q.setText(missing.get(ingredient).toString());
+                    ingredientEditTexts.add(i);
+                    quantitiesEditTexts.add(q);
+                }
+                shop.addToFirebase(ingredientEditTexts, quantitiesEditTexts, result -> runOnUiThread(() -> {
+                    if (result == 1) {
+                        Toast.makeText(RecipeListPage.this,
+                                "Success",
+                                Toast.LENGTH_SHORT).show();
+                    } else if (result == 2) {
+                        Toast.makeText(RecipeListPage.this,
+                                "Something went wrong with the firebase connection",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }));
+                v.setEnabled(false);
+                Toast.makeText(RecipeListPage.this,"Sending you to Shopping List", Toast.LENGTH_SHORT);
+                Log.d("EVENT", "done");
+                v.setEnabled(true);
+            }
+        });
 
         //Log.d("CAN COOK METHOD TESTING", canCook());
 
