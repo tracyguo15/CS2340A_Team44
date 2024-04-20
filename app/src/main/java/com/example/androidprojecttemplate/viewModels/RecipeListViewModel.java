@@ -15,6 +15,7 @@ import com.example.androidprojecttemplate.models.FirebaseDB;
 //import com.example.androidprojecttemplate.models.Pair;
 //import com.example.androidprojecttemplate.models.RecipeData;
 //import com.example.androidprojecttemplate.views.IngredientListPage;
+import com.example.androidprojecttemplate.models.RecipeData;
 import com.example.androidprojecttemplate.views.RecipeListPage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,11 +44,15 @@ public class RecipeListViewModel {
     private String theUsersEmailFromAuthenticationDatabase;
     private final ArrayList<String[]> pantryQuantities;
     private final ArrayList<String[]> recipeQuantities;
+    private HashMap<String, Integer> recipeMap;
+    private HashMap<String, Integer> pantryMap;
 
     public RecipeListViewModel() {
         theData = new RecipeListPage();
         pantryQuantities = new ArrayList<>();
         recipeQuantities = new ArrayList<>();
+        recipeMap = new HashMap<>();
+        pantryMap = new HashMap<>();
     }
 
     public static synchronized RecipeListViewModel getInstance() {
@@ -224,18 +229,38 @@ public class RecipeListViewModel {
 //    }
 
     public void getRecipeIngredients2(String recipeName, FirebaseCallback callback) {
-        DatabaseReference referenceForRecipe = FirebaseDatabase.getInstance().getReference().child("Cookbook").child(recipeName).child("ingredients");
-        HashMap<String, String> ingredients = new HashMap<>();
+        DatabaseReference referenceForRecipe = FirebaseDatabase.getInstance().getReference()
+                .child("Cookbook").child(recipeName);
 
+        /*
         referenceForRecipe.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("MAPPPP", snapshot.getValue(RecipeData.class).toString());
                 for (DataSnapshot ingredient : snapshot.getChildren()) {
                     String key = ingredient.getKey();
                     String value = ingredient.getValue(String.class);
                     ingredients.put(key, value);
                 }
                 callback.onCallback(ingredients); // invoke the callback method with the fetched data
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Error", "Something went wrong");
+            }
+        }); */
+        referenceForRecipe.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Log.d("MAPPPP", snapshot.getValue(RecipeData.class).toString());
+                RecipeData recipeData = snapshot.getValue(RecipeData.class);
+                if (recipeData != null) {
+                    recipeMap = recipeData.getIngredients();
+                    // Process the ingredients...
+                } else {
+                    // Handle the case where the data is not as expected
+                }
             }
 
             @Override
@@ -320,9 +345,9 @@ public class RecipeListViewModel {
                     @Override
                     public void onCallback(HashMap<String, String> pantryIngredients) {
                         boolean cooked = true;
-                        for (String ingredient : recipeIngredients.keySet()) {
-                            if (!pantryIngredients.containsKey(ingredient) ||
-                                    Integer.parseInt(pantryIngredients.get(ingredient)) < Integer.parseInt(recipeIngredients.get(ingredient))) {
+                        for (String ingredient : recipeMap.keySet()) {
+                            if (!pantryMap.containsKey(ingredient)
+                                    || pantryMap.get(ingredient) < recipeMap.get(ingredient)) {
                                 cooked = false;
                                 break;
                             }

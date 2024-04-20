@@ -136,7 +136,8 @@ public class RecipeListPage extends AppCompatActivity {
 
                     //Store the necessary data into their own variables
                     String name = snapshots.getKey();
-                    String time = Integer.toString(snapshots.getValue(RecipeData.class).getTime());
+                    Log.d("HUH?", String.valueOf(snapshots.child("time").getValue()));
+                    String time = (String) snapshots.child("time").getValue();
                     RecipeData recipe = snapshots.getValue(RecipeData.class);
 
                     //Tests to makes sure whether the variables have the correct data

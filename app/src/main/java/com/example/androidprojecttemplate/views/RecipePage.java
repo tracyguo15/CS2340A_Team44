@@ -38,6 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RecipePage extends AppCompatActivity {
     // ui
@@ -293,7 +294,9 @@ public class RecipePage extends AppCompatActivity {
                                             .child("time")
                                             .setValue(recipeTime);
 
+                                    HashMap<String, Integer> ingredientMap = new HashMap<>();
                                     for (String ingredientsKey : data.keySet()) {
+                                        ingredientMap.put(ingredientsKey, data.get(ingredientsKey));
                                         cookbookReference
                                                 .child(recipeName)
                                                 .child("ingredients")
@@ -301,6 +304,7 @@ public class RecipePage extends AppCompatActivity {
                                                 .child("quantity")
                                                 .setValue(data.get(ingredientsKey));
                                     }
+                                    data.setIngredients(ingredientMap);
                                 }
                             }
 

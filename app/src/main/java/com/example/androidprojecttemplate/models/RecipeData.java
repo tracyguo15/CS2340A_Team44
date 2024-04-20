@@ -2,24 +2,38 @@ package com.example.androidprojecttemplate.models;
 
 //import java.util.ArrayList;
 
+import java.util.HashMap;
+
 public class RecipeData extends AbstractDatabase<String, Integer> {
     private String name;
     private String description;
     private int time;
+    HashMap<String, Integer> ingredients;
 
-    public RecipeData(String name, String description, int time) {
+    //
+    public RecipeData(String name, String description, int time, HashMap<String, Integer> ingredients) {
         this.name = name;
         this.description = description;
         this.time = time;
+        this.ingredients = ingredients;
+    }
+
+    public RecipeData(String name, int time, HashMap<String, Integer> ingredients) {
+        this(name, "", time, ingredients);
+    }
+
+    public RecipeData(String name, String description, int time) {
+        this(name, description, time, new HashMap<String, Integer>());
     }
 
     public RecipeData(String name, int time) {
-        this(name, "", time);
+        this(name, "", time, new HashMap<String, Integer>());
     }
 
     public RecipeData() {
-        this("", "", 0);
+        this("", "", 0, new HashMap<>());
     }
+
 
     public void add(String ingredientName, int quantity) {
         this.put(ingredientName, quantity);
@@ -29,6 +43,7 @@ public class RecipeData extends AbstractDatabase<String, Integer> {
         this.remove(ingredientName);
     }
 
+    //Setters
     public void setName(String name) {
         try {
             this.name = name;
@@ -48,6 +63,9 @@ public class RecipeData extends AbstractDatabase<String, Integer> {
     public void setDescription(String description) {
         this.description = description;
     }
+    public void setIngredients(HashMap<String, Integer> ingredients) {
+        this.ingredients = ingredients;
+    }
 
     //Getters
     public String getName() {
@@ -58,6 +76,9 @@ public class RecipeData extends AbstractDatabase<String, Integer> {
     }
     public String getDescription() {
         return this.description;
+    }
+    public HashMap<String, Integer> getIngredients() {
+        return ingredients;
     }
 
     /**
