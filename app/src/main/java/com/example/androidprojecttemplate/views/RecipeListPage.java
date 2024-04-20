@@ -25,6 +25,7 @@ import com.example.androidprojecttemplate.models.Pair;
 import com.example.androidprojecttemplate.models.PantryData;
 import com.example.androidprojecttemplate.models.RecipeData;
 //import com.example.androidprojecttemplate.viewModels.DataObserver;
+import com.example.androidprojecttemplate.viewModels.CanCookCallback;
 import com.example.androidprojecttemplate.viewModels.RecipeListCallback;
 import com.example.androidprojecttemplate.viewModels.RecipeListViewModel;
 import com.google.firebase.auth.FirebaseAuth;
@@ -228,42 +229,42 @@ public class RecipeListPage extends AppCompatActivity {
     } */
 
     private void update(String recipeName) {
-
-        //for (RecipeData recipe : recipeList) {
-
-        //}
-        //Log.d("canCook Called", String.valueOf(viewModel.canCook(recipe)));
         display.clear();
         Log.d("RecipeList size", Integer.toString(recipes.size()));
-        //Adds each String[] to a separate Arraylist with better naming conventions
+        // Adds each String[] to a separate Arraylist with better naming conventions
         for (String[] arr : recipes) {
             display.add(arr[0] + " cook time: " + arr[1]);
         }
 
-        //Adapter to convert the list into the ListView
-        adapter = new ArrayAdapter(this,
+        // Adapter to convert the list into the ListView
+        adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, display) {
             @NonNull
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text = (TextView) view.findViewById(android.R.id.text1);
-                String availabilityText;
-                if (viewModel.canCook(recipeName)) {
-                    availabilityText = "<font color=\"#32CD32\">" + recipeName + "</font>";
-                } else {
-                    availabilityText = "<font color=\"#DC143C\">" + recipeName + "</font>";
-                }
-                text.setText(Html.fromHtml(availabilityText));
+
+                // Call the canCook2 method with a callback
+                viewModel.canCook2(recipes.get(position)[0], new CanCookCallback() {
+                    @Override
+                    public void onResult(boolean canCook) {
+                        runOnUiThread(() -> {
+                            // This ensures the update happens on the UI thread
+                            if (canCook) {
+                                text.setTextColor(Color.GREEN);
+                            } else {
+                                text.setTextColor(Color.RED);
+                            }
+                        });
+                    }
+                });
+
+                text.setText(recipes.get(position)[0]);
                 return view;
             }
-
-            @Override
-            public void notifyDataSetChanged() {
-                TextView text = (TextView) theListView.findViewById(android.R.id.text1);
-                text.setTextColor(Color.GREEN);
-            }
         };
-        this.listViewRecipes.setAdapter(adapter);
+        listViewRecipes.setAdapter(adapter);
     }
+
 }
