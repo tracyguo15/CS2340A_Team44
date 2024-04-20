@@ -8,11 +8,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.androidprojecttemplate.viewModels.CanCookCallback;
 import com.example.androidprojecttemplate.viewModels.RecipeListViewModel;
 import com.example.androidprojecttemplate.views.RecipeDetailPage;
 import com.example.androidprojecttemplate.views.RecipeListPage;
-import com.example.androidprojecttemplate.views.RecipePage;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,7 +21,6 @@ public class CustomAdapter {
     private RecipeListPage recipeListPage;
     private LinearLayout container;
     private RecipeListViewModel viewModel;
-
 
     public CustomAdapter(
             RecipeListPage recipeListPage,
@@ -93,8 +92,16 @@ public class CustomAdapter {
                     String text = name + " Time: " + time;
                     boolean canCook = true;
 
-                    TextView newView = createView(text, canCook);
-                    container.addView(newView);
+                    viewModel.canCook2(name, new CanCookCallback() {
+                        @Override
+                        public void onResult(boolean canCook) {
+                            TextView newView = createView(text, canCook);
+                            container.addView(newView);
+                        }
+                    });
+
+                    //TextView newView = createView(text, canCook);
+                    //container.addView(newView);
                 }
             }
         });
@@ -127,10 +134,18 @@ public class CustomAdapter {
                     int time = recipeData.getTime();
 
                     String text = name + " Time: " + time;
-                    boolean canCook = true;
 
-                    TextView newView = createView(text, canCook);
-                    container.addView(newView);
+                    viewModel.canCook2(name, new CanCookCallback() {
+                        @Override
+                        public void onResult(boolean canCook) {
+                            TextView newView = createView(text, canCook);
+                            container.addView(newView);
+                        }
+                    });
+
+
+                    //TextView newView = createView(text, canCookRecipe);
+                    //container.addView(newView);
                 }
             }
         });
@@ -162,8 +177,16 @@ public class CustomAdapter {
                     String text = name + " Time: " + time;
                     boolean canCook = true;
 
-                    TextView newView = createView(text, canCook);
-                    container.addView(newView);
+                    viewModel.canCook2(name, new CanCookCallback() {
+                        @Override
+                        public void onResult(boolean canCook) {
+                            TextView newView = createView(text, canCook);
+                            container.addView(newView);
+                        }
+                    });
+
+                    //TextView newView = createView(text, canCook);
+                    //container.addView(newView);
                 }
             }
         });
