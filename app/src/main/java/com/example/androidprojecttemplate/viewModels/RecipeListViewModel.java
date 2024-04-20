@@ -335,6 +335,3 @@ public class RecipeListViewModel {
     }
 }
 
-
-// get hashmap of all ingredient:quantity from certain recipe
-

@@ -22,13 +22,47 @@ public class Sprint4Junits {
     //Tracy Guo
     //check if shopping list quantity is null
     @Test
-public void testShoppingListDataQuantityNull() {
+    public void testShoppingListDataQuantityNull() {
         try {
             ShoppingListData shoppingListData = new ShoppingListData("apple", null);
         } catch (IllegalArgumentException e) {
             assertEquals("Quantity is null, empty, or negative please enter a proper value", e.getMessage());
         }
     }
+
+    //Michael Leonick
+    @Test
+    //test shopping list quantity empty
+    public void testShoppingListDataQuantityEmpty() {
+        try {
+            ShoppingListData shoppingListData = new ShoppingListData("apple", "");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Quantity is null, empty, or negative please enter a proper value", e.getMessage());
+        }
+    }
+    //Michael Leonick
+    @Test
+    //test shopping list name empty
+    public void testShoppingListDataNameEmpty() {
+        try {
+            ShoppingListData shoppingListData = new ShoppingListData("", "1");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Name is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Daniel Deller
+    @Test
+    //test shopping list name null
+    public void testShoppingListDataNameNull() {
+        try {
+            ShoppingListData shoppingListData = new ShoppingListData(null, "1");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Name is null or empty, please enter a proper value", e.getMessage());
+        }
+    }
+
+    //Daniel Deller
 
 
 
