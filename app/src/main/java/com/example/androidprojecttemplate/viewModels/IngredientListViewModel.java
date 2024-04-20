@@ -37,10 +37,6 @@ public class IngredientListViewModel {
 
     private String temp = "hel";
 
-    private int changer = 0;
-
-    private Timer timer;
-
     public IngredientListViewModel() {
         theData = new IngredientListPage();
     }
@@ -59,12 +55,10 @@ public class IngredientListViewModel {
         theUsersEmailFromAuthenticationDatabase = FirebaseDB.getInstance().getEmail();
     }
 
-    // Have to go to firebase and retrieve all of the current elements
-    // * May not work if it's empty, need to test
-    public String getTheQuantity(String theNameOfIngredient, int number) {
+
+    // Updates the quantity in firebase
+    public void setTheQuantity(String theNameOfIngredient, int newQuantity) {
         referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry");
-
-
         referenceForPantry.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -79,8 +73,8 @@ public class IngredientListViewModel {
                                 .child("Ingredients");
 
                         // Will use a helper method to do the rest
-                        theReturnQuantity = helperMethod(referenceForSpecificUser,
-                                theNameOfIngredient, number);
+                        helperMethod(referenceForSpecificUser,
+                                theNameOfIngredient, newQuantity);
                     }
                 }
             }
@@ -89,55 +83,30 @@ public class IngredientListViewModel {
                 Log.d("Error", "Something went wrong");
             }
         });
-
-        return theReturnQuantity;
     }
 
-    private String helperMethod(DatabaseReference theReference,
-                                String theNameOfIngredient, int number) {
+    private void helperMethod(DatabaseReference theReference,
+                                String theNameOfIngredient, int newQuantity) {
         Log.d("testReference", theReference.toString());
         theReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
-                    Log.d("test1", theSnapshot.toString());
+                    Log.d("name", theNameOfIngredient);
+                    Log.d("theSnapshot", String.valueOf(theSnapshot.child("name")));
                     if (theSnapshot.child("name").getValue(String.class)
                             .equals(theNameOfIngredient)) {
-                        // Now, depending on what button was pressed,
-                        // will have to increase or decrease
-                        if (number == 1) {
-                            //increase
-                            changer = Integer.parseInt(theSnapshot.child("quantity")
-                                    .getValue(String.class));
-                            changer++;
+
+                        // Check if the new quantity is zero
+                        if (newQuantity == 0) {
+                            temp = theSnapshot.child("name").getValue(String.class);
+                            theReference.child(temp).removeValue();
+                        } else {
                             temp = theSnapshot.child("name").getValue(String.class);
                             referenceForIngredient = theReference.child(temp);
                             referenceForIngredient.child("quantity")
-                                    .setValue(String.valueOf(changer));
-                        } else if (number == 2) {
-                            //decrease
-                            changer = Integer.parseInt(theSnapshot.child("quantity")
-                                    .getValue(String.class));
-                            changer--;
-                            temp = theSnapshot.child("name").getValue(String.class);
-                            referenceForIngredient = theReference.child(temp);
-                            if (changer == 0) {
-                                referenceForIngredient.removeValue();
-                            } else {
-                                referenceForIngredient.child("quantity")
-                                        .setValue(String.valueOf(changer));
-                            }
+                                    .setValue(String.valueOf(newQuantity));
                         }
-
-                        timer = new Timer();
-                        timer.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                temp = theSnapshot.child("quantity")
-                                            .getValue(String.class);
-                                Log.d("test2", temp);
-                            }
-                            }, 300);
                         break;
                     }
                 }
@@ -147,8 +116,6 @@ public class IngredientListViewModel {
                 Log.d("Error", "Something went wrong 2");
             }
         });
-
-        return temp;
     }
 
 }

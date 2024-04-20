@@ -171,6 +171,7 @@ public class IngredientPage extends AppCompatActivity {
                 //Switch to other screen
                 Intent theIntent = new Intent(IngredientPage.this, IngredientListPage.class);
                 theIntent.putExtra("TheList", theIngredientsList);
+                theIntent.putExtra("quantities", viewModel.getTheQuantities());
                 startActivity(theIntent);
             }
         }, 2000);
