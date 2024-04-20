@@ -109,34 +109,10 @@ public class RecipeListPage extends AppCompatActivity {
         missingIngredientsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String, Integer> missing = viewModel.getAllMissingIngredients(recipes);
-                Log.d("SIZE OF SHOPLIST", missing.size() + "");
-                ShoppingListViewModel shop = ShoppingListViewModel.getInstance();
-                Log.d("EVENT", "switching classes");
-                ArrayList<EditText> ingredientEditTexts = new ArrayList<>();
-                ArrayList<EditText> quantitiesEditTexts = new ArrayList<>();
-                for (String ingredient : missing.keySet()) {
-                    EditText i = new EditText(RecipeListPage.this);
-                    EditText q = new EditText(RecipeListPage.this);
-                    i.setText(ingredient);
-                    q.setText(missing.get(ingredient).toString());
-                    ingredientEditTexts.add(i);
-                    quantitiesEditTexts.add(q);
-                }
-                shop.addToFirebase(ingredientEditTexts, quantitiesEditTexts, result -> runOnUiThread(() -> {
-                    if (result == 1) {
-                        Toast.makeText(RecipeListPage.this,
-                                "Success",
-                                Toast.LENGTH_SHORT).show();
-                    } else if (result == 2) {
-                        Toast.makeText(RecipeListPage.this,
-                                "Something went wrong with the firebase connection",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }));
                 v.setEnabled(false);
-                Toast.makeText(RecipeListPage.this,"Sending you to Shopping List", Toast.LENGTH_SHORT);
-                Log.d("EVENT", "done");
+
+
+
                 v.setEnabled(true);
             }
         });
