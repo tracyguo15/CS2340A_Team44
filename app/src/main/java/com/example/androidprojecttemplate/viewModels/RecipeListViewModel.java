@@ -2,19 +2,16 @@ package com.example.androidprojecttemplate.viewModels;
 
 
 //import android.content.Intent;
+import android.util.AtomicFile;
 import android.util.Log;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 
 //import com.example.androidprojecttemplate.models.DataForPantry;
 //import com.example.androidprojecttemplate.models.IngredientData;
 //import com.example.androidprojecttemplate.models.UserData;
-import com.example.androidprojecttemplate.models.CookbookData;
 import com.example.androidprojecttemplate.models.FirebaseDB;
-import com.example.androidprojecttemplate.models.Pair;
 import com.example.androidprojecttemplate.models.RecipeData;
-import com.example.androidprojecttemplate.views.IngredientListPage;
 import com.example.androidprojecttemplate.views.RecipeListPage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,19 +21,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.Array;
 import java.util.*;
 //import java.util.logging.Handler;
 
 public class RecipeListViewModel {
     private static RecipeListViewModel instance;
-    private final RecipeListPage theData;
 
+    // later
     private FirebaseAuth theAuthenticationVariable;
     private FirebaseUser user;
+
+    // maybe need
     private DatabaseReference pantryRef;
     private DatabaseReference referenceForSpecificUser;
-    private DatabaseReference referenceForRecipe;
+    private DatabaseReference recipeReference;
+    private DatabaseReference referenceForPantry;
 
     private String theUsersEmailFromAuthenticationDatabase;
     private String theReturnQuantity = null;
@@ -49,6 +48,7 @@ public class RecipeListViewModel {
 
     public RecipeListViewModel() {
         theData = new RecipeListPage();
+        recipeReference = FirebaseDatabase.getInstance().getReference().child("Cookbook");
     }
 
     public static synchronized RecipeListViewModel getInstance() {

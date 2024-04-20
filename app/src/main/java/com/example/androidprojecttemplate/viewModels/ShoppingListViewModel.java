@@ -39,10 +39,12 @@ public class ShoppingListViewModel {
 
     private String theUsersEmailFromAuthenticationDatabase;
 
-    private boolean isItInIngredientDatabase;
+    private static int timesCalled = 0;
 
     private Timer timer;
     private String temp;
+    private String temp2;
+    private boolean doesItAlreadyExists;
 
     public ShoppingListViewModel() {
         theData = new ShoppingList();
@@ -62,7 +64,8 @@ public class ShoppingListViewModel {
         theUsersEmailFromAuthenticationDatabase = FirebaseDB.getInstance().getEmail();
     }
 
-    private static ArrayList<String> addedShoppingListItems = new ArrayList<>();
+    private ArrayList<String> addedShoppingListItems = new ArrayList<>();
+    private ArrayList<String> addedQuantities = new ArrayList<>();
 
     // Have to go to firebase and retrieve all of the current elements
     // * May not work if it's empty, need to test
@@ -102,6 +105,8 @@ public class ShoppingListViewModel {
                     if (theSnapshot.child("name").getValue(String.class) != null) {
                         temp = theSnapshot.child("name").getValue(String.class).toString();
                         addedShoppingListItems.add(temp);
+                        temp2 = theSnapshot.child("quantity").getValue(String.class).toString();
+                        addedQuantities.add(temp2);
                     }
                 }
             }
@@ -113,16 +118,14 @@ public class ShoppingListViewModel {
     }
 
 
-
-
-
-
-
-
     public void addToFirebase(ArrayList<EditText> names, ArrayList<EditText> quantities, TheCallback callback) {
         referenceForShoppingList = FirebaseDatabase.getInstance().getReference().child("Shopping_List");
 
-        addTheElementsFromFirebaseToTheList();
+        if (timesCalled == 0) {
+            addTheElementsFromFirebaseToTheList();
+        }
+
+        timesCalled++;
         referenceForShoppingList.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -149,49 +152,59 @@ public class ShoppingListViewModel {
         });
     }
 
-    private void helperMethod2(DatabaseReference theReference, ArrayList<EditText> names, ArrayList<EditText> quantities, String theUsersName) {
+    private void helperMethod2(DatabaseReference theReference, ArrayList<EditText> names, ArrayList<EditText> quantities1, String theUsersName) {
 
+        // Will have to check firebase to see if the ingredient already exists
         for(int i = 0; i < names.size(); i++) {
-            // Will have to check the pantry database
-                if(!isInPantryDatabase(theUsersName, names.get(i).getText().toString(), quantities.get(i).getText().toString())) {
-                    ShoppingListData theItem = new ShoppingListData(names.get(i).getText().toString(), quantities.get(i).getText().toString());
-                    theReference.child(names.get(i).getText().toString()).setValue(theItem);
-                    addedShoppingListItems.add(names.get(i).getText().toString());
+            String theCurrName = names.get(i).getText().toString();
+            String theCurrQuantity = quantities1.get(i).getText().toString();
+            doesItAlreadyExists = false;
+            theReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+                        if(theSnapshot.exists()) {
+                            // Now check the names
+                            if (theCurrName.equals(theSnapshot.getKey())) {
+                                // Name already exists, simply update the quantity
+                                theReference.child(theCurrName).child("quantity").setValue(theCurrQuantity);
+
+                                // Will need to call another method to update that quantity's value in the arrayList
+                                updateArrayListsWithNewValues(theCurrName, theCurrQuantity);
+                                doesItAlreadyExists = true;
+                            }
+                        }
+                    }
+
+                    if (!doesItAlreadyExists) {
+                        // Can now add it to the new list
+                        ShoppingListData theItem = new ShoppingListData(theCurrName, theCurrQuantity);
+                        theReference.child(theCurrName).setValue(theItem);
+                        addedShoppingListItems.add(theCurrName);
+                        addedQuantities.add(theCurrQuantity);
+                    }
                 }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d("Error", "Something went wrong");
+                }
+            });
         }
     }
 
-    private boolean isInPantryDatabase(String theUsersName, String nameOfIngredient, String theQuantity) {
-        doesItExist = false;
-        referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry").child(theUsersName).child("Ingredients");
-        Log.d("Reference1:", referenceForPantry.toString());
-
-        referenceForPantry.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot theSnapshot : snapshot.getChildren()) {
-                    if(nameOfIngredient.equals(theSnapshot.getKey())) {
-                        // The ingredient already exists in the Pantry database
-                        // Simply update the quantity
-                        referenceForPantry.child(nameOfIngredient).child("quantity").setValue(theQuantity);
-                        doesItExist = true;
-                        break;
-                    }
-                }
+    private void updateArrayListsWithNewValues(String theName, String theNewQuantity) {
+        for (int i = 0; i < addedShoppingListItems.size(); i++) {
+            if (theName.equals(addedShoppingListItems.get(i))) {
+                addedQuantities.set(i, theNewQuantity);
+                break;
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("Error", "Something went wrong");
-            }
-        });
-
-        Log.d("TheBool", String.valueOf(doesItExist));
-        return doesItExist;
+        }
     }
-
 
     public ArrayList<String> getTheArrayList() {
         return addedShoppingListItems;
     }
+
+    public ArrayList<String> getTheQuantities() { return addedQuantities;}
 }
