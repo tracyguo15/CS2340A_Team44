@@ -1,5 +1,6 @@
 package com.example.androidprojecttemplate.models;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
@@ -8,7 +9,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.androidprojecttemplate.viewModels.RecipeListViewModel;
+import com.example.androidprojecttemplate.views.RecipeDetailPage;
 import com.example.androidprojecttemplate.views.RecipeListPage;
+import com.example.androidprojecttemplate.views.RecipePage;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -49,10 +53,8 @@ public class CustomAdapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(
-                            recipeListPage,
-                            "Can cook this recipe!",
-                            Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(recipeListPage, RecipeDetailPage.class);
+                    recipeListPage.startActivity(intent);
                 }
             });
         } else {
