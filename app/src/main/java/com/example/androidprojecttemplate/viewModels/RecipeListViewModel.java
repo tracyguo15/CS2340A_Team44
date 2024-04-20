@@ -36,6 +36,7 @@ public class RecipeListViewModel {
 
     private FirebaseAuth theAuthenticationVariable;
     private FirebaseUser user;
+    private String userName;
     private DatabaseReference pantryRef;
     private DatabaseReference referenceForSpecificUser;
     private DatabaseReference referenceForRecipe;
@@ -232,7 +233,8 @@ public class RecipeListViewModel {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot ingredient : snapshot.getChildren()) {
                     String key = ingredient.getKey();
-                    String value = ingredient.getValue(String.class);
+                    String value = String.valueOf(ingredient.child("quantity").getValue());
+                    //Log.d("QUANTITY", value);
                     ingredients.put(key, value);
                 }
                 callback.onCallback(ingredients); // invoke the callback method with the fetched data
@@ -245,26 +247,56 @@ public class RecipeListViewModel {
         });
     }
 
-    public void getIngredients2(String userEmail, FirebaseCallback callback) {
-        DatabaseReference pantryRef = FirebaseDatabase.getInstance().getReference().child("Pantry").child(userEmail).child("Ingredients");
+    public void getIngredients2(FirebaseCallback callback) {
+        DatabaseReference pantryRef = FirebaseDatabase.getInstance().getReference().child("Pantry");
+                //.child(userName).child("Ingredients");
         HashMap<String, String> ingredients = new HashMap<>();
 
-        pantryRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        //Sets up the variables needed to authenticate user's data
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        String email = user.getEmail();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference()
+                .child("Users");
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot ingredient : snapshot.getChildren()) {
-                    if (!"username".equals(ingredient.getKey())) {
-                        String key = ingredient.getKey();
-                        String value = ingredient.getValue(String.class);
-                        ingredients.put(key, value);
+                //Each child should be pointing to a specific
+                for (DataSnapshot snapshots : snapshot.getChildren()) {
+                    //Grabs the email of the user in the snapshot
+                    String theEmailFromFirebase = snapshots.child("username")
+                            .getValue().toString();
+
+                    //Checks if the email from the snapshot matches the
+                    if (theEmailFromFirebase.equals(email)) {
+                        String userName = String.valueOf(snapshots.child("name").getValue());
+                        DatabaseReference userPantry = pantryRef.child(userName).child("Ingredients");
+                        userPantry.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                for (DataSnapshot ingredient : snapshot.getChildren()) {
+                                    if (!"username".equals(ingredient.getKey())) {
+                                        Log.d("INGREDIENT", ingredient.toString());
+                                        String key = ingredient.getKey();
+                                        String value = ingredient.child("quantity").getValue(String.class);
+                                        ingredients.put(key, value);
+                                    }
+                                }
+                                callback.onCallback(ingredients); // invoke the callback method with the fetched data
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Log.d("PANTRY REF", "Something went wrong");
+                            }
+                        });
                     }
                 }
-                callback.onCallback(ingredients); // invoke the callback method with the fetched data
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("Error", "Something went wrong");
+                Log.d("USER ERROR", error.toString());
             }
         });
     }
@@ -283,7 +315,7 @@ public class RecipeListViewModel {
         getRecipeIngredients2(recipeName, new FirebaseCallback() {
             @Override
             public void onCallback(HashMap<String, String> recipeIngredients) {
-                getIngredients2(theUsersEmailFromAuthenticationDatabase, new FirebaseCallback() {
+                getIngredients2(new FirebaseCallback() {
                     @Override
                     public void onCallback(HashMap<String, String> pantryIngredients) {
                         HashMap<String, String> missingIngredients = new HashMap<>();
@@ -316,13 +348,18 @@ public class RecipeListViewModel {
         getRecipeIngredients2(recipeName, new FirebaseCallback() {
             @Override
             public void onCallback(HashMap<String, String> recipeIngredients) {
-                getIngredients2(theUsersEmailFromAuthenticationDatabase, new FirebaseCallback() {
+                getIngredients2(new FirebaseCallback() {
                     @Override
                     public void onCallback(HashMap<String, String> pantryIngredients) {
                         boolean cooked = true;
                         for (String ingredient : recipeIngredients.keySet()) {
-                            if (!pantryIngredients.containsKey(ingredient) ||
-                                    Integer.parseInt(pantryIngredients.get(ingredient)) < Integer.parseInt(recipeIngredients.get(ingredient))) {
+                            Log.d("pantry quant", String.valueOf(pantryIngredients.containsKey("Bacon")));
+                            if (pantryIngredients.containsKey(ingredient)) {
+                                if (Integer.parseInt(pantryIngredients.get(ingredient)) < Integer.parseInt(recipeIngredients.get(ingredient))) {
+                                    cooked = false;
+                                    break;
+                                }
+                            } else if (!pantryIngredients.containsKey(ingredient)) {
                                 cooked = false;
                                 break;
                             }
