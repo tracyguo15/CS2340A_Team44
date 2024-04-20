@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.androidprojecttemplate.viewModels.CanCookCallback;
 import com.example.androidprojecttemplate.viewModels.RecipeListViewModel;
 import com.example.androidprojecttemplate.views.RecipeDetailPage;
@@ -99,9 +98,6 @@ public class CustomAdapter {
                             container.addView(newView);
                         }
                     });
-
-                    //TextView newView = createView(text, canCook);
-                    //container.addView(newView);
                 }
             }
         });
@@ -142,10 +138,6 @@ public class CustomAdapter {
                             container.addView(newView);
                         }
                     });
-
-
-                    //TextView newView = createView(text, canCookRecipe);
-                    //container.addView(newView);
                 }
             }
         });
@@ -184,9 +176,6 @@ public class CustomAdapter {
                             container.addView(newView);
                         }
                     });
-
-                    //TextView newView = createView(text, canCook);
-                    //container.addView(newView);
                 }
             }
         });
