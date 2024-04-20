@@ -250,40 +250,7 @@ public class RecipeListPage extends AppCompatActivity {
     //canCook method from PantryData not yet adapted for this class
 
     public boolean canCook(RecipeData recipe, RecipeListCallback callback) {
-        //Boolean variable to be returned
-        boolean cooked = false;
-
-        //Grab an instance of the ViewModel
-        viewModel = RecipeListViewModel.getInstance();
-        viewModel.getCurrentUser();
-
-        //Get String[] of all the ingredients necessary and available
-        ArrayList<String[]> recipeIngredients = viewModel.getRecipeIngredients(recipe);
-        ArrayList<String[]> pantryIngredients = viewModel.getPantryIngredients();
-
-        //Go through each ingredient necessary for recipe
-        for (String[] r : recipeIngredients) {
-            //Go through every ingredient in the pantry
-            for (String[] p : pantryIngredients) {
-                //Compare the names to see if they match
-                if (r[0].equals(p[0])) {
-                    //If the pantry amount < recipe amount
-                    if (Integer.parseInt(p[1]) < Integer.parseInt(r[1])) {
-                        break;
-                    } else if (Integer.parseInt(p[1]) > Integer.parseInt(r[1])) {
-                        cooked = true;
-                    }
-                }
-            }
-
-            //If cooked != true, then that means either the quantity was too low
-            //or it wasn't in the pantry
-            if (cooked != true) {
-                break;
-            }
-        }
-
-        return cooked;
+        return false;
     }
 
     private void update(List<RecipeData> recipes) {

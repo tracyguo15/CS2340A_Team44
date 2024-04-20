@@ -42,8 +42,100 @@ public class RecipeListViewModel {
 
     private Timer timer;
 
+    HashMap<String, RecipeData> cookbook;
+
+    HashMap<String, Integer> pantry;
+
     public RecipeListViewModel() {
         theData = new RecipeListPage();
+        getCurrentUser();
+        getDatabases();
+    }
+
+    private interface InitializingPantryCallback {
+        void onCallback(HashMap map);
+    }
+
+    private void getPantryDatabase(InitializingPantryCallback callback) {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                DataSnapshot ref;
+                String userEmail = theUsersEmailFromAuthenticationDatabase;
+                for (DataSnapshot testPantry : snapshot.getChildren()) {
+                    if (userEmail.equals(testPantry.child("username").getValue().toString())) {
+                        ref = testPantry.child("Ingredients");
+                        for (DataSnapshot item : ref.getChildren()) {
+                            if (item.getKey().equals("username")) {
+                                continue;
+                            }
+                            pantry.put(item.getKey(), Integer.parseInt(item.child("quantity").getValue().toString()));
+                        }
+                    }
+                }
+
+                callback.onCallback(pantry);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("ERROR", "error accessing pantry database!");
+            }
+        };
+
+        pantryRef.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    private void getCookbookDatabase(InitializingPantryCallback callback) {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                RecipeData recipe;
+                for (DataSnapshot R : snapshot.getChildren()) {
+                    String name = R.getKey();
+                    String desc = R.child("description").getValue().toString();
+                    int time = Integer.parseInt(R.child("time").getValue().toString());
+                    recipe = new RecipeData(name, desc, time);
+                    for (DataSnapshot item : R.child("ingredients").getChildren()) {
+                        String itemName = item.getKey();
+                        int quantity = Integer.parseInt(item.child("quantity").getValue().toString());
+                        recipe.add(itemName, quantity);
+                    }
+                    cookbook.put(name, recipe);
+                }
+
+                callback.onCallback(cookbook);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("ERROR", "trouble making cooking databse");
+            }
+        };
+
+        cookbookRef.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    private DatabaseReference cookbookRef;
+    private void getDatabases() {
+        Log.d("OUT", "starting callbacks");
+
+        pantryRef = FirebaseDatabase.getInstance().getReference().child("Pantry");
+        cookbookRef = FirebaseDatabase.getInstance().getReference().child("Cookbook");
+        pantry = new HashMap<>();
+        cookbook = new HashMap<>();
+        getPantryDatabase(new InitializingPantryCallback() {
+            @Override
+            public void onCallback(HashMap map) {
+                Log.d("OUT", pantry.size() + "pantry");
+            }
+        });
+        getCookbookDatabase(new InitializingPantryCallback() {
+            @Override
+            public void onCallback(HashMap map) {
+                Log.d("OUT", cookbook.size() + "cookbook");
+            }
+        });
     }
 
     public static synchronized RecipeListViewModel getInstance() {
@@ -58,7 +150,10 @@ public class RecipeListViewModel {
         user = FirebaseDB.getInstance().getUser();
         theUsersEmailFromAuthenticationDatabase = FirebaseDB.getInstance().getEmail();
     }
-
+    public HashMap<String, Integer> getRecipeIngredients(RecipeData recipe) {
+        return null;
+    }
+    /**
     //
     public ArrayList<String[]> getRecipeIngredients(RecipeData recipe) {
         //Arraylist of String arrays to hold each ingredient and its quantities
@@ -90,7 +185,7 @@ public class RecipeListViewModel {
         });
 
         return recipeQuantities;
-    }
+    }*/
   
   public ArrayList<String[]> getPantryIngredients() {
         //Arraylist of String arrays to hold each ingredient and its quantities
@@ -138,8 +233,8 @@ public class RecipeListViewModel {
                                 for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                                     //Get the pantry ingredient's name and quantity
                                     String name = snapshot1.getKey();
-                                    String quantity = (String) snapshot1
-                                            .child("quantity").getValue();
+                                    String quantity = (snapshot1.child("quantity").getValue() == null ? "0" : snapshot1
+                                            .child("quantity").getValue().toString());
 
                                     //Add the name and quantity to the Arraylist of String[]
                                     pantryQuantities.add(new String[]{name, quantity});
@@ -177,6 +272,7 @@ public class RecipeListViewModel {
         referenceForRecipe = FirebaseDatabase.getInstance().getReference().child("Cookbook");
 
         HashMap<String, String> ingredients = new HashMap<>();
+
 
         referenceForRecipe.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
