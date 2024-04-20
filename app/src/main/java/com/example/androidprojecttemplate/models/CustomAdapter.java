@@ -92,7 +92,7 @@ public class CustomAdapter {
                     String text = name + " Time: " + time;
                     boolean canCook = true;
 
-                    viewModel.canCook2(name, new CanCookCallback() {
+                    viewModel.canCook(name, new CanCookCallback() {
                         @Override
                         public void onResult(boolean canCook) {
                             TextView newView = createView(text, canCook);
@@ -135,7 +135,7 @@ public class CustomAdapter {
 
                     String text = name + " Time: " + time;
 
-                    viewModel.canCook2(name, new CanCookCallback() {
+                    viewModel.canCook(name, new CanCookCallback() {
                         @Override
                         public void onResult(boolean canCook) {
                             TextView newView = createView(text, canCook);
@@ -177,7 +177,7 @@ public class CustomAdapter {
                     String text = name + " Time: " + time;
                     boolean canCook = true;
 
-                    viewModel.canCook2(name, new CanCookCallback() {
+                    viewModel.canCook(name, new CanCookCallback() {
                         @Override
                         public void onResult(boolean canCook) {
                             TextView newView = createView(text, canCook);
