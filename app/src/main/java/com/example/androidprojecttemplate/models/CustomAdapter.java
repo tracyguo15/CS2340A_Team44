@@ -1,35 +1,33 @@
 package com.example.androidprojecttemplate.models;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.androidprojecttemplate.viewModels.CanCookCallback;
+import com.example.androidprojecttemplate.viewModels.RecipeListViewModel;
+import com.example.androidprojecttemplate.views.RecipeDetailPage;
 import com.example.androidprojecttemplate.views.RecipeListPage;
-
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class CustomAdapter {
     private RecipeListPage recipeListPage;
     private LinearLayout container;
-
-    // change to viewmodel and get data from there.
-    private ArrayList<String> names;
-    private ArrayList<Integer> cookTimes;
-    private ArrayList<Boolean> canCooks;
+    private RecipeListViewModel viewModel;
 
     public CustomAdapter(
             RecipeListPage recipeListPage,
             LinearLayout container,
-            ArrayList<String> names,
-            ArrayList<Integer> cookTimes,
-            ArrayList<Boolean> canCooks) {
+            RecipeListViewModel viewModel) {
         this.recipeListPage = recipeListPage;
         this.container = container;
-        this.names = names;
-        this.cookTimes = cookTimes;
-        this.canCooks = canCooks;
+        this.viewModel = viewModel;
     }
 
     /**
@@ -43,8 +41,9 @@ public class CustomAdapter {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
+        view.setPadding(0, 16, 16, 0);
         view.setAllCaps(false);
-        view.setTextSize(14);
+        view.setTextSize(24);
 
         // set color and listener if can cook.
         if (canCook) {
@@ -52,10 +51,8 @@ public class CustomAdapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(
-                            recipeListPage,
-                            "Can cook this recipe!",
-                            Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(recipeListPage, RecipeDetailPage.class);
+                    recipeListPage.startActivity(intent);
                 }
             });
         } else {
@@ -83,134 +80,104 @@ public class CustomAdapter {
         // clear view before
         container.removeAllViews();
 
-        // update with new views
-        for (int i = 0; i < this.names.size(); i++) {
-            TextView newView = this.createView(this.names.get(i), this.canCooks.get(i));
-            container.addView(newView);
-        }
-    }
-}
+        viewModel.updateRecipes(new RecipeListViewModel.UpdateRecipesCallback() {
+            @Override
+            public void onRecipesUpdated(ArrayList<RecipeData> recipesData) {
+                for (RecipeData recipeData : recipesData) {
+                    Log.d("container added", "added");
+                    String name = recipeData.getName();
+                    int time = recipeData.getTime();
 
-/*
-package com.example.greenplate.viewmodels.adapters;
+                    String text = name + " Time: " + time;
+                    boolean canCook = true;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.text.Html;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.greenplate.R;
-import com.example.greenplate.models.Recipe;
-
-import java.util.List;
-
-public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.ViewHolder> {
-    private List<Recipe> recipeList;
-    private List<String> availabilityList;
-    private int selectedPosition = RecyclerView.NO_POSITION;
-
-    public RecipesAdapter(List<Recipe> recipes, List<String> availability) {
-        recipeList = recipes;
-        availabilityList = availability;
-    }
-
-    @Override
-    public RecipesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        // Inflate the custom layout
-        View recipeView = inflater.inflate(R.layout.item_recipe, parent, false);
-
-        // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(recipeView);
-        return viewHolder;
-    }
-
-    // Involves populating data into the item through holder
-    @Override
-    public void onBindViewHolder(RecipesAdapter.ViewHolder holder, int position) {        // Get the data model based on position
-        Recipe recipe = recipeList.get(position);
-        String availability = availabilityList.get(position);
-
-        // Set item views based on your views and data model
-        TextView nameTextView = holder.nameTextView;
-        TextView availabilityTextView = holder.availabilityTextView;
-        TextView numIngredientsTextView = holder.numIngredientsTextView;
-        TextView numInstructionsTextView = holder.numInstructionsTextView;
-
-        nameTextView.setText(recipe.getName());
-        numIngredientsTextView.setText("Ingredients: " + recipe.getIngredients().size());
-        numInstructionsTextView.setText("Instructions: " + recipe.getInstructions().size());
-        String availabilityText;
-        if (availability.equals("Yes")) {
-            availabilityText = "<font color=\"#32CD32\">Yes</font>";
-        } else {
-            availabilityText = "<font color=\"#DC143C\">No</font>";
-        }
-        availabilityTextView.setText(Html.fromHtml(availabilityText));
-
-        // Check if recipe item is clicked
-        holder.itemView.setOnClickListener(v -> {
-            int clickedPosition = holder.getAdapterPosition();
-            if (clickedPosition != RecyclerView.NO_POSITION) {
-                if (selectedPosition != clickedPosition) {
-                    if (selectedPosition != RecyclerView.NO_POSITION) {
-                        notifyItemChanged(selectedPosition);
-                    }
-                    selectedPosition = clickedPosition;
-                    notifyItemChanged(selectedPosition);
+                    viewModel.canCook(name, new CanCookCallback() {
+                        @Override
+                        public void onResult(boolean canCook) {
+                            TextView newView = createView(text, canCook);
+                            container.addView(newView);
+                        }
+                    });
                 }
             }
         });
+    }
 
-        // Set the text color and toast message based on the selection status
-        if (holder.getAdapterPosition() == selectedPosition) {
-            if ((availabilityTextView.getText()).toString().equals("Yes")) {
-                holder.nameTextView.setTextColor(Color.rgb(50, 205, 50));
-                Toast.makeText(holder.itemView.getContext(),
-                                "View recipe " + recipe.getName(),
-                                Toast.LENGTH_SHORT)
-                        .show();
-            } else {
-                holder.nameTextView.setTextColor(Color.rgb(220, 20, 60));
-                Toast.makeText(holder.itemView.getContext(),
-                                "Not Enough Ingredients",
-                                Toast.LENGTH_SHORT)
-                        .show();
+    /**
+     * Displays the views in the container sorted alphabetically.
+     */
+    public void displayAlpha() {
+        // clear view before
+        container.removeAllViews();
+
+        viewModel.updateRecipes(new RecipeListViewModel.UpdateRecipesCallback() {
+            @Override
+            public void onRecipesUpdated(ArrayList<RecipeData> recipesData) {
+                // sort alphabetically
+                Collections.sort(recipesData, new Comparator<RecipeData>() {
+                    @Override
+                    public int compare(RecipeData recipe1, RecipeData recipe2) {
+                        String name1 = recipe1.getName().toUpperCase();
+                        String name2 = recipe2.getName().toUpperCase();
+
+                        return name1.compareTo(name2);
+                    }
+                });
+
+                for (RecipeData recipeData : recipesData) {
+                    Log.d("container added", "added");
+                    String name = recipeData.getName();
+                    int time = recipeData.getTime();
+
+                    String text = name + " Time: " + time;
+
+                    viewModel.canCook(name, new CanCookCallback() {
+                        @Override
+                        public void onResult(boolean canCook) {
+                            TextView newView = createView(text, canCook);
+                            container.addView(newView);
+                        }
+                    });
+                }
             }
-        } else {
-            holder.nameTextView.setTextColor(Color.BLACK);
-        }
+        });
     }
 
-    // Returns the total count of items in the list
-    @Override
-    public int getItemCount() {
-        return recipeList.size();
-    }
+    /**
+     * Displays the views in the container sorted by time.
+     */
+    public void displayTime() {
+        // clear view before
+        container.removeAllViews();
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView nameTextView;
-        private TextView availabilityTextView;
-        private TextView numIngredientsTextView;
-        private TextView numInstructionsTextView;
+        viewModel.updateRecipes(new RecipeListViewModel.UpdateRecipesCallback() {
+            @Override
+            public void onRecipesUpdated(ArrayList<RecipeData> recipesData) {
+                // sort by time
+                Collections.sort(recipesData, new Comparator<RecipeData>() {
+                    @Override
+                    public int compare(RecipeData recipe1, RecipeData recipe2) {
+                        return Integer.compare(recipe1.getTime(), recipe2.getTime());
+                    }
+                });
 
-        public ViewHolder(View itemView) {
-            super(itemView);
+                for (RecipeData recipeData : recipesData) {
+                    Log.d("container added", "added");
+                    String name = recipeData.getName();
+                    int time = recipeData.getTime();
 
-            nameTextView = (TextView) itemView.findViewById(R.id.recipe_name);
-            availabilityTextView = (TextView) itemView.findViewById(R.id.recipe_availability);
-            numIngredientsTextView = (TextView) itemView.findViewById(R.id.num_ingredients);
-            numInstructionsTextView = (TextView) itemView.findViewById(R.id.num_instructions);
-        }
+                    String text = name + " Time: " + time;
+                    boolean canCook = true;
+
+                    viewModel.canCook(name, new CanCookCallback() {
+                        @Override
+                        public void onResult(boolean canCook) {
+                            TextView newView = createView(text, canCook);
+                            container.addView(newView);
+                        }
+                    });
+                }
+            }
+        });
     }
 }
-
- */
