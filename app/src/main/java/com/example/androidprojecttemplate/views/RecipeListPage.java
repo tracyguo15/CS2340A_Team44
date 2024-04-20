@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 //import android.widget.Toast;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidprojecttemplate.R;
-import com.example.androidprojecttemplate.viewModels.ShoppingListViewModel;
 import com.example.androidprojecttemplate.models.RecipeData;
 //import com.example.androidprojecttemplate.viewModels.DataObserver;
 import com.example.androidprojecttemplate.viewModels.RecipeListCallback;
@@ -38,7 +36,6 @@ import java.util.Timer;
 import java.util.HashMap;
 
 import android.os.Handler;
-import android.widget.Toast;
 
 public class RecipeListPage extends AppCompatActivity {
     private ListView theListView;
@@ -66,6 +63,8 @@ public class RecipeListPage extends AppCompatActivity {
     private List<String[]> recipes = new ArrayList<>();
     private List<String> display = new ArrayList<>();
     private List<RecipeData> recipeDataList = new ArrayList<>();
+
+    private HashMap<String, Integer> shoppingList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,8 +109,12 @@ public class RecipeListPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 v.setEnabled(false);
+                Log.d("OUT", "click");
+                String name = viewModel.getUserName();
+                HashMap<String, Integer> missing = viewModel.getAllMissingIngredients();
+                DatabaseReference userShoppingList = FirebaseDatabase.getInstance().getReference().child("Shopping_List").child(name);
 
-
+                Log.d("OUT", missing.size() + "");
 
                 v.setEnabled(true);
             }
