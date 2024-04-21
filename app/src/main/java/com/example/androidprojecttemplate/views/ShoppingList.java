@@ -137,6 +137,7 @@ public class ShoppingList extends AppCompatActivity {
         submit.setOnClickListener(v -> {
             viewModel.getCurrentUser();
 
+
             // First check if anything was inputed in the first place
             if (ingredients.size() == 0 || quantities.size() == 0) {
                 Toast.makeText(ShoppingList.this,

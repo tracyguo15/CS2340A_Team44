@@ -4,6 +4,7 @@ import com.example.androidprojecttemplate.R;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -14,6 +15,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 //implements NavigationView.OnNavigationItemSelectedListener
 public class HomePage extends AppCompatActivity {
@@ -81,6 +90,8 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
+
+        testAccess();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -98,4 +109,41 @@ public class HomePage extends AppCompatActivity {
         isLoggedIn = value;
     }
      */
+    private DatabaseReference recipeDB;
+    private ArrayList<String> superList = new ArrayList<>();
+    private interface FirebaseCallback {
+        void onCallback(List<String> list);
+    }
+
+    private void accessRecipes(FirebaseCallback callback) {
+        Log.d("CALLBACK", "starting callback");
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot child : snapshot.getChildren()) {
+                    superList.add(child.getKey());
+                }
+                callback.onCallback(superList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("CALLBACK", "Error executing callback");
+            }
+        };
+
+        recipeDB.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    private void testAccess() {
+        recipeDB = FirebaseDatabase.getInstance().getReference().child("Cookbook");
+        accessRecipes(new FirebaseCallback() {
+            @Override
+            public void onCallback(List<String> list) {
+                Log.d("CALLBACKWITHIN", superList.toString());
+                Log.d("CALLBACK", "good jooobbbb :333");
+            }
+        });
+        Log.d("TEST ACCESS", superList.toString());
+    }
 }
