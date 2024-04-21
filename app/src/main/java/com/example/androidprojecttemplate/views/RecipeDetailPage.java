@@ -27,7 +27,7 @@ public class RecipeDetailPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
 
-        //TextViews that will show the data
+        // ui text
         recipeName = findViewById(R.id.textViewRecipeName);
         recipeDescription = findViewById(R.id.textViewRecipeDescription);
         recipeTime = findViewById(R.id.textViewRecipeTime);
@@ -39,6 +39,8 @@ public class RecipeDetailPage extends AppCompatActivity {
             Intent intent = new Intent(RecipeDetailPage.this, RecipeListPage.class);
             startActivity(intent);
         });
+
+        /*
 
         //Define the button to cook the recipe
         cookBtn = findViewById(R.id.cookBtn);
@@ -65,6 +67,6 @@ public class RecipeDetailPage extends AppCompatActivity {
 
         //Displays the recipe's cook time
         String recipeTimeText = "Total time: " + recipeDatabase.child("time").get().toString();
-        recipeTime.setText(recipeTimeText);
+        recipeTime.setText(recipeTimeText);*/
     }
 }
