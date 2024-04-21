@@ -2,29 +2,20 @@ package com.example.androidprojecttemplate.views;
 import android.content.Intent;
 import android.os.Bundle;
 //import android.util.Log;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 //import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 //import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidprojecttemplate.R;
-import com.example.androidprojecttemplate.viewModels.ShoppingListScrollableViewModel;
 import com.example.androidprojecttemplate.viewModels.ShoppingListTheCheckBoxViewModel;
 
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import android.os.Handler;
+
 import android.widget.Toast;
 
 

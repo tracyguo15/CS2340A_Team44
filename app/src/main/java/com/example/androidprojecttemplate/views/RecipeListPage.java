@@ -2,40 +2,23 @@ package com.example.androidprojecttemplate.views;
 
 
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 //import android.util.Log;
-import android.provider.ContactsContract;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 //import android.widget.Adapter;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.os.Bundle;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 //import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidprojecttemplate.R;
-import com.example.androidprojecttemplate.models.FirebaseDB;
-import com.example.androidprojecttemplate.models.Pair;
-import com.example.androidprojecttemplate.models.PantryData;
 import com.example.androidprojecttemplate.models.RecipeData;
 //import com.example.androidprojecttemplate.viewModels.DataObserver;
-import com.example.androidprojecttemplate.viewModels.CanCookCallback;
 import com.example.androidprojecttemplate.models.CustomAdapter;
-import com.example.androidprojecttemplate.models.RecipeData;
-import com.example.androidprojecttemplate.viewModels.RecipeListCallback;
 import com.example.androidprojecttemplate.viewModels.RecipeListViewModel;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,15 +26,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Timer;
-import java.util.TimerTask;
+
 import android.os.Handler;
-import android.widget.TextView;
 
 
 public class RecipeListPage extends AppCompatActivity {
@@ -65,6 +44,8 @@ public class RecipeListPage extends AppCompatActivity {
 
 
     private Button backToRecipePage;
+
+    private Button missingIngredientsButton;
     private Timer timer;
     private Timer timer2;
     private String temp = "hello";
@@ -83,6 +64,7 @@ public class RecipeListPage extends AppCompatActivity {
     private ArrayList<String> recipeNames = new ArrayList<>();
     private ArrayList<Integer> recipeTimes = new ArrayList<>();
     private ArrayList<Boolean> recipeCanCooks = new ArrayList<>();
+    private HashMap<String, Integer> shoppingList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -124,6 +106,75 @@ public class RecipeListPage extends AppCompatActivity {
 
         // initially display recipes
         this.displayRecipes();
+        Log.d("BREAK", "another break for buttons");
+
+        missingIngredientsButton = findViewById(R.id.missingIngredientsButton);
+        missingIngredientsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setEnabled(false);
+                Log.d("OUT", "click");
+
+                shoppingList = viewModel.getAllMissingIngredients();
+                if (shoppingList == null) {
+                    return;
+                }
+                String userName = viewModel.getUserName();
+                DatabaseReference shoppingListDB = FirebaseDatabase.getInstance().getReference().child("Shopping_List").child(userName);
+
+                shoppingListDB.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // for each element in the remote database that
+                        for (DataSnapshot listItem : snapshot.getChildren()) {
+                            Log.d("SUBMIT", listItem.getKey());
+                            String keyInDB = listItem.getKey();
+                            if (keyInDB.equals("name") || keyInDB.equals("username")) {
+                                continue;
+                            }
+
+                            if (shoppingList.containsKey(keyInDB)) {
+                                int previousQuantity = Integer.parseInt(listItem.child("quantity").getValue().toString());
+                                int additionalQuantity = shoppingList.get(keyInDB);
+                                String result = (previousQuantity + additionalQuantity) + "";
+                                shoppingListDB.child(keyInDB).child("quantity").getRef().setValue(result);
+                                shoppingList.remove(keyInDB);
+                            }
+                        }
+
+                        // for each element on the user's side that isn't already in the database
+                        for (String key : shoppingList.keySet()) {
+                            String quantity = shoppingList.get(key) + "";
+                            shoppingListDB.child(key).child("name").getRef().setValue(key);
+                            shoppingListDB.child(key).child("quantity").getRef().setValue(quantity);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.d("ERROR", "unable to write to Shopping_List database...!");
+                    }
+                });
+
+                v.setEnabled(true);
+            }
+        });
+
+        //Log.d("CAN COOK METHOD TESTING", canCook());
+
+        //Make it so that each item in the list is clickable
+        /*
+        theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Implement logic to display recipe details here
+                String recipeName = theListView.get(position); //This should get the value at the position in which it was clicked
+                Intent intent = new Intent(RecipeListPage.this, RecipeDetailPage.class);
+                intent.putExtra("recipe", recipeName);
+                startActivity(intent);
+            }
+        }); */
+        //Log.d("TESTING", cookbookDatabase.getKey());
     }
 
     /**
@@ -202,4 +253,12 @@ public class RecipeListPage extends AppCompatActivity {
 
         listViewRecipes.setAdapter(adapter);
     }*/
+
+    public RecipeListViewModel getViewModel() {
+        return viewModel;
+    }
+
+    public Button getMissingIngredientsButton() {
+        return missingIngredientsButton;
+    }
 }

@@ -6,8 +6,6 @@ import com.example.androidprojecttemplate.models.FirebaseDB;
 
 import androidx.annotation.NonNull;
 
-import com.example.androidprojecttemplate.models.IngredientData;
-import com.example.androidprojecttemplate.models.NameData;
 import com.example.androidprojecttemplate.models.UserLoginData;
 import com.example.androidprojecttemplate.views.CreateAccountActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
