@@ -398,5 +398,13 @@ public class RecipeListViewModel {
         }
         return true;
     }
+
+    public HashMap<String, Integer> getPantry() {
+        return pantry;
+    }
+
+    public HashMap<String, RecipeData> getCookbook() {
+        return cookbook;
+    }
 }
 

@@ -253,4 +253,12 @@ public class RecipeListPage extends AppCompatActivity {
 
         listViewRecipes.setAdapter(adapter);
     }*/
+
+    public RecipeListViewModel getViewModel() {
+        return viewModel;
+    }
+
+    public Button getMissingIngredientsButton() {
+        return missingIngredientsButton;
+    }
 }
