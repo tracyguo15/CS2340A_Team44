@@ -110,11 +110,47 @@ public class RecipeListPage extends AppCompatActivity {
             public void onClick(View v) {
                 v.setEnabled(false);
                 Log.d("OUT", "click");
-                String name = viewModel.getUserName();
-                HashMap<String, Integer> missing = viewModel.getAllMissingIngredients();
-                DatabaseReference userShoppingList = FirebaseDatabase.getInstance().getReference().child("Shopping_List").child(name);
 
-                Log.d("OUT", missing.size() + "");
+                shoppingList = viewModel.getAllMissingIngredients();
+                if (shoppingList == null) {
+                    return;
+                }
+                String userName = viewModel.getUserName();
+                DatabaseReference shoppingListDB = FirebaseDatabase.getInstance().getReference().child("Shopping_List").child(userName);
+
+                shoppingListDB.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // for each element in the remote database that
+                        for (DataSnapshot listItem : snapshot.getChildren()) {
+                            Log.d("SUBMIT", listItem.getKey());
+                            String keyInDB = listItem.getKey();
+                            if (keyInDB.equals("name") || keyInDB.equals("username")) {
+                                continue;
+                            }
+
+                            if (shoppingList.containsKey(keyInDB)) {
+                                int previousQuantity = Integer.parseInt(listItem.child("quantity").getValue().toString());
+                                int additionalQuantity = shoppingList.get(keyInDB);
+                                String result = (previousQuantity + additionalQuantity) + "";
+                                shoppingListDB.child(keyInDB).child("quantity").getRef().setValue(result);
+                                shoppingList.remove(keyInDB);
+                            }
+                        }
+
+                        // for each element on the user's side that isn't already in the database
+                        for (String key : shoppingList.keySet()) {
+                            String quantity = shoppingList.get(key) + "";
+                            shoppingListDB.child(key).child("name").getRef().setValue(key);
+                            shoppingListDB.child(key).child("quantity").getRef().setValue(quantity);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.d("ERROR", "unable to write to Shopping_List database...!");
+                    }
+                });
 
                 v.setEnabled(true);
             }

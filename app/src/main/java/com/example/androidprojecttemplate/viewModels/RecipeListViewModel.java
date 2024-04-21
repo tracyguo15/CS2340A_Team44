@@ -132,16 +132,10 @@ public class RecipeListViewModel {
             @Override
             public void onCallback(HashMap map) {
                 Log.d("OUT", pantry.size() + "pantry");
-                Log.d("OUT", userName);
-                for (String s : pantry.keySet()) {
-                    Log.d("OUT", s);
-                }
                 getCookbookDatabase(new InitializingPantryCallback() {
                     @Override
                     public void onCallback(HashMap map) {
                         Log.d("OUT", cookbook.size() + "cookbook");
-                        Log.d("OUT", "unpacked cookbook");
-                        allMissingIngredients = getAllMissingIngredients();
                     }
                 });
             }
@@ -196,7 +190,7 @@ public class RecipeListViewModel {
      * @return HashMap<String, String> missingIngredients
      */
     public HashMap<String, Integer> getMissingIngredients(String recipeName) {
-        HashMap<String, Integer> recipe = new HashMap<>();
+        HashMap<String, Integer> recipe = getRecipeIngredients(cookbook.get(recipeName));
         HashMap<String, Integer> missing = new HashMap<>();
 
         for (String item : recipe.keySet()) {
@@ -218,9 +212,7 @@ public class RecipeListViewModel {
      * and returns it as a HashMap
      * @return a HashMap(IngredientName, NeededIngredientQuantity)
     */
-    HashMap<String, Integer> allMissingIngredients = new HashMap<>();
     public HashMap<String, Integer> getAllMissingIngredients() {
-        int i = 0;
         HashMap<String, Integer> needed = new HashMap<>();
         for (RecipeData recipe : cookbook.values()) {
             if (!canCook(recipe)) {
