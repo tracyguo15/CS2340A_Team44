@@ -46,10 +46,8 @@ public class RecipeListViewModel {
      */
     public void getCurrentUser() {
         user = FirebaseDB.getInstance().getUser();
-        Log.d("DETAIL PAGE USER", user.toString());
 
         String email = user.getEmail();
-        Log.d("DETAIL PAGE MAIL", email);
         DatabaseReference userRef = FirebaseDatabase
                 .getInstance()
                 .getReference()

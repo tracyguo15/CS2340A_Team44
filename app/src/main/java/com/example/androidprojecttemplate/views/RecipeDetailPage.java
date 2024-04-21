@@ -14,8 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidprojecttemplate.R;
 import com.example.androidprojecttemplate.models.FirebaseDB;
 import com.example.androidprojecttemplate.models.MealData;
+import com.example.androidprojecttemplate.viewModels.ArrayListIngredientCallback;
 import com.example.androidprojecttemplate.viewModels.FirebaseCallback;
 import com.example.androidprojecttemplate.viewModels.RecipeListViewModel;
+import com.example.androidprojecttemplate.viewModels.StringCallback;
+import com.example.androidprojecttemplate.viewModels.TheCallback;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -79,32 +82,27 @@ public class RecipeDetailPage extends AppCompatActivity {
         cookBtn = findViewById(R.id.cookBtn);
         cookBtn.setOnClickListener(v -> {
             // Gets a list of the ingredients for this meal
-            referenceForCookBookIngredients = FirebaseDatabase.getInstance().getReference().child("Cookbook").child("theRecipeName").child("ingredients");
-            // Go through a loop
-            referenceForCookBookIngredients.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot theSnapshot : snapshot.getChildren()) {
-                        if (theSnapshot.exists()) {
-                            theListOfIngredients.add(theSnapshot.getKey());
-                        }
-                    }
-                }
+            referenceForCookBookIngredients = FirebaseDatabase.getInstance().getReference()
+                    .child("Cookbook")
+                    .child(recipeKey)
+                    .child("ingredients");
 
+            getListOfIngredients(new ArrayListIngredientCallback() {
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Log.d("Error", "Firebase error");
+                public void onCallback(ArrayList<String> list) {
+                    // Adds to the meals database
+                    addToMealDatabase(recipeKey, list);
                 }
             });
-
 
             //Cook recipe logic here
             removeFromPantry(recipeKey);
 
             // Adds to the meals database
-            addToMealDatabase(recipeKey, theListOfIngredients);
+            //addToMealDatabase(recipeKey, theListOfIngredients);
         });
 
+        //Displays all the relevant information
         recipeDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -134,7 +132,7 @@ public class RecipeDetailPage extends AppCompatActivity {
      * any values so I tried this instead.
      * Can be removed
      */
-    public void getCurrentUser() {
+    public void getCurrentUser(StringCallback callback) {
         user = FirebaseDB.getInstance().getUser();
 
         String email = user.getEmail();
@@ -152,12 +150,13 @@ public class RecipeDetailPage extends AppCompatActivity {
 
                     if (tempEmail.equals(email)) {
                         username = snapshots.getKey();
+                        callback.onCallback(username);
                     }
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("RECIPE INGREDIENTS ERROR", error.toString());
+                Log.d("GET CURRENT USER", error.toString());
             }
         });
     }
@@ -171,53 +170,96 @@ public class RecipeDetailPage extends AppCompatActivity {
      */
     private void removeFromPantry(String recipeName) {
         //Makes sure that the current user is up to date
-        viewModel.getCurrentUser();
-
-        //These are returning null for some reason
-        Log.d("USER", user.toString()); //Attempt to invoke virtual method 'java.lang.String java.lang.Object.toString()' on a null object reference
-        Log.d("username", username);
-
-        //Sets a database reference to the user's pantry ingredients
-        DatabaseReference userPantryRef = pantryRef.child(username).child("Ingredients");
-
-        //Calls on the getRecipeIngredients method to get a HashMap of the recipe's ingredients
-        viewModel.getRecipeIngredients(recipeName, new FirebaseCallback() {
+        getCurrentUser(new StringCallback() {
             @Override
-            public void onCallback(HashMap<String, String> recipeIngredients) {
-                //Call on the getIngredients method to get a HashMap of the user's pantry
-                viewModel.getIngredients(new FirebaseCallback() {
+            public void onCallback(String string) {
+                //Log.d("USERNAME", string);
+
+                //Sets a database reference to the user's pantry ingredients
+                DatabaseReference userPantryRef = pantryRef.child(string)
+                        .child("Ingredients");
+
+                //Calls on the getRecipeIngredients method to get a HashMap of the recipe's ingredients
+                viewModel.getRecipeIngredients(recipeName, new FirebaseCallback() {
                     @Override
-                    public void onCallback(HashMap<String, String> pantryIngredients) {
-                        //For each ingredient in the recipe
-                        for (String ingredient : recipeIngredients.keySet()) {
+                    public void onCallback(HashMap<String, String> recipeIngredients) {
+                        //Call on the getIngredients method to get a HashMap of the user's pantry
+                        viewModel.getIngredients(new FirebaseCallback() {
+                            @Override
+                            public void onCallback(HashMap<String, String> pantryIngredients) {
+                                //For each ingredient in the recipe
+                                for (String ingredient : recipeIngredients.keySet()) {
 
-                            //The quantity of the ingredient in the user's pantry
-                            int pantryQuantity = Integer.parseInt(pantryRef.child(ingredient)
-                                    .child("quantity").toString());
-                            Log.d("pantryQuantity", String.valueOf(pantryQuantity));
+                                    //Logic here
+                                    getQuantity(userPantryRef, ingredient, new TheCallback() {
+                                        @Override
+                                        public void onCompleted(int result) {
+                                            //Log.d("RESULT", String.valueOf(result));
 
-                            //The quantity of ingredient required for the recipe
-                            int recipeQuantity = Integer.parseInt(recipeDatabase.child("ingredients")
-                                    .child(ingredient).toString());
-                            Log.d("pantryQuantity", String.valueOf(recipeQuantity));
-
-                            //Subtract the recipe from the pantry and set the value in the database
-                            pantryRef.child(ingredient).child("quantity")
-                                    .setValue(pantryQuantity - recipeQuantity);
-                        }
+                                            //Set the value in the database
+                                            userPantryRef.child(ingredient)
+                                                    .child("quantity")
+                                                    .setValue(String.valueOf(result));
+                                        }
+                                    });
+                                }
+                            }
+                        });
                     }
                 });
             }
         });
     }
 
+    /**
+     * A method made to add up the total amount of calories
+     * in the ingredients and add it to the meal database
+     * @param theRecipeName the name of the recipe to be added to the meal database
+     * @param theListOfIngredients a list of the ingredients
+     */
     private void addToMealDatabase(String theRecipeName, ArrayList<String> theListOfIngredients) {
         // Gets the current time
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         String date = currentDate.format(formatter);
 
-        referenceForCookBookIngredients =  FirebaseDatabase.getInstance().getReference().child("Ingredients");
+        getTotalCalories(new TheCallback() {
+            @Override
+            public void onCompleted(int result) {
+                Log.d("TOTAL CALORIES", String.valueOf(totalCalories));
+
+                // Now that we have the appropriate data, can now add it to the meal database
+                // The code for the meals page will automatically accommodate the addition of the meal
+                referenceForMeal = FirebaseDatabase.getInstance().getReference().child("Meals");
+                referenceForMeal.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        MealData theData = new MealData();
+                        theData.setCalories(result);
+                        theData.setUsername(FirebaseDB.getInstance().getUser().getEmail());
+                        theData.setDate(date);
+
+                        referenceForMeal.child(theRecipeName).setValue(theData);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.d("ADD TO MEAL ERROR", error.toString());
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * Helper method for the addToMealDatabase method
+     * Used to get the total amount of calories in a meal
+     * @param callback callback used for getting back an int
+     */
+    private void getTotalCalories(TheCallback callback) {
+        //Sets the reference to the ingredients database
+        referenceForCookBookIngredients =  FirebaseDatabase.getInstance().getReference()
+                .child("Ingredients");
 
 
 
@@ -225,43 +267,107 @@ public class RecipeDetailPage extends AppCompatActivity {
         referenceForCookBookIngredients.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(int i = 0; i < theListOfIngredients.size(); i++) {
+                //Snapshot will be pointing to each individual ingredient in the database
+
+                //For each item in the list of ingredients
+                for (int i = 0; i < theListOfIngredients.size(); i++) {
+                    //Compares the name of the ingredient in the list to the name of the ingredient
+                    //currently hovered
+                    if (theListOfIngredients.get(i).equals(snapshot.getKey())) {
+                        Log.d("Ingredient Calories", snapshot.child("calories").getValue(String.class));
+                        // Found a matching ingredient
+                        totalCalories += Integer.parseInt(snapshot.child("calories").getValue(String.class));
+                        break;
+                    }
+                    /*
+                    //Snapshots would be pointing the the properties of each ingredient
                     for (DataSnapshot snapshots : snapshot.getChildren()) {
                         if (theListOfIngredients.get(i).equals(snapshots.toString())) {
                             // Found a matching ingredient
                             totalCalories += Integer.parseInt(snapshots.child("calories").getValue(String.class));
                             break;
                         }
-                    }
+                    } */
                 }
+
+                callback.onCompleted(totalCalories);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("Error", "Firebase error");
+                Log.d("TOTAL CALORIES ERROR", error.toString());
             }
         });
+    }
 
-
-        // Now that we have the appropriate data, can now add it to the meal database
-        // The code for the meals page will automatically accomodate the addition of the meal
-        referenceForMeal = FirebaseDatabase.getInstance().getReference().child("Meals");
-        referenceForMeal.addValueEventListener(new ValueEventListener() {
+    /**
+     * Helper method for cookBtn
+     * Gets an ArrayList<String> for use in the addToMealDatabase method
+     * @param callback callback that return an ArrayList<String>
+     */
+    private void getListOfIngredients(ArrayListIngredientCallback callback) {
+        // Go through a loop
+        referenceForCookBookIngredients.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                MealData theData = new MealData();
-                theData.setCalories(totalCalories);
-                theData.setUsername(FirebaseDB.getInstance().getUser().getEmail());
-                theData.setDate(date);
-
-                referenceForMeal.child(theRecipeName).setValue(theData);
+                for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+                    if (theSnapshot.exists()) {
+                        theListOfIngredients.add(theSnapshot.getKey());
+                    }
+                }
+                callback.onCallback(theListOfIngredients);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("Error", "Firebase issue");
+                Log.d("LIST OF INGREDIENTS ERROR", error.toString());
             }
         });
+    }
 
+    private void getQuantity(DatabaseReference ref, String ingredient, TheCallback callback) {
+        //The quantity of the ingredient in the user's pantry
+        DatabaseReference pantryQuantityRef = ref
+                .child(ingredient)
+                .child("quantity");
+
+        pantryQuantityRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //Log.d("Pantry Snapshot", String.valueOf(snapshot.getValue()));
+
+                //Should get the correct quantity of pantry ingredients
+                int pantryQuantity = Integer.parseInt(String.valueOf(snapshot.getValue()));
+
+                //The quantity of ingredient required for the recipe
+                DatabaseReference recipeQuantityRef = recipeDatabase.child("ingredients")
+                        .child(ingredient);
+
+                recipeQuantityRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        //Log.d("Recipe Snapshot", String.valueOf(snapshot.getValue()));
+
+                        int recipeQuantity = Integer.parseInt(String.valueOf(snapshot
+                                .child("quantity").getValue()));
+
+                        //Log.d("pantryQuantity", "Ingredient: " + ingredient + " " + pantryQuantity);
+                        //Log.d("recipeQuantity", "Ingredient: " + ingredient + " " + recipeQuantity);
+                        //Log.d("SUBTRACTION", String.valueOf(pantryQuantity - recipeQuantity));
+                        callback.onCompleted(pantryQuantity - recipeQuantity);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.d("Recipe quantity error", error.toString());
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("PANTRY QUANTITY ERROR", error.toString());
+            }
+        });
     }
 }
