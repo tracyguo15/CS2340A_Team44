@@ -4,23 +4,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import android.widget.Button;
-
-import androidx.annotation.NonNull;
-
-import com.example.androidprojecttemplate.models.IngredientData;
-import com.example.androidprojecttemplate.models.RecipeData;
 import com.example.androidprojecttemplate.models.ShoppingListData;
-import com.example.androidprojecttemplate.viewModels.RecipeListViewModel;
-import com.example.androidprojecttemplate.views.RecipeListPage;
-import com.google.firebase.Firebase;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
 
 
 public class Sprint4Junits {
@@ -78,10 +63,26 @@ public class Sprint4Junits {
         }
     }
 
-    RecipeListPage rp;
+    //Daniel Deller
+    @Test
+    public void changeShoppingListNameNull() {
+        try {
+            ShoppingListData theData = new ShoppingListData("Lox", "5");
+            theData.setName("Bagel");
+            assertEquals("Bagel", theData.getName());
+            theData.setName(null);
+        } catch (IllegalArgumentException e) {
+            assertEquals("Name is null or empty, please enter a proper value", e.getMessage());
+        }
+
+
+    }
+
+
+    //RecipeListPage rp;
     //Daniel Deller
     //test whether RecipeListViewModel calculated the missing ingredients correctly
-    public void testCalculateMissingIngredientseProperly() {
+   /* public void testCalculateMissingIngredientseProperly() {
         rp = new RecipeListPage();
         RecipeListViewModel vm = rp.getViewModel();
         HashMap<String, RecipeData> cookbook = vm.getCookbook();
@@ -145,7 +146,7 @@ public class Sprint4Junits {
 
             }
         });
-    }
+    } */
 
     //Rohan Bhole
     public void testSomething1() {
