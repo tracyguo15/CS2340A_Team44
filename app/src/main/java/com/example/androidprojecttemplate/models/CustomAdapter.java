@@ -52,6 +52,9 @@ public class CustomAdapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(recipeListPage, RecipeDetailPage.class);
+                    int i = text.indexOf(' ');
+                    String recipeName = text.substring(0, i);
+                    intent.putExtra("recipeName", recipeName);
                     recipeListPage.startActivity(intent);
                 }
             });

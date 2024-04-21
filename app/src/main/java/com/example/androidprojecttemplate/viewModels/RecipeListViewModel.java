@@ -316,10 +316,10 @@ public class RecipeListViewModel {
                 getIngredients(new FirebaseCallback() {
                     @Override
                     public void onCallback(HashMap<String, String> pantryIngredients) {
-                        Log.d("test", "2");
+                        //Log.d("test", "2");
                         boolean cooked = true;
                         for (String ingredient : recipeIngredients.keySet()) {
-                            Log.d("pantry quant", String.valueOf(pantryIngredients.containsKey("Bacon")));
+                            //Log.d("pantry quant", String.valueOf(pantryIngredients.containsKey("Bacon")));
                             if (pantryIngredients.containsKey(ingredient)) {
                                 if (Integer.parseInt(pantryIngredients.get(ingredient)) < Integer.parseInt(recipeIngredients.get(ingredient))) {
                                     cooked = false;
