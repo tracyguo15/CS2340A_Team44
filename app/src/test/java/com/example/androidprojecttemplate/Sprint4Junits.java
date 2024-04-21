@@ -14,7 +14,7 @@ public class Sprint4Junits {
     @Test
     public void testShoppingListDataQuantityNegative() {
         try {
-            ShoppingListData shoppingListData = new ShoppingListData("apple", "-1");
+            ShoppingListData shoppingListData = new ShoppingListData("apple", "-1", "50");
         } catch (IllegalArgumentException e) {
             assertEquals("Quantity is null, empty, or negative please enter a proper value", e.getMessage());
         }
@@ -25,7 +25,7 @@ public class Sprint4Junits {
     @Test
     public void testShoppingListDataQuantityNull() {
         try {
-            ShoppingListData shoppingListData = new ShoppingListData("apple", null);
+            ShoppingListData shoppingListData = new ShoppingListData("apple", null, "50");
         } catch (IllegalArgumentException e) {
             assertEquals("Quantity is null, empty, or negative please enter a proper value", e.getMessage());
         }
@@ -36,7 +36,7 @@ public class Sprint4Junits {
     //test shopping list quantity empty
     public void testShoppingListDataQuantityEmpty() {
         try {
-            ShoppingListData shoppingListData = new ShoppingListData("apple", "");
+            ShoppingListData shoppingListData = new ShoppingListData("apple", "", "30");
         } catch (IllegalArgumentException e) {
             assertEquals("Quantity is null, empty, or negative please enter a proper value", e.getMessage());
         }
@@ -46,7 +46,7 @@ public class Sprint4Junits {
     //test shopping list name empty
     public void testShoppingListDataNameEmpty() {
         try {
-            ShoppingListData shoppingListData = new ShoppingListData("", "1");
+            ShoppingListData shoppingListData = new ShoppingListData("", "1", "100");
         } catch (IllegalArgumentException e) {
             assertEquals("Name is null or empty, please enter a proper value", e.getMessage());
         }
@@ -57,7 +57,7 @@ public class Sprint4Junits {
     //test shopping list name null
     public void testShoppingListDataNameNull() {
         try {
-            ShoppingListData shoppingListData = new ShoppingListData(null, "1");
+            ShoppingListData shoppingListData = new ShoppingListData(null, "1", "40");
         } catch (IllegalArgumentException e) {
             assertEquals("Name is null or empty, please enter a proper value", e.getMessage());
         }
@@ -67,7 +67,7 @@ public class Sprint4Junits {
     @Test
     public void changeShoppingListNameNull() {
         try {
-            ShoppingListData theData = new ShoppingListData("Lox", "5");
+            ShoppingListData theData = new ShoppingListData("Lox", "5", "90");
             theData.setName("Bagel");
             assertEquals("Bagel", theData.getName());
             theData.setName(null);
