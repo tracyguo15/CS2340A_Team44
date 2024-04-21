@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,6 +135,7 @@ public class ShoppingList extends AppCompatActivity {
 
         submit.setOnClickListener(v -> {
             viewModel.getCurrentUser();
+
 
             // First check if anything was inputed in the first place
             if (ingredients.size() == 0 || quantities.size() == 0) {

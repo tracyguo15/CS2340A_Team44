@@ -18,7 +18,7 @@ import com.example.androidprojecttemplate.viewModels.IngredientListViewModel;
 
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
+
 import android.os.Handler;
 
 
