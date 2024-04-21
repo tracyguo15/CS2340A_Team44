@@ -18,9 +18,6 @@ import com.example.androidprojecttemplate.viewModels.ShoppingListScrollableViewM
 
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-import android.os.Handler;
 
 
 public class ShoppingListScrollablePage extends AppCompatActivity {

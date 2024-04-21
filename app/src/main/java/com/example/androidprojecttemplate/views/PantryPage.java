@@ -82,7 +82,7 @@ public class PantryPage extends AppCompatActivity {
                     startActivity(intent);
                 } else if (id == R.id.list) {
                     //Toast.makeText(HomePage.this, "ShoppingList", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(PantryPage.this, ListPage.class);
+                    Intent intent = new Intent(PantryPage.this, ShoppingList.class);
                     startActivity(intent);
                 } else if (id == R.id.personalinfo) {
                     Intent intent = new Intent(PantryPage.this, PersonalInfo.class);

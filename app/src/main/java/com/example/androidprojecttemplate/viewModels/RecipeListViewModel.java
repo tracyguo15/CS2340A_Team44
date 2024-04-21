@@ -4,7 +4,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import com.example.androidprojecttemplate.models.FirebaseDB;
 import com.example.androidprojecttemplate.models.RecipeData;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -218,7 +217,7 @@ public class RecipeListViewModel {
      * @param recipe RecipeData of the recipe you are trying to make
      * @return a HashMap(IngredientName, IngredientQuantity)
      */
-    public HashMap<String, Integer> getRecipeIngredients(RecipeData recipe) {
+    public HashMap<String, Integer> getRecipeIngredientMap(RecipeData recipe) {
         HashMap<String, Integer> needed = new HashMap<>();
         for (String item : recipe.keySet()) {
             needed.put(item, recipe.get(item));
@@ -232,7 +231,7 @@ public class RecipeListViewModel {
      */
     public void updateRecipes(UpdateRecipesCallback callback) {
         ArrayList<RecipeData> recipesData = new ArrayList<>();
-
+        recipeReference = FirebaseDatabase.getInstance().getReference().child("Cookbook");
         recipeReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -344,7 +343,7 @@ public class RecipeListViewModel {
      * @return HashMap<String, String> missingIngredients
      */
     public HashMap<String, Integer> getMissingIngredients(String recipeName) {
-        HashMap<String, Integer> recipe = getRecipeIngredients(cookbook.get(recipeName));
+        HashMap<String, Integer> recipe = getRecipeIngredientMap(cookbook.get(recipeName));
         HashMap<String, Integer> missing = new HashMap<>();
 
         for (String item : recipe.keySet()) {
