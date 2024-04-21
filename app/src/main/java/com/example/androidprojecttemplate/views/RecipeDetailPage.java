@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androidprojecttemplate.R;
 import com.example.androidprojecttemplate.models.FirebaseDB;
+import com.example.androidprojecttemplate.models.MealData;
 import com.example.androidprojecttemplate.viewModels.FirebaseCallback;
 import com.example.androidprojecttemplate.viewModels.RecipeListViewModel;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +23,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RecipeDetailPage extends AppCompatActivity {
@@ -36,7 +40,11 @@ public class RecipeDetailPage extends AppCompatActivity {
     private Button backbtn;
     private Button cookBtn;
     private DatabaseReference recipeDatabase;
+    private DatabaseReference referenceForCookBookIngredients;
+    private DatabaseReference referenceForMeal;
     private DatabaseReference pantryRef;
+    private ArrayList<String> theListOfIngredients = new ArrayList<>();
+    private int totalCalories = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,8 +78,31 @@ public class RecipeDetailPage extends AppCompatActivity {
         //Define the button to cook the recipe
         cookBtn = findViewById(R.id.cookBtn);
         cookBtn.setOnClickListener(v -> {
+            // Gets a list of the ingredients for this meal
+            referenceForCookBookIngredients = FirebaseDatabase.getInstance().getReference().child("Cookbook").child("theRecipeName").child("ingredients");
+            // Go through a loop
+            referenceForCookBookIngredients.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot theSnapshot : snapshot.getChildren()) {
+                        if (theSnapshot.exists()) {
+                            theListOfIngredients.add(theSnapshot.getKey());
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d("Error", "Firebase error");
+                }
+            });
+
+
             //Cook recipe logic here
-            removeFromPantry(recipeKey);
+            //removeFromPantry(recipeKey);
+
+            // Adds to the meals database
+            addToMealDatabase(recipeKey, theListOfIngredients);
         });
 
         recipeDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -178,5 +209,59 @@ public class RecipeDetailPage extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void addToMealDatabase(String theRecipeName, ArrayList<String> theListOfIngredients) {
+        // Gets the current time
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        String date = currentDate.format(formatter);
+
+        referenceForCookBookIngredients =  FirebaseDatabase.getInstance().getReference().child("Ingredients");
+
+
+
+        // Goes to the ingredient database to get the quantities
+        referenceForCookBookIngredients.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(int i = 0; i < theListOfIngredients.size(); i++) {
+                    for (DataSnapshot snapshots : snapshot.getChildren()) {
+                        if (theListOfIngredients.get(i).equals(snapshots.toString())) {
+                            // Found a matching ingredient
+                            totalCalories += Integer.parseInt(snapshots.child("calories").getValue(String.class));
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Error", "Firebase error");
+            }
+        });
+
+
+        // Now that we have the appropriate data, can now add it to the meal database
+        // The code for the meals page will automatically accomodate the addition of the meal
+        referenceForMeal = FirebaseDatabase.getInstance().getReference().child("Meals");
+        referenceForMeal.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                MealData theData = new MealData();
+                theData.setCalories(totalCalories);
+                theData.setUsername(FirebaseDB.getInstance().getUser().getEmail());
+                theData.setDate(date);
+
+                referenceForMeal.child(theRecipeName).setValue(theData);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("Error", "Firebase issue");
+            }
+        });
+
     }
 }
