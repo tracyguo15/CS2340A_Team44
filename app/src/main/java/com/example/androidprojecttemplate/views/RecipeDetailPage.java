@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -130,7 +131,7 @@ public class RecipeDetailPage extends AppCompatActivity {
      * Yes this is copied over from the RecipeListViewModel.
      * When I called viewModel.getCurrentUser it wasn't setting
      * any values so I tried this instead.
-     * Can be removed
+     * Do not remove, uses a callback which differentiates it
      */
     public void getCurrentUser(StringCallback callback) {
         user = FirebaseDB.getInstance().getUser();
@@ -200,6 +201,12 @@ public class RecipeDetailPage extends AppCompatActivity {
                                             userPantryRef.child(ingredient)
                                                     .child("quantity")
                                                     .setValue(String.valueOf(result));
+
+                                            //Toast message notifying that the recipe
+                                            // was successfully cooked
+                                            Toast.makeText(RecipeDetailPage.this,
+                                                    "Recipe cooked",
+                                                    Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 }
@@ -268,28 +275,27 @@ public class RecipeDetailPage extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //Snapshot will be pointing to each individual ingredient in the database
+                //Log.d("CALORIE SNAPSHOT", snapshot.toString());
+                //Log.d("SIZE OF INGREDIENT DATABASE", String.valueOf(snapshot.getChildrenCount()));
 
                 //For each item in the list of ingredients
                 for (int i = 0; i < theListOfIngredients.size(); i++) {
+                    //Log.d("LIST OF INGREDIENT", theListOfIngredients.get(i));
+
                     //Compares the name of the ingredient in the list to the name of the ingredient
                     //currently hovered
-                    if (theListOfIngredients.get(i).equals(snapshot.getKey())) {
-                        Log.d("Ingredient Calories", snapshot.child("calories").getValue(String.class));
-                        // Found a matching ingredient
-                        totalCalories += Integer.parseInt(snapshot.child("calories").getValue(String.class));
-                        break;
-                    }
-                    /*
-                    //Snapshots would be pointing the the properties of each ingredient
                     for (DataSnapshot snapshots : snapshot.getChildren()) {
-                        if (theListOfIngredients.get(i).equals(snapshots.toString())) {
+                        //Log.d("SNAPSHOT INGREDIENT", snapshots.getKey());
+
+                        if (theListOfIngredients.get(i).equals(snapshots.getKey())) {
+                            Log.d("Ingredient Calories", snapshots.child("calories").toString());
+
                             // Found a matching ingredient
-                            totalCalories += Integer.parseInt(snapshots.child("calories").getValue(String.class));
+                            totalCalories += Integer.parseInt(String.valueOf(snapshots.child("calories").getValue()));
                             break;
                         }
-                    } */
+                    }
                 }
-
                 callback.onCompleted(totalCalories);
             }
 
@@ -325,6 +331,12 @@ public class RecipeDetailPage extends AppCompatActivity {
         });
     }
 
+    /**
+     * Helper method that gets the final quantity after subtraction
+     * @param ref Database Reference to a user's pantry
+     * @param ingredient the name of the ingredient
+     * @param callback callback that returns an integer
+     */
     private void getQuantity(DatabaseReference ref, String ingredient, TheCallback callback) {
         //The quantity of the ingredient in the user's pantry
         DatabaseReference pantryQuantityRef = ref
