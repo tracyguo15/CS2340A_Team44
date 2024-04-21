@@ -202,6 +202,11 @@ public class RecipeDetailPage extends AppCompatActivity {
                                                     .child("quantity")
                                                     .setValue(String.valueOf(result));
 
+                                            if (result == 0) {
+                                                userPantryRef.child(ingredient)
+                                                        .removeValue();
+                                            }
+
                                             //Toast message notifying that the recipe
                                             // was successfully cooked
                                             Toast.makeText(RecipeDetailPage.this,
