@@ -99,7 +99,7 @@ public class RecipeDetailPage extends AppCompatActivity {
 
 
             //Cook recipe logic here
-            //removeFromPantry(recipeKey);
+            removeFromPantry(recipeKey);
 
             // Adds to the meals database
             addToMealDatabase(recipeKey, theListOfIngredients);
