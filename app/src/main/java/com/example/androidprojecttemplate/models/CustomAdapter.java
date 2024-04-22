@@ -32,7 +32,8 @@ public class CustomAdapter {
 
     /**
      * Creates a view to be used in the recipes container.
-     *
+     * @param text The text for the view
+     * @param canCook theBoolean to see if can cook
      * @return the formatted view
      */
     public TextView createView(String text, boolean canCook) {

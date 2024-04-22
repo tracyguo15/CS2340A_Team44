@@ -22,9 +22,9 @@ public class CreateAccountViewModel {
     private FirebaseAuth theAuthenticationVariable;
 
     private DatabaseReference reference;
-    DatabaseReference referenceForPantry;
-    DatabaseReference childForReferenceForPantry;
-    DatabaseReference referenceForShoppingList;
+    private DatabaseReference referenceForPantry;
+    private DatabaseReference childForReferenceForPantry;
+    private DatabaseReference referenceForShoppingList;
 
     private boolean isItValid = true;
 
@@ -79,8 +79,9 @@ public class CreateAccountViewModel {
 
                                 UserLoginData theUser = new UserLoginData(username, password, name);
 
-                                // Will track different usernames in the database by taking the first
-                                // letter of their username (since you can't use the full username since
+                                // Will track different usernames in the database
+                                // by taking the first letter of their username
+                                // (since you can't use the full username since
                                 // it has special characters)
                                 reference.child(name).setValue(theUser);
 

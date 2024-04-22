@@ -64,14 +64,16 @@ public class ShoppingListViewModel {
     // Have to go to firebase and retrieve all of the current elements
     // * May not work if it's empty, need to test
     private void addTheElementsFromFirebaseToTheList() {
-        referenceForShoppingList = FirebaseDatabase.getInstance().getReference().child("Shopping_List");
+        referenceForShoppingList = FirebaseDatabase.getInstance()
+                .getReference().child("Shopping_List");
 
         referenceForShoppingList.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
 
-                    String theEmailFromFirebase = theSnapshot.child("username").getValue(String.class);
+                    String theEmailFromFirebase = theSnapshot
+                            .child("username").getValue(String.class);
 
                     String theUsersName = theSnapshot.child("name").getValue(String.class);
 
@@ -111,8 +113,12 @@ public class ShoppingListViewModel {
     }
 
 
-    public void addToFirebase(ArrayList<EditText> names, ArrayList<EditText> quantities, ArrayList<EditText> calories, TheCallback callback) {
-        referenceForShoppingList = FirebaseDatabase.getInstance().getReference().child("Shopping_List");
+    public void addToFirebase(ArrayList<EditText> names,
+                              ArrayList<EditText> quantities,
+                              ArrayList<EditText> calories, TheCallback callback) {
+
+        referenceForShoppingList = FirebaseDatabase.getInstance()
+                .getReference().child("Shopping_List");
 
         if (timesCalled == 0) {
             addTheElementsFromFirebaseToTheList();
@@ -145,10 +151,14 @@ public class ShoppingListViewModel {
         });
     }
 
-    private void helperMethod2(DatabaseReference theReference, ArrayList<EditText> names, ArrayList<EditText> quantities1, ArrayList<EditText> calories1, String theUsersName) {
+    private void helperMethod2(DatabaseReference theReference,
+                               ArrayList<EditText> names,
+                               ArrayList<EditText> quantities1,
+                               ArrayList<EditText> calories1,
+                               String theUsersName) {
 
         // Will have to check firebase to see if the ingredient already exists
-        for(int i = 0; i < names.size(); i++) {
+        for (int i = 0; i < names.size(); i++) {
             String theCurrName = names.get(i).getText().toString();
             String theCurrQuantity = quantities1.get(i).getText().toString();
             String theCurrCalories = calories1.get(i).getText().toString();
@@ -157,13 +167,15 @@ public class ShoppingListViewModel {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot theSnapshot : snapshot.getChildren()) {
-                        if(theSnapshot.exists()) {
+                        if (theSnapshot.exists()) {
                             // Now check the names
                             if (theCurrName.equals(theSnapshot.getKey())) {
                                 // Name already exists, simply update the quantity
-                                theReference.child(theCurrName).child("quantity").setValue(theCurrQuantity);
+                                theReference.child(theCurrName)
+                                        .child("quantity").setValue(theCurrQuantity);
 
-                                // Will need to call another method to update that quantity's value in the arrayList
+                                // Will need to call another method to
+                                // update that quantity's value in the arrayList
                                 updateArrayListsWithNewValues(theCurrName, theCurrQuantity);
                                 doesItAlreadyExists = true;
                             }
@@ -172,7 +184,8 @@ public class ShoppingListViewModel {
 
                     if (!doesItAlreadyExists) {
                         // Can now add it to the new list
-                        ShoppingListData theItem = new ShoppingListData(theCurrName, theCurrQuantity, theCurrCalories);
+                        ShoppingListData theItem = new ShoppingListData(
+                                theCurrName, theCurrQuantity, theCurrCalories);
                         theReference.child(theCurrName).setValue(theItem);
                         addedShoppingListItems.add(theCurrName);
                         addedQuantities.add(theCurrQuantity);
@@ -200,5 +213,7 @@ public class ShoppingListViewModel {
         return addedShoppingListItems;
     }
 
-    public ArrayList<String> getTheQuantities() { return addedQuantities;}
+    public ArrayList<String> getTheQuantities() {
+        return addedQuantities;
+    }
 }

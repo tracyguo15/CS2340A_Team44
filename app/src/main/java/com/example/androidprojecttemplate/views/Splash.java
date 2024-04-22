@@ -9,7 +9,7 @@ import com.example.androidprojecttemplate.R;
 
 public class Splash extends AppCompatActivity {
 
-    private static int SPLASH_TIME = 2000; // 2 seconds of splash
+    private static int splashTime = 2000; // 2 seconds of splash
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +23,6 @@ public class Splash extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        }, SPLASH_TIME);
+        }, splashTime);
     }
 }

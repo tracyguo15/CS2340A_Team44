@@ -57,6 +57,7 @@ public class ShoppingList extends AppCompatActivity {
 
 
 
+    /** @noinspection checkstyle:MethodLength*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +72,6 @@ public class ShoppingList extends AppCompatActivity {
         calories = new ArrayList<>();
 
         viewModel = ShoppingListViewModel.getInstance();
-
-
 
         // Navbar
         Toolbar homeToolBar = (Toolbar) findViewById(R.id.nav_toolbar);
@@ -120,7 +119,6 @@ public class ShoppingList extends AppCompatActivity {
                 return false;
             }
         });
-
         addShoppingIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,7 +136,6 @@ public class ShoppingList extends AppCompatActivity {
         submit.setOnClickListener(v -> {
             viewModel.getCurrentUser();
 
-
             // First check if anything was inputed in the first place
             if (ingredients.size() == 0 || quantities.size() == 0 || calories.size() == 0) {
                 Toast.makeText(ShoppingList.this,
@@ -149,7 +146,7 @@ public class ShoppingList extends AppCompatActivity {
                 // Checks for null
                 // Need to traverse through the ingredients and quantities to determine if null
                 for (int i = 0; i < ingredients.size(); i++) {
-                    if(ingredients.get(i).getText().toString().isEmpty()) {
+                    if (ingredients.get(i).getText().toString().isEmpty()) {
                         // Should display a toast message
                         Toast.makeText(ShoppingList.this,
                                 "Please input an ingredient!",
@@ -157,7 +154,6 @@ public class ShoppingList extends AppCompatActivity {
                         isThereInvalidEntry = true;
                         break;
                     }
-
                     if (quantities.get(i).getText().toString().isEmpty()) {
                         Toast.makeText(ShoppingList.this,
                                 "Please input a quantity!",
@@ -165,7 +161,6 @@ public class ShoppingList extends AppCompatActivity {
                         isThereInvalidEntry = true;
                         break;
                     }
-
                     if (calories.get(i).getText().toString().isEmpty()) {
                         Toast.makeText(ShoppingList.this,
                                 "Please input a calorie!",
@@ -173,7 +168,6 @@ public class ShoppingList extends AppCompatActivity {
                         isThereInvalidEntry = true;
                         break;
                     }
-
                     // Also needs to check for negative quantities
                     if (Integer.parseInt(quantities.get(i).getText().toString()) < 0) {
                         Toast.makeText(ShoppingList.this,
@@ -182,7 +176,6 @@ public class ShoppingList extends AppCompatActivity {
                         isThereInvalidEntry = true;
                         break;
                     }
-
                     if (Integer.parseInt(calories.get(i).getText().toString()) < 0) {
                         Toast.makeText(ShoppingList.this,
                                 "Please input a positive quantity!",
@@ -193,24 +186,22 @@ public class ShoppingList extends AppCompatActivity {
                 }
             }
 
-
             if (!isThereInvalidEntry) {
-                viewModel.addToFirebase(ingredients, quantities, calories, result -> runOnUiThread(() -> {
-                    if (result == 1) {
-                        Toast.makeText(ShoppingList.this,
-                                "Success",
-                                Toast.LENGTH_SHORT).show();
-                        switchScreen();
-                    } else if (result == 2) {
-                        Toast.makeText(ShoppingList.this,
-                                "Something went wrong with the firebase connection",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }));
+                viewModel.addToFirebase(ingredients, quantities, calories,
+                        result -> runOnUiThread(() -> {
 
-
+                            if (result == 1) {
+                                Toast.makeText(ShoppingList.this,
+                                        "Success",
+                                        Toast.LENGTH_SHORT).show();
+                                switchScreen();
+                            } else if (result == 2) {
+                                Toast.makeText(ShoppingList.this,
+                                        "Something went wrong with the firebase connection",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }));
             }
-
             // Will change the value of the boolean variable for the next time
             isThereInvalidEntry = false;
         });

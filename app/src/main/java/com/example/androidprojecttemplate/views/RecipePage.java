@@ -169,10 +169,8 @@ public class RecipePage extends AppCompatActivity {
                 System.out.println(R.id.inputmeal);
                 int id = item.getItemId();
                 if (id == R.id.inputmeal) {
-                    if (!(RecipePage.this instanceof RecipePage)) {
-                        Intent intent = new Intent(RecipePage.this, InputMealPage.class);
-                        startActivity(intent);
-                    }
+                    Intent intent = new Intent(RecipePage.this, InputMealPage.class);
+                    startActivity(intent);
                     return true;
                 } else if (id == R.id.recipe) {
                     Intent intent = new Intent(RecipePage.this, RecipePage.class);
@@ -195,6 +193,20 @@ public class RecipePage extends AppCompatActivity {
             }
         });
 
+        theFunctionality();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (navView.getVisibility() == View.VISIBLE) {
+            navView.setVisibility(View.GONE);
+        } else {
+            navView.setVisibility(View.VISIBLE);
+        }
+        return true;
+    }
+
+    private void theFunctionality() {
         // page functionality
         ingredientContainer = findViewById(R.id.container);
         addIngredient = findViewById(R.id.addIngredientRow);
@@ -328,15 +340,5 @@ public class RecipePage extends AppCompatActivity {
             Intent intent = new Intent(RecipePage.this, RecipeListPage.class);
             startActivity(intent);
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (navView.getVisibility() == View.VISIBLE) {
-            navView.setVisibility(View.GONE);
-        } else {
-            navView.setVisibility(View.VISIBLE);
-        }
-        return true;
     }
 }

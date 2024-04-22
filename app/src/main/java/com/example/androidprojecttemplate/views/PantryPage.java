@@ -107,15 +107,19 @@ public class PantryPage extends AppCompatActivity {
     }
 
     /**
-     * This function takes in the current viewmodel and sets up listeners for the whole Pantry.
+     * This function takes in the current viewmodel and sets up
+     * listeners for the whole Pantry.
      *
      * It does this by
      * 1) Using the ViewModel to return a list of all the ingredient item names to use
-     * 2) Making it such that all the buttons, so that depending on whatever button is clicked, it displays
+     * 2) Making it such that all the buttons,
+     * so that depending on whatever button is clicked, it displays
      * information in the bottom of the screen
-     * 3) once a button is chosen, it sends a signal to the ViewModel which sets the current ingredient on
+     * 3) once a button is chosen, it sends a signal to the
+     * ViewModel which sets the current ingredient on
      * focus.
-     * 4) the user can then modify the ingredient count as chosen, and when the count is reduced to zero,
+     * 4) the user can then modify the ingredient count as chosen,
+     * and when the count is reduced to zero,
      * the ingredient is removed from the pantry and removed from the list.
      * @param vm the PantryPageViewModel
      */

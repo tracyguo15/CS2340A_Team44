@@ -1,7 +1,6 @@
 package com.example.androidprojecttemplate.models;
 
-public class DataForPantry
-{
+public class DataForPantry {
     private String name;
 
     private String quantity;
