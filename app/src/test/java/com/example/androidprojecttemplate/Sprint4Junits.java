@@ -4,23 +4,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import android.widget.Button;
-
-import androidx.annotation.NonNull;
-
-import com.example.androidprojecttemplate.models.IngredientData;
-import com.example.androidprojecttemplate.models.RecipeData;
 import com.example.androidprojecttemplate.models.ShoppingListData;
-import com.example.androidprojecttemplate.viewModels.RecipeListViewModel;
-import com.example.androidprojecttemplate.views.RecipeListPage;
-import com.google.firebase.Firebase;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
 
 
 public class Sprint4Junits {
@@ -29,7 +14,7 @@ public class Sprint4Junits {
     @Test
     public void testShoppingListDataQuantityNegative() {
         try {
-            ShoppingListData shoppingListData = new ShoppingListData("apple", "-1");
+            ShoppingListData shoppingListData = new ShoppingListData("apple", "-1", "50");
         } catch (IllegalArgumentException e) {
             assertEquals("Quantity is null, empty, or negative please enter a proper value", e.getMessage());
         }
@@ -40,7 +25,7 @@ public class Sprint4Junits {
     @Test
     public void testShoppingListDataQuantityNull() {
         try {
-            ShoppingListData shoppingListData = new ShoppingListData("apple", null);
+            ShoppingListData shoppingListData = new ShoppingListData("apple", null, "50");
         } catch (IllegalArgumentException e) {
             assertEquals("Quantity is null, empty, or negative please enter a proper value", e.getMessage());
         }
@@ -51,7 +36,7 @@ public class Sprint4Junits {
     //test shopping list quantity empty
     public void testShoppingListDataQuantityEmpty() {
         try {
-            ShoppingListData shoppingListData = new ShoppingListData("apple", "");
+            ShoppingListData shoppingListData = new ShoppingListData("apple", "", "30");
         } catch (IllegalArgumentException e) {
             assertEquals("Quantity is null, empty, or negative please enter a proper value", e.getMessage());
         }
@@ -61,7 +46,7 @@ public class Sprint4Junits {
     //test shopping list name empty
     public void testShoppingListDataNameEmpty() {
         try {
-            ShoppingListData shoppingListData = new ShoppingListData("", "1");
+            ShoppingListData shoppingListData = new ShoppingListData("", "1", "100");
         } catch (IllegalArgumentException e) {
             assertEquals("Name is null or empty, please enter a proper value", e.getMessage());
         }
@@ -72,16 +57,32 @@ public class Sprint4Junits {
     //test shopping list name null
     public void testShoppingListDataNameNull() {
         try {
-            ShoppingListData shoppingListData = new ShoppingListData(null, "1");
+            ShoppingListData shoppingListData = new ShoppingListData(null, "1", "40");
         } catch (IllegalArgumentException e) {
             assertEquals("Name is null or empty, please enter a proper value", e.getMessage());
         }
     }
 
-    RecipeListPage rp;
+    //Daniel Deller
+    @Test
+    public void changeShoppingListNameNull() {
+        try {
+            ShoppingListData theData = new ShoppingListData("Lox", "5", "90");
+            theData.setName("Bagel");
+            assertEquals("Bagel", theData.getName());
+            theData.setName(null);
+        } catch (IllegalArgumentException e) {
+            assertEquals("Name is null or empty, please enter a proper value", e.getMessage());
+        }
+
+
+    }
+
+
+    //RecipeListPage rp;
     //Daniel Deller
     //test whether RecipeListViewModel calculated the missing ingredients correctly
-    public void testCalculateMissingIngredientseProperly() {
+   /* public void testCalculateMissingIngredientseProperly() {
         rp = new RecipeListPage();
         RecipeListViewModel vm = rp.getViewModel();
         HashMap<String, RecipeData> cookbook = vm.getCookbook();
@@ -145,7 +146,7 @@ public class Sprint4Junits {
 
             }
         });
-    }
+    } */
 
     //Rohan Bhole
     public void testSomething1() {

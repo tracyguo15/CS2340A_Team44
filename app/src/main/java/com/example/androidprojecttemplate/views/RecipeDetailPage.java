@@ -147,7 +147,7 @@ public class RecipeDetailPage extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snapshots : snapshot.getChildren()) {
                     // check if email from db == user email
-                    String tempEmail = snapshots.child("username").getValue().toString();
+                    String tempEmail = snapshots.child("username").getValue(String.class);
 
                     if (tempEmail.equals(email)) {
                         username = snapshots.getKey();

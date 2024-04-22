@@ -49,6 +49,7 @@ public class ShoppingList extends AppCompatActivity {
     private boolean isThereInvalidEntry = false;
     private ArrayList<EditText> ingredients;
     private ArrayList<EditText> quantities;
+    private ArrayList<EditText> calories;
     private ArrayList<String> theList = new ArrayList<>();
 
     private Timer timer;
@@ -67,6 +68,7 @@ public class ShoppingList extends AppCompatActivity {
 
         ingredients = new ArrayList<>();
         quantities = new ArrayList<>();
+        calories = new ArrayList<>();
 
         viewModel = ShoppingListViewModel.getInstance();
 
@@ -138,7 +140,7 @@ public class ShoppingList extends AppCompatActivity {
 
 
             // First check if anything was inputed in the first place
-            if (ingredients.size() == 0 || quantities.size() == 0) {
+            if (ingredients.size() == 0 || quantities.size() == 0 || calories.size() == 0) {
                 Toast.makeText(ShoppingList.this,
                         "Please input something!",
                         Toast.LENGTH_SHORT).show();
@@ -164,8 +166,24 @@ public class ShoppingList extends AppCompatActivity {
                         break;
                     }
 
+                    if (calories.get(i).getText().toString().isEmpty()) {
+                        Toast.makeText(ShoppingList.this,
+                                "Please input a calorie!",
+                                Toast.LENGTH_SHORT).show();
+                        isThereInvalidEntry = true;
+                        break;
+                    }
+
                     // Also needs to check for negative quantities
                     if (Integer.parseInt(quantities.get(i).getText().toString()) < 0) {
+                        Toast.makeText(ShoppingList.this,
+                                "Please input a positive quantity!",
+                                Toast.LENGTH_SHORT).show();
+                        isThereInvalidEntry = true;
+                        break;
+                    }
+
+                    if (Integer.parseInt(calories.get(i).getText().toString()) < 0) {
                         Toast.makeText(ShoppingList.this,
                                 "Please input a positive quantity!",
                                 Toast.LENGTH_SHORT).show();
@@ -177,7 +195,7 @@ public class ShoppingList extends AppCompatActivity {
 
 
             if (!isThereInvalidEntry) {
-                viewModel.addToFirebase(ingredients, quantities, result -> runOnUiThread(() -> {
+                viewModel.addToFirebase(ingredients, quantities, calories, result -> runOnUiThread(() -> {
                     if (result == 1) {
                         Toast.makeText(ShoppingList.this,
                                 "Success",
@@ -234,6 +252,7 @@ public class ShoppingList extends AppCompatActivity {
         // row elements
         EditText input = new EditText(this);
         EditText quantityInput = new EditText(this);
+        EditText calorieInput = new EditText(this);
         Button removeButton = new Button(this);
 
         row.getViewTreeObserver()
@@ -249,7 +268,11 @@ public class ShoppingList extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT));
 
         quantityInput.setLayoutParams(new ViewGroup.LayoutParams(
-                205,
+                105,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        calorieInput.setLayoutParams(new ViewGroup.LayoutParams(
+                105,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
 
         input.setLayoutParams(new ViewGroup.LayoutParams(
@@ -282,6 +305,7 @@ public class ShoppingList extends AppCompatActivity {
                 ingredientContainer.removeView(row);
                 ingredients.remove(input);
                 quantities.remove(quantityInput);
+                calories.remove(calorieInput);
                 ingredientCount--;
             }
         });
@@ -296,14 +320,19 @@ public class ShoppingList extends AppCompatActivity {
         quantityInput.setInputType(InputType.TYPE_CLASS_NUMBER);
         quantityInput.setHint("0");
 
+        calorieInput.setInputType(InputType.TYPE_CLASS_NUMBER);
+        calorieInput.setHint("0");
+
         row.addView(input);
         row.addView(quantityInput);
+        row.addView(calorieInput);
         row.addView(removeButton);
 
         ingredientContainer.addView(row);
 
         ingredients.add(input);
         quantities.add(quantityInput);
+        calories.add(calorieInput);
 
     }
 }

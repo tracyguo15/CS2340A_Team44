@@ -71,10 +71,9 @@ public class ShoppingListViewModel {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
 
-                    String theEmailFromFirebase = theSnapshot.child("username")
-                            .getValue().toString();
+                    String theEmailFromFirebase = theSnapshot.child("username").getValue(String.class);
 
-                    String theUsersName = theSnapshot.child("name").getValue().toString();
+                    String theUsersName = theSnapshot.child("name").getValue(String.class);
 
                     if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
                         referenceForSpecifcUser = referenceForShoppingList.child(theUsersName);
@@ -112,7 +111,7 @@ public class ShoppingListViewModel {
     }
 
 
-    public void addToFirebase(ArrayList<EditText> names, ArrayList<EditText> quantities, TheCallback callback) {
+    public void addToFirebase(ArrayList<EditText> names, ArrayList<EditText> quantities, ArrayList<EditText> calories, TheCallback callback) {
         referenceForShoppingList = FirebaseDatabase.getInstance().getReference().child("Shopping_List");
 
         if (timesCalled == 0) {
@@ -133,7 +132,7 @@ public class ShoppingListViewModel {
                     if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
                         referenceTemp = referenceForShoppingList.child(theUsersName);
                         // Will use a helper method to do the rest
-                        helperMethod2(referenceTemp, names, quantities, theUsersName);
+                        helperMethod2(referenceTemp, names, quantities, calories, theUsersName);
                         callback.onCompleted(1);
                     }
                 }
@@ -146,12 +145,13 @@ public class ShoppingListViewModel {
         });
     }
 
-    private void helperMethod2(DatabaseReference theReference, ArrayList<EditText> names, ArrayList<EditText> quantities1, String theUsersName) {
+    private void helperMethod2(DatabaseReference theReference, ArrayList<EditText> names, ArrayList<EditText> quantities1, ArrayList<EditText> calories1, String theUsersName) {
 
         // Will have to check firebase to see if the ingredient already exists
         for(int i = 0; i < names.size(); i++) {
             String theCurrName = names.get(i).getText().toString();
             String theCurrQuantity = quantities1.get(i).getText().toString();
+            String theCurrCalories = calories1.get(i).getText().toString();
             doesItAlreadyExists = false;
             theReference.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -172,7 +172,7 @@ public class ShoppingListViewModel {
 
                     if (!doesItAlreadyExists) {
                         // Can now add it to the new list
-                        ShoppingListData theItem = new ShoppingListData(theCurrName, theCurrQuantity);
+                        ShoppingListData theItem = new ShoppingListData(theCurrName, theCurrQuantity, theCurrCalories);
                         theReference.child(theCurrName).setValue(theItem);
                         addedShoppingListItems.add(theCurrName);
                         addedQuantities.add(theCurrQuantity);
