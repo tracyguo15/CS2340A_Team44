@@ -7,15 +7,18 @@ public class ShoppingListData {
 
     public ShoppingListData(String name, String quantity, String calories) {
         if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Name is null or empty, please enter a proper value");
+            throw new IllegalArgumentException(
+                    "Name is null or empty, please enter a proper value");
         }
 
-        if (quantity == null || quantity.isEmpty() || Integer.parseInt(quantity) < 0){
-            throw new IllegalArgumentException("Quantity is null, empty, or negative please enter a proper value");
+        if (quantity == null || quantity.isEmpty() || Integer.parseInt(quantity) < 0) {
+            throw new IllegalArgumentException(
+                    "Quantity is null, empty, or negative please enter a proper value");
         }
 
-        if (calories == null || calories.isEmpty() || Integer.parseInt(calories) < 0){
-            throw new IllegalArgumentException("Calorie is null, empty, or negative please enter a proper value");
+        if (calories == null || calories.isEmpty() || Integer.parseInt(calories) < 0) {
+            throw new IllegalArgumentException(
+                    "Calorie is null, empty, or negative please enter a proper value");
         }
 
         this.name = name;
@@ -26,7 +29,8 @@ public class ShoppingListData {
 
     public void setName(String name) {
         if (name == null || name.isEmpty()) {
-            throw new IllegalArgumentException("Name is null or empty, please enter a proper value");
+            throw new IllegalArgumentException(
+                    "Name is null or empty, please enter a proper value");
         }
         this.name = name;
     }
@@ -35,19 +39,27 @@ public class ShoppingListData {
     }
 
     public void setQuantity(String quantity) {
-        if (quantity == null || quantity.isEmpty() || Integer.parseInt(quantity) < 0) {
-            throw new IllegalArgumentException("Quantity is null, empty, or negative please enter a proper value");
+        if (quantity == null || quantity.isEmpty()
+                || Integer.parseInt(quantity) < 0) {
+            throw new IllegalArgumentException(
+                    "Quantity is null, empty, or negative please enter a proper value");
         }
         this.quantity = quantity;
     }
-    public String getQuantity() {return quantity; }
+    public String getQuantity() {
+        return quantity;
+    }
 
     public void setCalorie(String calories) {
-        if (calories == null || calories.isEmpty() || Integer.parseInt(calories) < 0) {
-            throw new IllegalArgumentException("Calories is null, empty, or negative please enter a proper value");
+        if (calories == null || calories.isEmpty()
+                || Integer.parseInt(calories) < 0) {
+            throw new IllegalArgumentException(
+                    "Calories is null, empty, or negative please enter a proper value");
         }
         this.calories = calories;
     }
 
-    public String getCalories() {return calories; }
+    public String getCalories() {
+        return calories;
+    }
 }

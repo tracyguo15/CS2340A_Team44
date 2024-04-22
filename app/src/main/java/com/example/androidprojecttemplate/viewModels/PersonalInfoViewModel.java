@@ -19,7 +19,8 @@ import com.google.firebase.database.ValueEventListener;
 public class PersonalInfoViewModel {
     private static PersonalInfoViewModel instance;
     private final PersonalInfo data;
-    public static int temp = 0;
+
+    private static int temp = 0;
 
     // For firebase authentication (to get user's email)
     private FirebaseAuth firebaseAuth;

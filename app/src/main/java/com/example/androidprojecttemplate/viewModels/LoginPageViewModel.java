@@ -36,7 +36,8 @@ public class LoginPageViewModel {
         return instance;
     }
 
-    public void toHomeScreenMethodFromLogin(String username, String password, TheCallback callback) {
+    public void toHomeScreenMethodFromLogin(String username,
+                                            String password, TheCallback callback) {
         // Can now login the user through firebase
         firebaseAuth.signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

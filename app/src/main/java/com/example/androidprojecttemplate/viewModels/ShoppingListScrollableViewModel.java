@@ -56,7 +56,7 @@ public class ShoppingListScrollableViewModel {
         theUsersEmailFromAuthenticationDatabase = FirebaseDB.getInstance().getEmail();
     }
 
-   // Update the quantity in firebase
+    // Update the quantity in firebase
     public void setTheQuantity(String theNameOfIngredient, int newQuantity) {
         referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Shopping_List");
 

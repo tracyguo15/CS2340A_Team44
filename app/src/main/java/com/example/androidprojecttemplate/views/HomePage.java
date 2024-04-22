@@ -103,18 +103,6 @@ public class HomePage extends AppCompatActivity {
         return true;
     }
 
-    /*
-    Method to set the login state. remember to set login after login page is implemented
-    public static void setLoggedIn(boolean value) {
-        isLoggedIn = value;
-    }
-     */
-    private DatabaseReference recipeDB;
-    private ArrayList<String> superList = new ArrayList<>();
-    private interface FirebaseCallback {
-        void onCallback(List<String> list);
-    }
-
     private void accessRecipes(FirebaseCallback callback) {
         Log.d("CALLBACK", "starting callback");
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -145,5 +133,17 @@ public class HomePage extends AppCompatActivity {
             }
         });
         Log.d("TEST ACCESS", superList.toString());
+    }
+
+    /*
+    Method to set the login state. remember to set login after login page is implemented
+    public static void setLoggedIn(boolean value) {
+        isLoggedIn = value;
+    }
+     */
+    private DatabaseReference recipeDB;
+    private ArrayList<String> superList = new ArrayList<>();
+    private interface FirebaseCallback {
+        void onCallback(List<String> list);
     }
 }

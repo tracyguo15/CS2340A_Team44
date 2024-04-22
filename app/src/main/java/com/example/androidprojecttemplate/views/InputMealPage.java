@@ -73,6 +73,7 @@ public class InputMealPage extends AppCompatActivity {
     private DatabaseReference userReference;
     private DatabaseReference mealReference;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,28 +141,39 @@ public class InputMealPage extends AppCompatActivity {
             }
         });
 
+
+
+        submitData();
+        showVisualizations();
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (navView.getVisibility() == View.VISIBLE) {
+            navView.setVisibility(View.GONE);
+        } else {
+            navView.setVisibility(View.VISIBLE);
+        }
+        return true;
+    }
+
+    private void submitData() {
         firebaseAuth = FirebaseAuth.getInstance();
         user = firebaseAuth.getCurrentUser();
         String email = user.getEmail();
-
         userReference = FirebaseDatabase.getInstance().getReference().child("Users");
         mealReference = FirebaseDatabase.getInstance().getReference().child("Meals");
-
-        // displaying user data
         userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot theSnapshot: snapshot.getChildren()) {
-
                     String theEmailFromFirebase = theSnapshot.child("username")
                             .getValue().toString();
-                    
                     if (theEmailFromFirebase.equals(email)) {
                         viewModel = UserDataViewModel.getInstance();
-
                         DataSnapshot userDataSnapshot = theSnapshot
                                 .child("Personal Info");
-
                         if (userDataSnapshot != null) {
                             String height = userDataSnapshot
                                     .child("height").getValue().toString();
@@ -171,13 +183,11 @@ public class InputMealPage extends AppCompatActivity {
                                     .child("gender").getValue().toString();
                             String age = userDataSnapshot
                                     .child("age").getValue().toString();
-
                             viewModel.updateData(
-                                Integer.parseInt(height),
-                                Integer.parseInt(weight),
-                                gender,
-                                Integer.parseInt(age));
-
+                                    Integer.parseInt(height),
+                                    Integer.parseInt(weight),
+                                    gender,
+                                    Integer.parseInt(age));
                             userHeight.setText(viewModel.heightText());
                             userWeight.setText(viewModel.weightText());
                             userGender.setText(viewModel.genderText());
@@ -186,10 +196,8 @@ public class InputMealPage extends AppCompatActivity {
                             userHeight.setText("no user data available");
                         }
                     }
-
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(InputMealPage.this,
@@ -234,7 +242,7 @@ public class InputMealPage extends AppCompatActivity {
                     data.setCalories(Integer.parseInt(calories));
                     data.setUsername(email);
                     data.setDate(date);
-                   
+
                     mealReference.child(meal).setValue(data);
 
                     // reset input text
@@ -299,12 +307,10 @@ public class InputMealPage extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-        /*
-        private void setupChart() {
-            
-        }*/
 
+    private void showVisualizations() {
         // displaying visuals
         visual1.setOnClickListener(v -> {
             // parse total calories
@@ -350,9 +356,9 @@ public class InputMealPage extends AppCompatActivity {
 
             cartesian.crosshair().enabled(true);
             cartesian.crosshair()
-                .yLabel(true)
-                // TODO ystroke
-                .yStroke((Stroke) null, null, null, (String) null, (String) null);
+                    .yLabel(true)
+                    // TODO ystroke
+                    .yStroke((Stroke) null, null, null, (String) null, (String) null);
 
             cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
 
@@ -402,7 +408,7 @@ public class InputMealPage extends AppCompatActivity {
         visual2.setOnClickListener(v -> {
             // chart setup
             chart = findViewById(R.id.visualization);
-  
+
             Pie pie = AnyChart.pie();
 
             // series data
@@ -424,15 +430,5 @@ public class InputMealPage extends AppCompatActivity {
 
             chart.setChart(pie);
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (navView.getVisibility() == View.VISIBLE) {
-            navView.setVisibility(View.GONE);
-        } else {
-            navView.setVisibility(View.VISIBLE);
-        }
-        return true;
     }
 }

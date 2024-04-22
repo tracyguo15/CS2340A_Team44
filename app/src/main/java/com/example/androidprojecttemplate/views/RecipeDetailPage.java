@@ -2,7 +2,6 @@ package com.example.androidprojecttemplate.views;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ListView;
@@ -132,6 +131,7 @@ public class RecipeDetailPage extends AppCompatActivity {
      * When I called viewModel.getCurrentUser it wasn't setting
      * any values so I tried this instead.
      * Do not remove, uses a callback which differentiates it
+     * @param callback The callback
      */
     public void getCurrentUser(StringCallback callback) {
         user = FirebaseDB.getInstance().getUser();
@@ -180,7 +180,8 @@ public class RecipeDetailPage extends AppCompatActivity {
                 DatabaseReference userPantryRef = pantryRef.child(string)
                         .child("Ingredients");
 
-                //Calls on the getRecipeIngredients method to get a HashMap of the recipe's ingredients
+                //Calls on the getRecipeIngredients method
+                // to get a HashMap of the recipe's ingredients
                 viewModel.getRecipeIngredients(recipeName, new FirebaseCallback() {
                     @Override
                     public void onCallback(HashMap<String, String> recipeIngredients) {
@@ -240,8 +241,10 @@ public class RecipeDetailPage extends AppCompatActivity {
             public void onCompleted(int result) {
                 Log.d("TOTAL CALORIES", String.valueOf(totalCalories));
 
-                // Now that we have the appropriate data, can now add it to the meal database
-                // The code for the meals page will automatically accommodate the addition of the meal
+                // Now that we have the appropriate data,
+                // can now add it to the meal database
+                // The code for the meals page will automatically
+                // accommodate the addition of the meal
                 referenceForMeal = FirebaseDatabase.getInstance().getReference().child("Meals");
                 referenceForMeal.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -296,7 +299,8 @@ public class RecipeDetailPage extends AppCompatActivity {
                             Log.d("Ingredient Calories", snapshots.child("calories").toString());
 
                             // Found a matching ingredient
-                            totalCalories += Integer.parseInt(String.valueOf(snapshots.child("calories").getValue()));
+                            totalCalories += Integer.parseInt(
+                                    String.valueOf(snapshots.child("calories").getValue()));
                             break;
                         }
                     }
@@ -313,8 +317,8 @@ public class RecipeDetailPage extends AppCompatActivity {
 
     /**
      * Helper method for cookBtn
-     * Gets an ArrayList<String> for use in the addToMealDatabase method
-     * @param callback callback that return an ArrayList<String>
+     * Gets an ArrayList(String) for use in the addToMealDatabase method
+     * @param callback callback that return an ArrayList(String)
      */
     private void getListOfIngredients(ArrayListIngredientCallback callback) {
         // Go through a loop
@@ -368,10 +372,8 @@ public class RecipeDetailPage extends AppCompatActivity {
                         int recipeQuantity = Integer.parseInt(String.valueOf(snapshot
                                 .child("quantity").getValue()));
 
-                        //Log.d("pantryQuantity", "Ingredient: " + ingredient + " " + pantryQuantity);
-                        //Log.d("recipeQuantity", "Ingredient: " + ingredient + " " + recipeQuantity);
-                        //Log.d("SUBTRACTION", String.valueOf(pantryQuantity - recipeQuantity));
-                        callback.onCompleted(pantryQuantity - recipeQuantity);
+                        callback.onCompleted(
+                                pantryQuantity - recipeQuantity);
                     }
 
                     @Override

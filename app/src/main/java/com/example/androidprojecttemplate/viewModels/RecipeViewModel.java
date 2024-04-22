@@ -66,9 +66,9 @@ public class RecipeViewModel {
                             .getValue().toString();
                     String theUsersName = snapshots.child("name").getValue().toString();
 
-                    if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
-                        //referenceForSpecificUser = cookbookDatabase.child
-                    }
+                    //if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
+                    //referenceForSpecificUser = cookbookDatabase.child
+                    //}
                 }
             }
 

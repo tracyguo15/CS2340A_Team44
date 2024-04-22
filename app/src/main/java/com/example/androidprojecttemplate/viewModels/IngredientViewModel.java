@@ -23,6 +23,7 @@ public class IngredientViewModel {
     private static IngredientViewModel instance;
     private final IngredientPage theData;
 
+    private String fuck;
     private FirebaseAuth theAuthenticationVariable;
     private FirebaseUser user;
     private DatabaseReference referenceForPantry;
@@ -162,21 +163,25 @@ public class IngredientViewModel {
 
                             String theUsersName = theSnapshot.child("name").getValue().toString();
 
-                            if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
+                            if (theEmailFromFirebase.equals(
+                                    theUsersEmailFromAuthenticationDatabase)) {
                                 // Add the ingredient to Firebase
-                                DataForPantry newIngre = new DataForPantry(name, quantity, expirationDate);
+                                DataForPantry newIngre = new DataForPantry(name,
+                                        quantity, expirationDate);
 
-                                referenceForPantry.child(theUsersName).child("Ingredients").child(name).setValue(newIngre)
+                                referenceForPantry.child(theUsersName).child("Ingredients")
+                                        .child(name).setValue(newIngre)
                                         .addOnSuccessListener(aVoid -> {
                                             addedIngredientNames.add(name);
                                             addedQuantities.add(quantity);
 
                                             // Have to add it to the ingredient database
-                                            addToIngredientFirebase(name, "0",calories);
+                                            addToIngredientFirebase(name, "0", calories);
                                             callback.onCompleted(1); // Success
 
                                         })
-                                        .addOnFailureListener(e -> callback.onCompleted(2)); // Error
+                                        .addOnFailureListener(e -> callback
+                                                .onCompleted(2)); // Error
                             }
                         }
                     }
@@ -189,21 +194,25 @@ public class IngredientViewModel {
         }, 300);
     }
 
-    private void addToIngredientFirebase(String name, String calories, String price) {
-        referenceForIngredientDatabase = FirebaseDatabase.getInstance().getReference().child("Ingredients");
+    private void addToIngredientFirebase(String name,
+                                         String calories, String price) {
+
+        referenceForIngredientDatabase = FirebaseDatabase.getInstance()
+                .getReference().child("Ingredients");
 
         referenceForIngredientDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot theSnapshot : snapshot.getChildren()) {
-                    if(name.equals(theSnapshot.getKey())) {
+                    if (name.equals(theSnapshot.getKey())) {
                         isItInIngredientDatabase = true;
                         break;
                     }
                 }
                 if (!isItInIngredientDatabase) {
                     // Can add it
-                    IngredientData theIng = new IngredientData(name, Integer.parseInt(calories), Integer.parseInt(price));
+                    IngredientData theIng = new IngredientData(name,
+                            Integer.parseInt(calories), Integer.parseInt(price));
                     referenceForIngredientDatabase.child(name).setValue(theIng);
                 }
             }
@@ -216,7 +225,10 @@ public class IngredientViewModel {
     }
 
     public ArrayList<String> getTheArrayList() {
+
         return addedIngredientNames;
     }
-    public ArrayList<String> getTheQuantities() { return addedQuantities;}
+    public ArrayList<String> getTheQuantities() {
+        return addedQuantities;
+    }
 }

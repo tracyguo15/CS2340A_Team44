@@ -1,7 +1,6 @@
 package com.example.androidprojecttemplate.models;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public class PantryData extends AbstractDatabase<String, Integer> {
     public PantryData(ArrayList<Pair<String, Integer>> ingredients) {

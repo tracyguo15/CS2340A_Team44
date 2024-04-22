@@ -58,7 +58,8 @@ public class ShoppingListTheCheckBoxViewModel {
         theUsersEmailFromAuthenticationDatabase = FirebaseDB.getInstance().getEmail();
     }
 
-    public void sendToFirebase(ArrayList<String> itemsToBeRemovedFromShoppingDatabase, ArrayList<String> theQuantities) {
+    public void sendToFirebase(ArrayList<String> itemsToBeRemovedFromShoppingDatabase,
+                               ArrayList<String> theQuantities) {
         theReference = FirebaseDatabase.getInstance().getReference().child("Users");
         theReference.addListenerForSingleValueEvent(new ValueEventListener() {
 
@@ -73,7 +74,8 @@ public class ShoppingListTheCheckBoxViewModel {
                     if (theEmailFromFirebase.equals(theUsersEmailFromAuthenticationDatabase)) {
                         theReturned = theUsersName;
                         Log.d("TheName2", theReturned);
-                        deleteFromShoppingList(itemsToBeRemovedFromShoppingDatabase, theQuantities, theReturned);
+                        deleteFromShoppingList(
+                                itemsToBeRemovedFromShoppingDatabase, theQuantities, theReturned);
                     }
                 }
             }
@@ -85,18 +87,25 @@ public class ShoppingListTheCheckBoxViewModel {
         });
     }
 
-    private void deleteFromShoppingList(ArrayList<String> itemsToBeRemovedFromShoppingDatabase, ArrayList<String> theQuantities, String theNameOfTheUser) {
-        referenceForShoppingList = FirebaseDatabase.getInstance().getReference().child("Shopping_List").child(theNameOfTheUser);
+    private void deleteFromShoppingList(ArrayList<String> itemsToBeRemovedFromShoppingDatabase,
+                                        ArrayList<String> theQuantities,
+                                        String theNameOfTheUser) {
+
+        referenceForShoppingList = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("Shopping_List")
+                .child(theNameOfTheUser);
+
         Log.d("TheReference", referenceForShoppingList.toString());
 
         //loop to remove, have to do linear search
-        for(String theNameOfIngredient: itemsToBeRemovedFromShoppingDatabase) {
+        for (String theNameOfIngredient: itemsToBeRemovedFromShoppingDatabase) {
             referenceForShoppingList.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     for (DataSnapshot theSnapshot : snapshot.getChildren()) {
                         Log.d("fuck", theSnapshot.toString());
-                        if(theNameOfIngredient.equals(theSnapshot.getKey())) {
+                        if (theNameOfIngredient.equals(theSnapshot.getKey())) {
                             referenceForShoppingList.child(theNameOfIngredient).removeValue();
                         }
                     }
@@ -113,13 +122,17 @@ public class ShoppingListTheCheckBoxViewModel {
         addToPantry(itemsToBeRemovedFromShoppingDatabase, theQuantities, theNameOfTheUser);
     }
 
-    private void addToPantry(ArrayList<String> ItemsToAddToPantry, ArrayList<String> theQuantities, String name) {
-        referenceForPantry = FirebaseDatabase.getInstance().getReference().child("Pantry").child(name).child("Ingredients");
+    private void addToPantry(ArrayList<String> itemsToAddToPantry,
+                             ArrayList<String> theQuantities,
+                             String name) {
+        referenceForPantry = FirebaseDatabase.getInstance()
+                .getReference().child("Pantry")
+                .child(name).child("Ingredients");
 
         // Need to check for duplicates
         //for(String theNameOfIngredient: ItemsToAddToPantry) {
-        for(int i = 0; i < ItemsToAddToPantry.size(); i++) {
-            String theNewName = ItemsToAddToPantry.get(i);
+        for (int i = 0; i < itemsToAddToPantry.size(); i++) {
+            String theNewName = itemsToAddToPantry.get(i);
             String theNewQuantity = theQuantities.get(i);
 
             isInPantryDatabase = false;

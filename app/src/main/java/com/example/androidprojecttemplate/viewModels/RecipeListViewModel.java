@@ -14,13 +14,6 @@ import java.util.*;
 
 
 public class RecipeListViewModel {
-    /**
-     * Callback for updateRecipes().
-     */
-    public interface UpdateRecipesCallback {
-        void onRecipesUpdated(ArrayList<RecipeData> recipesData);
-    }
-
     private static RecipeListViewModel instance;
     private FirebaseUser user;
     private String username;
@@ -41,9 +34,9 @@ public class RecipeListViewModel {
 
     private Timer timer;
 
-    HashMap<String, RecipeData> cookbook;
+    private HashMap<String, RecipeData> cookbook;
 
-    HashMap<String, Integer> pantry;
+    private HashMap<String, Integer> pantry;
 
     /**
      * Initializes the viewModel with a reference to the recipes database.
@@ -53,10 +46,6 @@ public class RecipeListViewModel {
         getCurrentUser();
         theUsersEmailFromAuthenticationDatabase = user.getEmail();
         getDatabases();
-    }
-
-    private interface InitializingPantryCallback {
-        void onCallback(HashMap map);
     }
 
     private void getPantryDatabase(InitializingPantryCallback callback) {
@@ -73,7 +62,8 @@ public class RecipeListViewModel {
                             if (item.getKey().equals("username")) {
                                 continue;
                             }
-                            pantry.put(item.getKey(), Integer.parseInt(item.child("quantity").getValue().toString()));
+                            pantry.put(item.getKey(), Integer.parseInt(
+                                    item.child("quantity").getValue().toString()));
                         }
                     }
                 }
@@ -95,14 +85,15 @@ public class RecipeListViewModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 RecipeData recipe;
-                for (DataSnapshot R : snapshot.getChildren()) {
-                    String name = R.getKey();
-                    String desc = R.child("description").getValue().toString();
-                    int time = Integer.parseInt(R.child("time").getValue().toString());
+                for (DataSnapshot theR : snapshot.getChildren()) {
+                    String name = theR.getKey();
+                    String desc = theR.child("description").getValue().toString();
+                    int time = Integer.parseInt(theR.child("time").getValue().toString());
                     recipe = new RecipeData(name, desc, time);
-                    for (DataSnapshot item : R.child("ingredients").getChildren()) {
+                    for (DataSnapshot item : theR.child("ingredients").getChildren()) {
                         String itemName = item.getKey();
-                        int quantity = Integer.parseInt(item.child("quantity").getValue().toString());
+                        int quantity = Integer.parseInt(item.child("quantity")
+                                .getValue().toString());
                         recipe.add(itemName, quantity);
                     }
                     cookbook.put(name, recipe);
@@ -190,7 +181,8 @@ public class RecipeListViewModel {
      * @param callback - the callback to execute
      */
     public void getRecipeIngredients(String recipeName, FirebaseCallback callback) {
-        DatabaseReference referenceForRecipe = FirebaseDatabase.getInstance().getReference().child("Cookbook").child(recipeName).child("ingredients");
+        DatabaseReference referenceForRecipe = FirebaseDatabase.getInstance()
+                .getReference().child("Cookbook").child(recipeName).child("ingredients");
         HashMap<String, String> ingredients = new HashMap<>();
 
         referenceForRecipe.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -202,7 +194,8 @@ public class RecipeListViewModel {
                     //Log.d("QUANTITY", value);
                     ingredients.put(key, value);
                 }
-                callback.onCallback(ingredients); // invoke the callback method with the fetched data
+                // invoke the callback method with the fetched data
+                callback.onCallback(ingredients);
             }
 
             @Override
@@ -291,7 +284,8 @@ public class RecipeListViewModel {
                     ingredients.put(key, value);
                 }
 
-                callback.onCallback(ingredients); // invoke the callback method with the fetched data
+                // invoke the callback method with the fetched data
+                callback.onCallback(ingredients);
             }
 
             @Override
@@ -319,9 +313,11 @@ public class RecipeListViewModel {
                         //Log.d("test", "2");
                         boolean cooked = true;
                         for (String ingredient : recipeIngredients.keySet()) {
-                            //Log.d("pantry quant", String.valueOf(pantryIngredients.containsKey("Bacon")));
+                            //Log.d("pantry quant",
+                            // String.valueOf(pantryIngredients.containsKey("Bacon")));
                             if (pantryIngredients.containsKey(ingredient)) {
-                                if (Integer.parseInt(pantryIngredients.get(ingredient)) < Integer.parseInt(recipeIngredients.get(ingredient))) {
+                                if (Integer.parseInt(pantryIngredients.get(ingredient))
+                                        < Integer.parseInt(recipeIngredients.get(ingredient))) {
                                     cooked = false;
                                     break;
                                 }
@@ -336,11 +332,13 @@ public class RecipeListViewModel {
             }
         });
     }
+
+
     /**
      * This method will return a hashmap of all the ingredients and their quantities
      * that are required for a certain recipe but are missing from the user's pantry
-     * @param recipeName
-     * @return HashMap<String, String> missingIngredients
+     * @param recipeName The name of the recipe
+     * @return HashMap(String, String) missingIngredients
      */
     public HashMap<String, Integer> getMissingIngredients(String recipeName) {
         HashMap<String, Integer> recipe = getRecipeIngredientMap(cookbook.get(recipeName));
@@ -407,5 +405,17 @@ public class RecipeListViewModel {
     public HashMap<String, RecipeData> getCookbook() {
         return cookbook;
     }
+
+    /**
+     * Callback for updateRecipes().
+     */
+    public interface UpdateRecipesCallback {
+        void onRecipesUpdated(ArrayList<RecipeData> recipesData);
+    }
+
+    private interface InitializingPantryCallback {
+        void onCallback(HashMap map);
+    }
+
 }
 

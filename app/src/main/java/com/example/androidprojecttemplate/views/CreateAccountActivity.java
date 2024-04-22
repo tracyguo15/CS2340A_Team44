@@ -89,7 +89,8 @@ public class CreateAccountActivity extends AppCompatActivity {
                                     "Your account has been created, please login",
                                     Toast.LENGTH_SHORT).show();
                             // switch to home page
-                            Intent theIntent = new Intent(CreateAccountActivity.this, LoginPageActivity.class);
+                            Intent theIntent = new Intent(CreateAccountActivity.this,
+                                    LoginPageActivity.class);
                             startActivity(theIntent);
                             //finish();
                         } else if (theResult == 6) {

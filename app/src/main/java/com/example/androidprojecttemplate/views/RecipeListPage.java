@@ -120,7 +120,8 @@ public class RecipeListPage extends AppCompatActivity {
                     return;
                 }
                 String userName = viewModel.getUserName();
-                DatabaseReference shoppingListDB = FirebaseDatabase.getInstance().getReference().child("Shopping_List").child(userName);
+                DatabaseReference shoppingListDB = FirebaseDatabase.getInstance()
+                        .getReference().child("Shopping_List").child(userName);
 
                 shoppingListDB.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -134,10 +135,12 @@ public class RecipeListPage extends AppCompatActivity {
                             }
 
                             if (shoppingList.containsKey(keyInDB)) {
-                                int previousQuantity = Integer.parseInt(listItem.child("quantity").getValue().toString());
+                                int previousQuantity = Integer.parseInt(
+                                        listItem.child("quantity").getValue().toString());
                                 int additionalQuantity = shoppingList.get(keyInDB);
                                 String result = (previousQuantity + additionalQuantity) + "";
-                                shoppingListDB.child(keyInDB).child("quantity").getRef().setValue(result);
+                                shoppingListDB.child(keyInDB).child("quantity")
+                                        .getRef().setValue(result);
                                 shoppingList.remove(keyInDB);
                             }
                         }
@@ -159,22 +162,6 @@ public class RecipeListPage extends AppCompatActivity {
                 v.setEnabled(true);
             }
         });
-
-        //Log.d("CAN COOK METHOD TESTING", canCook());
-
-        //Make it so that each item in the list is clickable
-        /*
-        theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Implement logic to display recipe details here
-                String recipeName = theListView.get(position); //This should get the value at the position in which it was clicked
-                Intent intent = new Intent(RecipeListPage.this, RecipeDetailPage.class);
-                intent.putExtra("recipe", recipeName);
-                startActivity(intent);
-            }
-        }); */
-        //Log.d("TESTING", cookbookDatabase.getKey());
     }
 
     /**

@@ -28,7 +28,7 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
     private ArrayList<String> theQuantities = new ArrayList<>();
     private ArrayList<String> theSelectedItems = new ArrayList<>();
     private ArrayList<String> theSelectedQuantities = new ArrayList<>();
-    ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> adapter;
 
 
     @Override
@@ -45,7 +45,8 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
         // Deals with setting up list view
         theShoppingList = getIntent().getExtras().getStringArrayList("ListForShopping");
         theQuantities = getIntent().getExtras().getStringArrayList("Quantities");
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, theShoppingList);
+        adapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_list_item_multiple_choice, theShoppingList);
         theListView.setAdapter(adapter);
         theListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
@@ -53,7 +54,8 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
         buttonToGoBackToScrollablePage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent theIntent = new Intent(ShoppingListTheCheckBoxPage.this, ShoppingListScrollablePage.class);
+                Intent theIntent = new Intent(
+                        ShoppingListTheCheckBoxPage.this, ShoppingListScrollablePage.class);
                 theIntent.putExtra("TheList", theShoppingList);
                 theIntent.putExtra("TheQuantities", theQuantities);
                 startActivity(theIntent);
@@ -65,8 +67,8 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Will analyze the listview with the different check boxes
-                for(int i = 0; i < theListView.getCount(); i++) {
-                    if(theListView.isItemChecked(i)) {
+                for (int i = 0; i < theListView.getCount(); i++) {
+                    if (theListView.isItemChecked(i)) {
                         // Items are selected should be removed from the shopping database
                         // And added to the pantry database
                         theSelectedItems.add((String) theListView.getItemAtPosition(i));
@@ -77,7 +79,10 @@ public class ShoppingListTheCheckBoxPage extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
 
                 if (theSelectedItems.size() == 0) {
-                    Toast.makeText(ShoppingListTheCheckBoxPage.this, "Nothing was selected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(
+                            ShoppingListTheCheckBoxPage.this,
+                            "Nothing was selected",
+                            Toast.LENGTH_SHORT).show();
                 } else {
                     //Send data to viewModel method
                     viewModel.getCurrentUser();
