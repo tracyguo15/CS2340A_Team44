@@ -42,6 +42,7 @@ Springboarding off of the Use Case Diagram, our team created an initial system s
 
 
 ## Singleton Pattern Evidence
+
 The code presented in the image above follows the singleton pattern by creating only one instance. The singleton design pattern requires there to be only one private instance of a variable and globally accessible through one pathway. The variable titled “uniqueInstance” is the only instance created. The variable is private to help ensure that no external class is able to gain access and in turn generate another instance of the singleton class. Finally, the only way to access the variable is through the “getInstance()” method. This method communicates with the firebase authentication database to retrieve information about usernames(emails) and passwords using the variable. There is only one instance that can actually communicate with the firebase authentication and for other classes such as the createAccountViewModel, it would have to call that one instance to send and retrieve appropriate data to firebase. As a result, by utilizing a singleton pattern, it allows the class surrounding the firebase to execute more efficiently and utilize resources effectively due to only one instance to be created.  
 
 <img width="466" alt="singleton" src="singleton.png">
@@ -54,6 +55,7 @@ For our third sprint we developed a Design Class Diagram to further define the d
 
 
 ## Updated Sequence Diagram and Use Case Scenarios
+
 Here is another sequence diagram developed during our third sprint that included the functionality we later implemented for the sprint. 
 ### Use Case Scenarios
 <img width="612" alt="SD3" src="SD3.png">
@@ -64,9 +66,12 @@ Here is another sequence diagram developed during our third sprint that included
 ## Design Principles Examples: SOLID
 
 ### Liskov Substitution Principle
+
 <img width="460" alt="LSP1" src="LSP1.png">
 
 <img width="473" alt="LSP2" src="LSP2.png">
+
+
 The top image is the parent class AbstractDatabase with one of its children being the PantryData class. The Liskov substitution principle covers how parent and child classes impact one another. Child classes are supposed to be able to substitute for their parent classes without it being noticeable. The PantryData class has many of the methods that its parent class contains and is able to complete the same functionality such as adding items and deleting items similar to how the AbstractDatabase completed the put and remove method which is in line with the Liskov substitution principle.
 
 ### Interface Segregation Principle
@@ -103,6 +108,7 @@ The creator principle of GRASP determines which programs are responsible for cre
 
 ## Design Patterns
 ### Strategy Pattern
+
 <img width="537" alt="SP1" src="SP1.png">
 
 <img width="392" alt="SP2" src="SP2.png">
@@ -115,6 +121,7 @@ The design strategy pattern defines a family of algorithms, encapsulates each on
 ### Adapter Pattern
 
 <img width="489" alt="AP" src="AP.png">
+
 The adapter pattern is primarily utilized to allow items with incompatible interfaces to be able to work together in order to achieve some goal. The adapter pattern falls under the structural pattern’ umbrella' so to speak. Structural patterns unite different classes and objects into a bigger structure without affecting the efficiency.  Here in the code below we have implemented the adapter pattern by creating an adapter class that can be utilized to make an adapter object. Our adapter in this instance is allowing us to be able to adapt a list into the list view. By implementing the adapter pattern we were able to unite the list and the list view which have separate interfaces in order to have them be compatible together. This in turn will benefit the application’s implementation later down the road by connecting separate classes to improve the code’s capabilities without impacting the functionality.
 
 ### Observer Pattern
@@ -128,10 +135,76 @@ The observer pattern is used to be able to notify other objects about events tha
 
 # User Interface
 
+### Filter by Time
+<img width="254" alt="FilterTime" src="FilterTime.png">
+This is the recipe page with the different times that it will take to complete each item.
+
+
+### Add to Shopping List
+<img width="254" alt="addshoppinglist" src="addshoppinglist.png">
+Here is the page in which users can place their ingredients into to be logged.
+
+
+### Personal Information Input
+
+<img width="254" alt="PersonalInfo" src="PersonalInfo.png">
+This is the page where users can enter in their body type information so that they can determine their recommended calorie intake. 
+
+### Scrollable Ingredient List
+<img width="254" alt="IngredientList" src="IngredientList.png">
+
+Above is the shopping list for the user based on what they are out of.
+
+
+### Input Meal
+
+<img width="254" alt="InputMeal" src="InputMeal.png">
+
+This is the page that users can enter a recipe into their recipe list.
+
+
 # Functionality
 [Watch Video Demo](https://drive.google.com/file/d/1l6r8kNe42IKGBu-0dZnQlR6O4NSW1O9C/view?usp=sharing)
 
-# Conclusion
+# Conclusion: Individual Reflections
+
+### Rohan Bhole
+I’ve worked on group projects in the past before, but never like this. They were always for non-CS classes so each individual member’s contributions often didn’t affect each other. When asking others for help, it was often a struggle since they were not familiar with my code and even if they were, they each have their own coding practices that may not align well with my own.
+
+Even from previous CS classes, I have never had an experience with such a large scale project. I had never created JUnits to test my code and I had never had to read from databases or even use them before. For this project I was primarily responsible for the recipe side of the app. The ability to add new recipes, display whether you had enough ingredients in your pantry to cook the recipes, and to add calorie tracking features and visualizations. 
+
+
+### Daniel Deller
+I have never really worked in a group setting, but this assignment introduced me to the fast paced nature of software engineering. Throughout these four months I have picked up many tangible and intangible skills, such as properly reading documentation, team communication, simple Firebase programming, Android mobile development using Android Studio, and git version control. As a team member I was more involved with the design and debugging of the system. I first assisted in designing the domain model and design class diagrams for our program. After that, I mostly assisted my teammates in debugging software and working more on backend code, such as in our last spring where I had to fix the database callback methods in RecipeViewList, or when I helped work on the navigation view. While doing this project, the main issues I encountered were technical. A lot of times I was having difficulty with managing my personal branches, as well as finding resources to solve certain problems I was having, such as finding out how to properly return values from a database call. To solve these issues, I made sure to test merges on local branches before pushing the changes to the remote repository. I also made sure to test snippets of code so I could get a better handle of the problem.
+
+I had many important takeaways from this project, such as: it is okay to ask for help, to balance perfection and practicality, to be a go-getter and look for the solution, and good design early pays well off later on down the line. In the end, through trial, error, and good system design our team managed to complete our goal of building a functional pantry management app.
+
+
+### Tracy Guo
+Looking back at our project, it’s clear that we've come a long way. Working together, we got better at collaborating effectively, especially towards the end when we shifted from doing things alone to really being a team. I put a lot into this project: I handled the navigation bar, worked out how to make callback interfaces smooth, stepped in to debug when my teammates hit a wall, wrote most of our unit tests, pulled our website together, and kept everyone on track to meet our deadlines.
+
+Sure, there were hurdles—like trying to make sense of someone else’s code to fix issues, which was really tough. And keeping everyone moving to hit our project milestones wasn’t always easy when things got complex. But overcoming these challenges was worth it. I’ve learned so much, especially about working with Firebase and understanding MVVM architecture, not to mention understanding new design patterns.
+
+
+### Michael Leonick
+Overall, I learned a lot more about how to construct an app. First off, I learned how to use android studio with Java to implement object-oriented principles and UI elements. Furthermore, I was responsible for setting up login information in firebase and worked on setting up the ingredient and shopping list screens. From there, I learned more complex UI elements such as how to construct a scrollable list and checkbox. I also handled both respective databases. Lastly, I also learned how to use Logcat to debug runtime errors. 
+
+The main challenge I had was determining firebase issues. For instance, one of the biggest issues I realized was that there is a time delay for firebase to retrieve information from databases. As a result, this was messing up my code since due to the time delay, nothing was returned immediately and I got null pointer errors. I was able to detect the issue by using Logcat and using timers to make sure that necessary information can be retrieved and then used. 
+
+In addition, I learned more about the design elements of a software and to work with a team to build a functional app. Both of these are very beneficial skills that I can use in the future. 
+
+### Adam Vaughn
+Throughout the project we successfully completed our goal of creating a food sustainability app to help enrich user’s lives by reducing food waste. Though there were difficult setbacks our team was able to manage and find work around the issues that we encountered. With the process of developing an application I learned a tremendous amount about how to manage a team, how to test code for functionality, and diagramming to ensure consistent design.
+
+
+# Acknowledgements
+
+Rohan Bhole: App Developer
+Daniel Deller: System designer, helping hand, debugger, app developer
+Tracy Guo: Deadline manager, web developer, app developer
+Michael Leonick: App Developer
+Michael Vaden: App Developer
+Adam Vaughn: Team manager, topics research, designer
 
 
 
