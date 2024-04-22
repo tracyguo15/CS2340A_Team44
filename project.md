@@ -9,7 +9,7 @@ GreenPlate is an app designed to help reduce the waste of food, save people mone
 
 Here we have the use case diagram for our first sprint where we were defining how primary and supporting actors would interact with the app, and who could potentially be supporting the development and production of the app. The user being a primary actor in this diagram interacts with the app by logging into the app, entering in their calorie intake to be recorded, adding items to their shopping list, and selecting a recipe to cook. Understanding how the different actors such as the user interact with the system allowed the development of the GreenPlate app to go smoothly by providing a consistent description of what needed to be implemented down the road. 
 
-<img width="620" alt="Use Case" src="https://github.com/tracyguo15/CS2340A_Team44/assets/151801680/e4f6ecb8-a083-4550-8d34-57ba69f0b5be">
+<img width="620" alt="Use Case" src="https://github.com/tracyguo15/CS2340A_Team44/DomainModel.png">
 
 ### Domain Model
 This is the Domain model that we developed early on in the project to be able to define the different classes and their different attributes. This domain model was created in order to bridge the written description of what GreenPlate was going to be to something easy to understand when generating software. The domain model was useful as well to help understand how the different classes will interact with one another such as how classes will interact with an interface.
