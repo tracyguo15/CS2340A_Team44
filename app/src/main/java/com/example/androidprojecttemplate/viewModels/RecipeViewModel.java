@@ -3,7 +3,6 @@ package com.example.androidprojecttemplate.viewModels;
 import androidx.annotation.NonNull;
 
 import com.example.androidprojecttemplate.models.FirebaseDB;
-import com.example.androidprojecttemplate.views.IngredientPage;
 import com.example.androidprojecttemplate.views.RecipePage;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

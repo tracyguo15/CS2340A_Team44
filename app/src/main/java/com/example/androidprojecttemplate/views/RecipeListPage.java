@@ -1,24 +1,22 @@
 package com.example.androidprojecttemplate.views;
+
+
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 //import android.util.Log;
 import android.util.Log;
 import android.view.View;
 //import android.widget.Adapter;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 //import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.androidprojecttemplate.R;
 import com.example.androidprojecttemplate.models.RecipeData;
 //import com.example.androidprojecttemplate.viewModels.DataObserver;
-import com.example.androidprojecttemplate.viewModels.RecipeListCallback;
+import com.example.androidprojecttemplate.models.CustomAdapter;
 import com.example.androidprojecttemplate.viewModels.RecipeListViewModel;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,230 +25,240 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
+
 import android.os.Handler;
+
+
 public class RecipeListPage extends AppCompatActivity {
-    // might need
-    private ListView theListView;
+    private RecipeListViewModel viewModel;
+    private LinearLayout recipesContainer;
 
     private ArrayAdapter adapter;
+    private Button goBackToRecipeScreen;
     private Button alphabetFilter;
     private Button timeFilter;
 
-    private RecipeListViewModel viewModel;
+
     private Button backToRecipePage;
 
-    // may need
-    private static String[] ingredientHolder = new String[1];
-    private ListView listViewRecipes;
+    private Button missingIngredientsButton;
+    private Timer timer;
+    private Timer timer2;
+    private String temp = "hello";
+
+    private Handler timerHandler = new Handler();
+    //private static String[] ingredientHolder = new String[1];
+    private LinearLayout listViewRecipes;
     private FirebaseUser user;
     private DatabaseReference userRef;
     private DatabaseReference cookbookRef;
     private DatabaseReference pantryRef;
     private List<String[]> recipes = new ArrayList<>();
-    //private List<String> display = new ArrayList<>();
-    //private List<RecipeData> recipeDataList = new ArrayList<>();
+    private List<String> display = new ArrayList<>();
+    private List<RecipeData> recipeDataList = new ArrayList<>();
 
     private ArrayList<String> recipeNames = new ArrayList<>();
     private ArrayList<Integer> recipeTimes = new ArrayList<>();
     private ArrayList<Boolean> recipeCanCooks = new ArrayList<>();
-
+    private HashMap<String, Integer> shoppingList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list_page);
 
-        // back button
+        listViewRecipes = findViewById(R.id.listViewRecipes);
+        viewModel = RecipeListViewModel.getInstance();
+        viewModel.getCurrentUser();
+
+        //Identify and define the button that takes you back to the recipe page
         backToRecipePage = findViewById(R.id.backToRecipePage);
         backToRecipePage.setOnClickListener(v -> {
             Intent intent = new Intent(RecipeListPage.this, RecipePage.class);
             startActivity(intent);
         });
 
-        // filter alphabetically button
+        //Filter alphabetically button
         alphabetFilter = findViewById(R.id.btnFilterAlpha);
         alphabetFilter.setOnClickListener(v -> {
-            sortByAlphabet();
+            displayRecipesAlpha();
         });
 
-        // filter by time button
+        //Filter by time button
         timeFilter = findViewById(R.id.btnFilterTime);
         timeFilter.setOnClickListener(v -> {
-            sortByTime();
+            displayRecipesTime();
         });
 
-        // define database references for use later
+        // database references
         cookbookRef = FirebaseDatabase.getInstance().getReference().child("Cookbook");
         pantryRef = FirebaseDatabase.getInstance().getReference().child("Pantry");
 
-        // THIS SHOULD BE REFACTORED
-        listViewRecipes = findViewById(R.id.listViewRecipes);
+        // container view
+        recipesContainer = findViewById(R.id.listViewRecipes);
+
+        // RecipeListViewModel instantiation
         viewModel = RecipeListViewModel.getInstance();
-        viewModel.getCurrentUser();
 
-        // THIS SHOULD BE REFACTORED
-        // attach listeners
-        attachDatabaseReadListener();
+        // initially display recipes
+        this.displayRecipes();
+        Log.d("BREAK", "another break for buttons");
 
+        missingIngredientsButton = findViewById(R.id.missingIngredientsButton);
+        missingIngredientsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setEnabled(false);
+                Log.d("OUT", "click");
+
+                shoppingList = viewModel.getAllMissingIngredients();
+                if (shoppingList == null) {
+                    return;
+                }
+                String userName = viewModel.getUserName();
+                DatabaseReference shoppingListDB = FirebaseDatabase.getInstance().getReference().child("Shopping_List").child(userName);
+
+                shoppingListDB.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // for each element in the remote database that
+                        for (DataSnapshot listItem : snapshot.getChildren()) {
+                            Log.d("SUBMIT", listItem.getKey());
+                            String keyInDB = listItem.getKey();
+                            if (keyInDB.equals("name") || keyInDB.equals("username")) {
+                                continue;
+                            }
+
+                            if (shoppingList.containsKey(keyInDB)) {
+                                int previousQuantity = Integer.parseInt(listItem.child("quantity").getValue().toString());
+                                int additionalQuantity = shoppingList.get(keyInDB);
+                                String result = (previousQuantity + additionalQuantity) + "";
+                                shoppingListDB.child(keyInDB).child("quantity").getRef().setValue(result);
+                                shoppingList.remove(keyInDB);
+                            }
+                        }
+
+                        // for each element on the user's side that isn't already in the database
+                        for (String key : shoppingList.keySet()) {
+                            String quantity = shoppingList.get(key) + "";
+                            shoppingListDB.child(key).child("name").getRef().setValue(key);
+                            shoppingListDB.child(key).child("quantity").getRef().setValue(quantity);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.d("ERROR", "unable to write to Shopping_List database...!");
+                    }
+                });
+
+                v.setEnabled(true);
+            }
+        });
+
+        //Log.d("CAN COOK METHOD TESTING", canCook());
+
+        //Make it so that each item in the list is clickable
+        /*
+        theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Implement logic to display recipe details here
+                String recipeName = theListView.get(position); //This should get the value at the position in which it was clicked
+                Intent intent = new Intent(RecipeListPage.this, RecipeDetailPage.class);
+                intent.putExtra("recipe", recipeName);
+                startActivity(intent);
+            }
+        }); */
+        //Log.d("TESTING", cookbookDatabase.getKey());
     }
 
     /**
-     * Should be handled with viewModel.
+     * Displays each of the recipes in the database.
      */
-    private void attachDatabaseReadListener() {
-        cookbookRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot snapshots : snapshot.getChildren()) {
-                    // store the necessary data into their own variables
-                    String name = snapshots.getKey();
-                    String time = Integer.toString(snapshots.getValue(RecipeData.class).getTime());
+    private void displayRecipes() {
+        CustomAdapter adapter = new CustomAdapter(
+                this,
+                this.recipesContainer,
+                this.viewModel);
 
-                    // RecipeData recipe = snapshots.getValue(RecipeData.class);
-
-                    // tests to makes sure whether the variables have the correct data
-                    Log.d("NAME", name);
-                    Log.d("TIME", time);
-                    //Log.d("RECIPEDATA", recipe.toString());
-
-                    //Add the data to the String[] recipes
-                    // recipes.add(new String[]{name, time});
-                    // recipeDataList.add(recipe);
-
-                    //Update the views
-                    // update(recipeDataList);
-                    displayRecipes();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("Error", "Something went wrong");
-            }
-        });
+        adapter.display();
     }
 
-    private void displayRecipes() {
-        // should take global recipes from
-        /*
-        display.clear();
+    /**
+     * Displays each of the recipes in the database sorted alphabetically.
+     */
+    private void displayRecipesAlpha() {
+        CustomAdapter adapter = new CustomAdapter(
+                this,
+                this.recipesContainer,
+                this.viewModel);
 
-        Log.d("perhaps error?", Integer.toString(recipes.size()));
-        //Adds each String[] to a separate Arraylist with better naming conventions
+        adapter.displayAlpha();
+    }
+
+    /**
+     * Displays each of the recipes in the database sorted by time.
+     */
+    private void displayRecipesTime() {
+        CustomAdapter adapter = new CustomAdapter(
+                this,
+                this.recipesContainer,
+                this.viewModel);
+
+        adapter.displayTime();
+    }
+
+    /*
+    private void update(String recipeName) {
+        display.clear();
+        Log.d("RecipeList size", Integer.toString(recipes.size()));
+        // Adds each String[] to a separate Arraylist with better naming conventions
         for (String[] arr : recipes) {
             display.add(arr[0] + " cook time: " + arr[1]);
         }
 
-        //Adapter to convert the list into the ListView
-        adapter = new ArrayAdapter(this,
+        // Adapter to convert the list into the ListView
+        adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, display) {
             @NonNull
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text = (TextView) view.findViewById(android.R.id.text1);
-                text.setTextColor(Color.RED);
+
+                // Call the canCook2 method with a callback
+                viewModel.canCook2(recipes.get(position)[0], new CanCookCallback() {
+                    @Override
+                    public void onResult(boolean canCook) {
+                        runOnUiThread(() -> {
+                            // This ensures the update happens on the UI thread
+                            if (canCook) {
+                                text.setTextColor(Color.GREEN);
+                            } else {
+                                text.setTextColor(Color.RED);
+                            }
+                        });
+                    }
+                });
+
+                text.setText(recipes.get(position)[0]);
                 return view;
             }
-
-            @Override
-            public void notifyDataSetChanged() {
-                TextView text = (TextView) theListView.findViewById(android.R.id.text1);
-                text.setTextColor(Color.GREEN);
-            }
         };
-        this.listViewRecipes.setAdapter(adapter);
 
-        //Code to changed the text color based on whether the recipe can be cooked
-        //this.theListView.setBackgroundColor(canCook() ? Color.GREEN : Color.RED);
-        //this.theListView.textColor
-        */
+        listViewRecipes.setAdapter(adapter);
+    }*/
+
+    public RecipeListViewModel getViewModel() {
+        return viewModel;
     }
 
-    public void sortByAlphabet() {
-        Collections.sort(recipes, (recipe1, recipe2) ->
-                recipe1[0].compareToIgnoreCase(recipe2[0]));
-        displayRecipes();
-    }
-
-    public void sortByTime() {
-        Collections.sort(recipes, new Comparator<String[]>() {
-            @Override
-            public int compare(String[] time1, String[] time2) {
-                int quantity1 = Integer.parseInt(time1[1]);
-                int quantity2 = Integer.parseInt(time2[1]);
-                return Integer.compare(quantity1, quantity2);
-            }
-        });
-        displayRecipes();
-    }
-
-    //canCook method from PantryData not yet adapted for this class
-
-    public boolean canCook(RecipeData recipe, RecipeListCallback callback) {
-        //Boolean variable to be returned
-        boolean cooked = false;
-
-        //Grab an instance of the ViewModel
-        viewModel = RecipeListViewModel.getInstance();
-        viewModel.getCurrentUser();
-
-        //Get String[] of all the ingredients necessary and available
-        ArrayList<String[]> recipeIngredients = viewModel.getRecipeIngredients(recipe);
-        ArrayList<String[]> pantryIngredients = viewModel.getPantryIngredients();
-
-        //Go through each ingredient necessary for recipe
-        for (String[] r : recipeIngredients) {
-            //Go through every ingredient in the pantry
-            for (String[] p : pantryIngredients) {
-                //Compare the names to see if they match
-                if (r[0].equals(p[0])) {
-                    //If the pantry amount < recipe amount
-                    if (Integer.parseInt(p[1]) < Integer.parseInt(r[1])) {
-                        break;
-                    } else if (Integer.parseInt(p[1]) > Integer.parseInt(r[1])) {
-                        cooked = true;
-                    }
-                }
-            }
-
-            //If cooked != true, then that means either the quantity was too low
-            //or it wasn't in the pantry
-            if (cooked != true) {
-                break;
-            }
-        }
-
-        return cooked;
-    }
-
-    private void update(List<RecipeData> recipes) {
-
-        for (RecipeData recipe : recipes) {
-            //if (recipe.canCook(pantryRef.getValue(PantryData.class))) {
-                //TextView text = (TextView) theListView.findViewById(android.R.id.text1);
-                //text.setTextColor(Color.GREEN);
-            //} else {
-                //TextView text = (TextView) theListView.findViewById(android.R.id.text1);
-                //text.setTextColor(Color.RED);
-            //}
-            Log.d("canCook Called", String.valueOf(canCook(recipe, new RecipeListCallback() {
-                @Override
-                public boolean onCanCook(boolean canCook) {
-                    return canCook;
-                }
-
-                @Override
-                public void onError(DatabaseError databaseError) {
-                    Log.d("CALLBACK ERROR", databaseError.toString());
-                }
-            })));
-        }
+    public Button getMissingIngredientsButton() {
+        return missingIngredientsButton;
     }
 }
