@@ -207,10 +207,15 @@ Throughout the project we successfully completed our goal of creating a food sus
 # Acknowledgements
 
 Rohan Bhole: App Developer
+
 Daniel Deller: System designer, helping hand, debugger, app developer
+
 Tracy Guo: Deadline manager, web developer, app developer
+
 Michael Leonick: App Developer
+
 Michael Vaden: App Developer
+
 Adam Vaughn: Team manager, topics research, designer
 
 
