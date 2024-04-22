@@ -9,7 +9,7 @@ GreenPlate is an app designed to help reduce the waste of food, save people mone
 
 Here we have the use case diagram for our first sprint where we were defining how primary and supporting actors would interact with the app, and who could potentially be supporting the development and production of the app. The user being a primary actor in this diagram interacts with the app by logging into the app, entering in their calorie intake to be recorded, adding items to their shopping list, and selecting a recipe to cook. Understanding how the different actors such as the user interact with the system allowed the development of the GreenPlate app to go smoothly by providing a consistent description of what needed to be implemented down the road. 
 
-<img width="620" alt="Use Case" src="DomainModel.png">
+<img width="620" alt="Use Case" src="UseCase.png">
 
 ### Domain Model
 This is the Domain model that we developed early on in the project to be able to define the different classes and their different attributes. This domain model was created in order to bridge the written description of what GreenPlate was going to be to something easy to understand when generating software. The domain model was useful as well to help understand how the different classes will interact with one another such as how classes will interact with an interface.
@@ -19,15 +19,14 @@ This is the Domain model that we developed early on in the project to be able to
 ### MVVM Architecture
 In our project we decided to use MVVM as our architecture. This is mainly because it was the preferred development pattern for Android mobile development. In our model, we have around 9 classes representing important concepts in our system. Namely, Ingredients, Recipes, and Meals, which represent the food; a Pantry which stores the food; a RecipeBook and Health Report to keep track of meals eaten in the past and future. There is also a Trash Bin that keeps track of food wasted. This is the internal workings of our system, however, we need to keep our system responsive to the user, and let the user update the system while the system notifies the user of what actions they can take. We created Model classes (located in the modelfolder) to keep track of any internal classes used by the system. We then made ViewModels (kept in the viewmodels folder)  which would be an intermediate layer for communicating between the internal system models and the user inputs. Finally, we have Views (located in the views folder), which represent the visual GUI that the user will interact with. The Views folder holds the classes which implement the logic for making GUI components work. Along with the Views folder is the res/layout folder, which lays out all the components of the GUI that the app will use.
 
-[https://github.com/tracyguo15/CS2340A_Team44/assets/151801680/98a16b5d-4347-4468-a242-e088f1b8ceaf](https://github.com/tracyguo15/CS2340A_Team44/blob/73a4a85ae2e9814f6bc8395b9f9552e70d58e1ca/MVVM.png)
 
-
-<img width="288" alt="MVVM" src="https://github.com/tracyguo15/CS2340A_Team44/assets/151801680/e270a5bd-98b5-4861-9971-4c17cc4d5b22">
+<img width="288" alt="MVVM" src="MVVM.png">
+<img width="288" alt="MVVM" src="MVVM2.png">
 
 ### Updated Domain Model
 This is the updated Domain model that we created in the second sprint of the project to be able to further define the relationships between the classes we already had, and the new ones that we added. The updated model allowed for a better understanding of how the new classes will be included within the scope of our current implementation, and what attributes that they contain.
 
-<img width="641" alt="Updated Domain Model" src="https://github.com/tracyguo15/CS2340A_Team44/assets/151801680/c4269dc2-8d7d-49b3-95d3-f08e97d424cb">
+<img width="641" alt="Updated Domain Model" src="UpdatedDomainModel.png">
 
 
 
