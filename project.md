@@ -61,7 +61,7 @@ Here is another sequence diagram developed during our third sprint that included
 ### Sequence Diagram
 <img width="710" alt="UseCase3" src="UseCase3.png">
 
-## Design Principles Examples
+## Design Principles Examples: SOLID
 
 ### Liskov Substitution Principle
 <img width="460" alt="LSP1" src="LSP1.png">
@@ -69,8 +69,61 @@ Here is another sequence diagram developed during our third sprint that included
 <img width="473" alt="LSP2" src="LSP2.png">
 The top image is the parent class AbstractDatabase with one of its children being the PantryData class. The Liskov substitution principle covers how parent and child classes impact one another. Child classes are supposed to be able to substitute for their parent classes without it being noticeable. The PantryData class has many of the methods that its parent class contains and is able to complete the same functionality such as adding items and deleting items similar to how the AbstractDatabase completed the put and remove method which is in line with the Liskov substitution principle.
 
-###
+### Interface Segregation Principle
+ISP
 
+The interface segregation principle focuses on not using large interfaces and utilizing small focused interfaces. The IngredientCallback class is an interface that focuses on ensuring that we are properly updating the app’s interface. The IngredientCallback class is not a multipurpose interface. It just focuses on one main purpose of ensuring that the code implemented effectively interacts with the interface of the app with one singular method to implement in a concrete class. This allows for the classes that utilize the interface to not be reliant on one another and able to complete their tasks separately.
+
+### Dependency Inversion Principle
+
+DIP
+The dependency inversion principle highlights that classes should depend on interfaces and abstract methods instead of concrete implementations in another class, and that high level modules should not be tightly coupled with lower level modules. In the example above the top image is the interface, and the bottom is a screenshot of the addToFirebase method in another class that utilizes the interface. The class that contains addToFirebase is following the dependency inversion principle by utilizing an interface and an abstract method in order to complete the implementation instead of relying on a concrete class. The interface class IngredientCallback is abiding by the dependency inversion principle by not relying on details from lower level modules.
+
+
+## Design Principles Examples: GRASP
+
+### Information Expert
+
+IE
+The information expert principle of GRASP emphasizes classes holding necessary data for its operations, therefore being an expert on its data by encapsulating the data needed to create its functions. The IngredientData.java class is an example that complies with this principle because it encapsulates all relevant data about an ingredient, such as its name, calories, price, quantity, and expiration date. This encapsulation allows IngredientData to have the necessary information to perform operations related to an ingredient, making it an expert on that data.
+
+### Controller
+
+Controller
+The controller principle is a pattern where all non-UI logic is passed down to a base model. In this case, PantryPageViewModel class acts as the controller class, by making it so that the user has access to their pantry, and can add, modify, and remove items at will. It does this by being instantiated when the UI class is created, and depending on which button is pressed, updating the PantryData database. This makes it so that it is easier to separate UI logic from the backend code.
+
+### Creator
+
+Creator
+The creator principle of GRASP determines which programs are responsible for creating an object, or a new instance of another class. The goal is to avoid creating redundant objects and to only create one if necessary, such as if one class has initializing data or closely uses another class. In this example that’s in the IngredientViewModel, it complies with this principle as the IngreidentViewModel is creating a DataForPantry object, This is because the viewmodel has all of the initializing data for DataForPanty, and uses the object closely as the object is what’s added to firebase. 
+
+
+## Design Patterns
+### Strategy Pattern
+SP1
+SP2
+SP3
+
+
+The design strategy pattern defines a family of algorithms, encapsulates each one, and makes them interchangeable. The strategy lets the algorithm vary independently from clients that use it. The classes IngredientCallback, IngredientViewModel, and IngredientPage reflect this pattern. The IngredientCallback Interface defines a contract for the strategies, encapsulating the different possible completion actions for an operation with ingredients as the onCompleted(int result) method. It serves as an abstraction for the algorithm that can be called upon completion of the background task. Next, the IngredientViewModel class plays the role of the context in the strategy pattern. It maintains a reference to a IngredientCallback strategy and communicates with it via the addToFirebase method. By accepting a IngredientCallback as a parameter, IngredientViewModel is designed to work with any strategy that adheres to the IngredientCallback interface. This setup allows the IngredientViewModel to delegate the post-operation action, depending on the outcome of adding ingredients to the database, to the concrete strategy provided. Finally, the IngredientPage class acts as a client of the strategy pattern. It holds the UI logic and interacts with the IngredientViewModel to initiate actions. When it's time to report the outcome of an action, such as adding an ingredient, IngredientPage supplies a concrete implementation of the IngredientCallback strategy to IngredientViewModel. It defines the specific behavior of the algorithm to execute when the action is completed, be it success, failure, or duplication, based on the user interaction. By separating the concerns, the strategy pattern is effectively used to manage different outcomes of adding an ingredient, without coupling the outcome handling to the IngredientViewModel context. This enables easier maintenance and expansion for handling other types of operations that might be introduced in the future.
+
+### Adapter Pattern
+
+AP
+The adapter pattern is primarily utilized to allow items with incompatible interfaces to be able to work together in order to achieve some goal. The adapter pattern falls under the structural pattern’ umbrella' so to speak. Structural patterns unite different classes and objects into a bigger structure without affecting the efficiency.  Here in the code below we have implemented the adapter pattern by creating an adapter class that can be utilized to make an adapter object. Our adapter in this instance is allowing us to be able to adapt a list into the list view. By implementing the adapter pattern we were able to unite the list and the list view which have separate interfaces in order to have them be compatible together. This in turn will benefit the application’s implementation later down the road by connecting separate classes to improve the code’s capabilities without impacting the functionality.
+
+### Observer Pattern
+The observer pattern is used to be able to notify other objects about events that happen to other objects that are relevant to their use. This allows classes with dynamic data to not have to be altered when introducing another class that relies on that data for functionality. When you implement the observer pattern, it connects objects together at runtime to reduce errors caused by miscommunication between classes. In our code, the getDatabases method calls methods that implement the observer pattern to update data. The method onDataChange implements the observer pattern and updates the data through listeners. The observer pattern allows for our pantry and cookbook database to be able to stay updated to ensure no errors when a user is at the store getting food, or is trying to select a recipe.
+
+OP1
+OP2
+OP3
+
+# User Interface
+
+# Functionality
+
+# Conclusion
 
 
 
