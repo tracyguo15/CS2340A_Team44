@@ -103,11 +103,11 @@ The creator principle of GRASP determines which programs are responsible for cre
 
 ## Design Patterns
 ### Strategy Pattern
-<img width="537" alt="SP1" src="SP1">
+<img width="537" alt="SP1" src="SP1.png">
 
-<img width="392" alt="SP2" src="SP2">
+<img width="392" alt="SP2" src="SP2.png">
 
-<img width="377" alt="SP3" src="SP3">
+<img width="377" alt="SP3" src="SP3.png">
 
 
 The design strategy pattern defines a family of algorithms, encapsulates each one, and makes them interchangeable. The strategy lets the algorithm vary independently from clients that use it. The classes IngredientCallback, IngredientViewModel, and IngredientPage reflect this pattern. The IngredientCallback Interface defines a contract for the strategies, encapsulating the different possible completion actions for an operation with ingredients as the onCompleted(int result) method. It serves as an abstraction for the algorithm that can be called upon completion of the background task. Next, the IngredientViewModel class plays the role of the context in the strategy pattern. It maintains a reference to a IngredientCallback strategy and communicates with it via the addToFirebase method. By accepting a IngredientCallback as a parameter, IngredientViewModel is designed to work with any strategy that adheres to the IngredientCallback interface. This setup allows the IngredientViewModel to delegate the post-operation action, depending on the outcome of adding ingredients to the database, to the concrete strategy provided. Finally, the IngredientPage class acts as a client of the strategy pattern. It holds the UI logic and interacts with the IngredientViewModel to initiate actions. When it's time to report the outcome of an action, such as adding an ingredient, IngredientPage supplies a concrete implementation of the IngredientCallback strategy to IngredientViewModel. It defines the specific behavior of the algorithm to execute when the action is completed, be it success, failure, or duplication, based on the user interaction. By separating the concerns, the strategy pattern is effectively used to manage different outcomes of adding an ingredient, without coupling the outcome handling to the IngredientViewModel context. This enables easier maintenance and expansion for handling other types of operations that might be introduced in the future.
@@ -120,11 +120,11 @@ The adapter pattern is primarily utilized to allow items with incompatible inter
 ### Observer Pattern
 The observer pattern is used to be able to notify other objects about events that happen to other objects that are relevant to their use. This allows classes with dynamic data to not have to be altered when introducing another class that relies on that data for functionality. When you implement the observer pattern, it connects objects together at runtime to reduce errors caused by miscommunication between classes. In our code, the getDatabases method calls methods that implement the observer pattern to update data. The method onDataChange implements the observer pattern and updates the data through listeners. The observer pattern allows for our pantry and cookbook database to be able to stay updated to ensure no errors when a user is at the store getting food, or is trying to select a recipe.
 
-<img width="489" alt="OP1" src="OP1">
+<img width="489" alt="OP1" src="OP1.png">
 
-<img width="489" alt="OP2" src="OP2">
+<img width="489" alt="OP2" src="OP2.png">
 
-<img width="489" alt="OP3" src="OP3">
+<img width="489" alt="OP3" src="OP3.png">
 
 # User Interface
 
