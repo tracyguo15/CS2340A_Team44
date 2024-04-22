@@ -56,11 +56,20 @@ For our third sprint we developed a Design Class Diagram to further define the d
 ## Updated Sequence Diagram and Use Case Scenarios
 Here is another sequence diagram developed during our third sprint that included the functionality we later implemented for the sprint. 
 ### Use Case Scenarios
-<img width="612" alt="SD3" src="SD3">
+<img width="612" alt="SD3" src="SD3.png">
 
 ### Sequence Diagram
-<img width="710" alt="UseCase3" src="UseCase3">
+<img width="710" alt="UseCase3" src="UseCase3.png">
 
+## Design Principles Examples
+
+### Liskov Substitution Principle
+<img width="460" alt="LSP1" src="LSP1.png">
+
+<img width="473" alt="LSP2" src="LSP2.png">
+The top image is the parent class AbstractDatabase with one of its children being the PantryData class. The Liskov substitution principle covers how parent and child classes impact one another. Child classes are supposed to be able to substitute for their parent classes without it being noticeable. The PantryData class has many of the methods that its parent class contains and is able to complete the same functionality such as adding items and deleting items similar to how the AbstractDatabase completed the put and remove method which is in line with the Liskov substitution principle.
+
+###
 
 
 
