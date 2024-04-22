@@ -208,9 +208,9 @@ Throughout the project we successfully completed our goal of creating a food sus
 
 Rohan Bhole: App Developer
 
-Daniel Deller: System designer, helping hand, debugger, app developer
+Daniel Deller: App Developer, System Designer, Helping Hand, Debugger
 
-Tracy Guo: Deadline manager, web developer, app developer
+Tracy Guo: App developer, Web developer
 
 Michael Leonick: App Developer
 
