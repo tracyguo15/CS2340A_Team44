@@ -9,8 +9,8 @@ import com.example.androidprojecttemplate.models.ShoppingListData;
 
 
 public class Sprint4Junits {
-    //Tracy Guo
-    //check if shopping list quantity is negative
+    // Tracy Guo
+    // check if shopping list quantity is negative
     @Test
     public void testShoppingListDataQuantityNegative() {
         try {
@@ -20,8 +20,8 @@ public class Sprint4Junits {
         }
     }
 
-    //Tracy Guo
-    //check if shopping list quantity is null
+    // Tracy Guo
+    // check if shopping list quantity is null
     @Test
     public void testShoppingListDataQuantityNull() {
         try {
@@ -31,9 +31,9 @@ public class Sprint4Junits {
         }
     }
 
-    //Michael Leonick
+    // Michael Leonick
     @Test
-    //test shopping list quantity empty
+    // test shopping list quantity empty
     public void testShoppingListDataQuantityEmpty() {
         try {
             ShoppingListData shoppingListData = new ShoppingListData("apple", "", "30");
@@ -41,9 +41,9 @@ public class Sprint4Junits {
             assertEquals("Quantity is null, empty, or negative please enter a proper value", e.getMessage());
         }
     }
-    //Michael Leonick
+    // Michael Leonick
     @Test
-    //test shopping list name empty
+    // test shopping list name empty
     public void testShoppingListDataNameEmpty() {
         try {
             ShoppingListData shoppingListData = new ShoppingListData("", "1", "100");
@@ -52,9 +52,9 @@ public class Sprint4Junits {
         }
     }
 
-    //Daniel Deller
+    // Daniel Deller
     @Test
-    //test shopping list name null
+    // test shopping list name null
     public void testShoppingListDataNameNull() {
         try {
             ShoppingListData shoppingListData = new ShoppingListData(null, "1", "40");
@@ -63,7 +63,7 @@ public class Sprint4Junits {
         }
     }
 
-    //Daniel Deller
+    // Daniel Deller
     @Test
     public void changeShoppingListNameNull() {
         try {
@@ -74,8 +74,6 @@ public class Sprint4Junits {
         } catch (IllegalArgumentException e) {
             assertEquals("Name is null or empty, please enter a proper value", e.getMessage());
         }
-
-
     }
 
 
@@ -148,23 +146,69 @@ public class Sprint4Junits {
         });
     } */
 
-    //Rohan Bhole
-    public void testSomething1() {
-
+    // Rohan Bhole
+    @Test
+    public void testShoppingListCaloriesEmpty() {
+        try {
+            ShoppingListData data = new ShoppingListData("name", "quantity", "");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Calories is null, empty, or negative please enter a proper value", e.getMessage());
+        }
     }
 
-    //Rohan Bhole
+    // Rohan Bhole
+    @Test
+    public void testShoppingListCaloriesNull() {
+        try {
+            ShoppingListData data = new ShoppingListData("name", "quantity", null);
+        } catch (IllegalArgumentException e) {
+            assertEquals("Calories is null, empty, or negative please enter a proper value", e.getMessage());
+        }
+    }
 
+    // Michael Vaden
+    @Test
+    public void testChangeShoppingListCaloriesEmpty() {
+        try {
+            ShoppingListData data = new ShoppingListData("name", "quantity", "calories");
+            data.setCalorie("100");
+            assertEquals("100", data.getCalories());
+            data.setCalorie("");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Calories is null, empty, or negative please enter a proper value", e.getMessage());
+        }
+    }
 
-    //Michael Vaden
+    // Michael Vaden
+    @Test
+    public void testChangeShoppingListCaloriesNull() {
+        try {
+            ShoppingListData data = new ShoppingListData("name", "quantity", "calories");
+            data.setCalorie("100");
+            assertEquals("100", data.getCalories());
+            data.setCalorie(null);
+        } catch (IllegalArgumentException e) {
+            assertEquals("Calories is null, empty, or negative please enter a proper value", e.getMessage());
+        }
+    }
 
+    // Adam Vaughn
+    @Test
+    public void testShoppingListCaloriesZero() {
+        try {
+            ShoppingListData data = new ShoppingListData("name", "quantity", "0");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Calories is null, empty, or negative please enter a proper value", e.getMessage());
+        }
+    }
 
-    //Micahel Vaden
-
-
-    //Adam Vaughn
-
-
-    //Adam Vaughn
-
+    // Adam Vaughn
+    @Test
+    public void testShoppingListCaloriesNegative() {
+        try {
+            ShoppingListData data = new ShoppingListData("name", "quantity", "-100");
+        } catch (IllegalArgumentException e) {
+            assertEquals("Calories is null, empty, or negative please enter a proper value", e.getMessage());
+        }
+    }
 }
