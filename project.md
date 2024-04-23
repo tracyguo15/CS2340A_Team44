@@ -210,13 +210,13 @@ Rohan Bhole: App Developer
 
 Daniel Deller: App Developer, System Designer, Helping Hand, Debugger
 
-Tracy Guo: App developer, Web developer
+Tracy Guo: App Developer, Web Developer
 
 Michael Leonick: App Developer
 
 Michael Vaden: App Developer
 
-Adam Vaughn: Team manager, topics research, designer
+Adam Vaughn: Team manager, Topics Research, Designer
 
 
 
