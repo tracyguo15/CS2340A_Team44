@@ -59,10 +59,10 @@ For our third sprint we developed a Design Class Diagram to further define the d
 
 Here is another sequence diagram developed during our third sprint that included the functionality we later implemented for the sprint. 
 ### Use Case Scenarios
-<img width="612" alt="SD3" src="SD3.png">
+<img width="710" alt="UseCase3" src="UseCase3.png">
 
 ### Sequence Diagram
-<img width="710" alt="UseCase3" src="UseCase3.png">
+<img width="612" alt="SD3" src="SD3.png">
 
 ## Design Principles Examples: SOLID
 
